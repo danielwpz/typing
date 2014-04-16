@@ -1,0 +1,14 @@
+function registerListeners(so) {
+	so.on('_Reply', function(data) {
+		if (data.type == 'Register') {
+			if (data.result == 'ok') {
+				console.log('Register successfully!\n');
+				$('#registeModal').modal('toggle');
+			}else {
+				console.log(data);
+			}
+		}
+	});
+}
+
+
