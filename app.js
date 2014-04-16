@@ -10,7 +10,7 @@ var session = require('express-session');
 var sessionStore = new session.MemoryStore();
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var typing = require('./routes/typing');
 
 var cookieParser = CookieParser('secret');
 
@@ -35,7 +35,7 @@ app.use(partials());
 app.use(session({key: 'connect.sid', secret: 'secret', store: sessionStore}));
 
 app.use('/', routes);
-app.use('/users', users);
+app.use('/typing', typing);
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
@@ -104,12 +104,12 @@ engine.on('pair-made', function(p1, p2) {
 	p1.socket.emit('_Reply', {
 		type: 'Challenge', 
 		result: 'start',
-		page: '/users'
+		page: '/typing'
 	});
 	p2.socket.emit('_Reply', {
 		type: 'Challenge', 
 		result: 'start',
-		page: '/users'
+		page: '/typing'
 	});
 });
 
@@ -134,7 +134,7 @@ function isRegistered(name) {
 }
 
 function getName(session) {
-	if (session && session.name && isRegistered(session.name))
+	if (session && session.name)
 		return session.name;
 	else
 		return null;
@@ -217,7 +217,6 @@ sio.on('connection', function(err, socket, session) {
 				});
 			}
 		}else {
-			console.log('Already name: ' + name);
 			socket.emit('_Reply', {
 				type: 'Register', 
 				result: 'already'
@@ -251,24 +250,21 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 	var name = getName(session);
 	var pairIndex = session.pairIndex;
 	var pair;
-	console.log(name + pairIndex + '\n');
 
 	userList[name].socket = socket;
 	
 	if (pairList[pairIndex].player1 == name) {
-		console.log(name + ' is 1\n');
-		console.log('2:' + pairList[pairIndex].player2_online);
+		// Tell the pair that I am online.
 		pairList[pairIndex].player1_online = true;
+		// Check if my component is also online.
 		if (pairList[pairIndex].player2_online) {
-			console.log('ready emit\n');
 			engine.emit('pair_ready', pairIndex);
 		}
 	}else if (pairList[pairIndex].player2 == name) {
-		console.log(name + ' is 2\n');
-		console.log('1:' + pairList[pairIndex].player1_online);
+		// Tell the pair that I am online.
 		pairList[pairIndex].player2_online = true;
+		// Check if my component is also online.
 		if (pairList[pairIndex].player1_online) {
-			console.log('ready emit\n');
 			engine.emit('pair-ready', pairIndex);
 		}
 	}
