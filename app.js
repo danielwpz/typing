@@ -269,6 +269,17 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 		}
 	}
 
+	socket.on('Update', function(data) {
+		socket.get('pair', function(err, pair) {
+			if (err) {
+				console.log('Get socket pair err.\n');
+			}else {
+				// just forward
+				pair.socket.volatile.emit('_Update', data);
+			}
+		});
+	});
+
 });
 
 module.exports = app;
