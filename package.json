@@ -17,6 +17,7 @@
 	"express-partials": "*",
 	"session.socket.io": "*",
 	"connect": "*",
-	"express-session": "*"
+	"express-session": "*",
+	"node-inspector": "*"
   }
 }
