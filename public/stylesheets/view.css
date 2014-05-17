@@ -1,0 +1,19 @@
+.contest {
+	width:960px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.me {
+	float:left;
+	border-style:solid;
+}
+
+.opponent {
+	float:right;
+	border-style:solid;
+}
+
+.stat {
+	clear:both;
+}
