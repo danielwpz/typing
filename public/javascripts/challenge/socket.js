@@ -20,6 +20,10 @@ function registerListeners(so) {
 	});
 }
 
+function sendUpdate(data) {
+	//socket.volatile.emit('Update', data);
+}
+
 function doUpdate(data) {
 	switch (data)
 	{
@@ -105,6 +109,4 @@ function handleSpeChars(data) {
  
    }
 }
-function sendUpdate(data) {
-	socket.volatile.emit('Update', data);
-}
+
