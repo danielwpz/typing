@@ -2,11 +2,12 @@
 
 function keypress(e)
 {
+	
 	var currKey=0,CapsLock=0,e=e||event;
 	currKey=e.keyCode||e.which||e.charCode;
 	//CapsLock=currKey>=65&&currKey<=90;
 	var letter = $(".me span.typing").text();
-	sendUpdate(currKey);
+	
 	switch (currKey)
 	{
 	//屏蔽了退格、制表、回车、空格、方向键、删除键
@@ -17,6 +18,7 @@ function keypress(e)
    	default:
    //		alert(currKey);
    //		alert(String.fromCharCode(currKey));
+		sendUpdate({key:currKey});
    		var k = String.fromCharCode(currKey);
    		if ($(".me span").hasClass("wrong")) {   			   	
     	   		$(".me span.typing").removeClass("typing").addClass("wrong");
@@ -37,6 +39,7 @@ function keypress(e)
 		$(".me span.typing").removeClass("hidden");
 	if ($(".me span.hasTyped:last").hasClass("hiddenElement"))
 		$(".me span.hasTyped:last").addClass("hidden");
+	
 
 }
 
@@ -46,6 +49,7 @@ function keydown(e)
    	var currKey = e.keyCode||e.which||e.charCode;
    	if ((currKey>7&&currKey<14)||(currKey>31&&currKey<47))
    	{
+		sendUpdate({key:currKey});
        	switch (currKey)
        	{
        	case 8: 
