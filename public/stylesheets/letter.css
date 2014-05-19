@@ -1,0 +1,22 @@
+@CHARSET "UTF-8";
+
+.notTyped {
+	color: #000;
+}
+
+.hasTyped {
+	color: gray;
+}
+
+.wrong {
+	color: red;
+}
+
+.typing {
+	color: #000;
+	background-color: #0f0;
+	
+}
+
+
+

@@ -258,7 +258,7 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 		pairList[pairIndex].player1_online = true;
 		// Check if my component is also online.
 		if (pairList[pairIndex].player2_online) {
-			engine.emit('pair_ready', pairIndex);
+			engine.emit('pair-ready', pairIndex);
 		}
 	}else if (pairList[pairIndex].player2 == name) {
 		// Tell the pair that I am online.
@@ -275,7 +275,7 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 				console.log('Get socket pair err.\n');
 			}else {
 				// just forward
-				pair.socket.volatile.emit('_Update', data);
+				pair.socket.emit('_Update', data);
 			}
 		});
 	});
