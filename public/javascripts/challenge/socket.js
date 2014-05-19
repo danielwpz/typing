@@ -21,8 +21,11 @@ function registerListeners(so) {
 }
 
 function doUpdate(data) {
+	console.log('Update: ' + data.cnt + '\n');
 }
 
+var i = 0;
+
 function sendUpdate(data) {
-	socket.volatile.emit('Update', data);
+	socket.emit('Update', {cnt: i++});
 }

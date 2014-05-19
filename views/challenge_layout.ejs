@@ -54,10 +54,12 @@
         /* Init socket.io */
         $(function() {
             socket = io.connect('http://localhost:8080/challenge');
-			if (socket)
-            	console.log('socket established\n');
 
-			registerListeners(socket);
+			if (socket) {
+				registerListeners(socket);
+				socket.emit('Established', {});
+				console.log('socket established\n');
+			}
         });
 
 		/* Init Messenger */

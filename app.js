@@ -26,7 +26,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(favicon());
-app.use(logger('dev'));
+//app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser);
@@ -75,6 +75,7 @@ server.listen(app.get('port'), function() {
 /* ================================================== */
 var events = require('events');
 var util = require('util');
+var Player = require('./modules/Player.js');
 
 /*****************
  *    Classes    *
@@ -84,13 +85,6 @@ var util = require('util');
 function Engine() {
 }
 util.inherits(Engine, events.EventEmitter);
-
-function Player(name, socket, session) {
-	this.name = name;
-	this.socket = socket;
-	this.session = session;
-	this.state = 'normal';
-}
 
 /*********************
  *    Global vars    *
@@ -114,7 +108,7 @@ engine.on('pair-made', function(p1, p2) {
 });
 
 engine.on('pair-ready', function(index) {
-	console.log('one ready.\n');
+	console.log('Pair[' + index + '] ready.\n');
 	var player1 = userList[pairList[index].player1];
 	var player2 = userList[pairList[index].player2];
 
@@ -249,25 +243,26 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 	// gets to this point, his session must be valid.
 	var name = getName(session);
 	var pairIndex = session.pairIndex;
-	var pair;
 
 	userList[name].socket = socket;
 	
-	if (pairList[pairIndex].player1 == name) {
-		// Tell the pair that I am online.
-		pairList[pairIndex].player1_online = true;
-		// Check if my component is also online.
-		if (pairList[pairIndex].player2_online) {
-			engine.emit('pair_ready', pairIndex);
+	socket.on('Established', function(data) {
+		if (pairList[pairIndex].player1 == name) {
+			// Tell the pair that I am online.
+			pairList[pairIndex].player1_online = true;
+			// Check if my component is also online.
+			if (pairList[pairIndex].player2_online) {
+				engine.emit('pair-ready', pairIndex);
+			}
+		}else if (pairList[pairIndex].player2 == name) {
+			// Tell the pair that I am online.
+			pairList[pairIndex].player2_online = true;
+			// Check if my component is also online.
+			if (pairList[pairIndex].player1_online) {
+				engine.emit('pair-ready', pairIndex);
+			}
 		}
-	}else if (pairList[pairIndex].player2 == name) {
-		// Tell the pair that I am online.
-		pairList[pairIndex].player2_online = true;
-		// Check if my component is also online.
-		if (pairList[pairIndex].player1_online) {
-			engine.emit('pair-ready', pairIndex);
-		}
-	}
+	});
 
 	socket.on('Update', function(data) {
 		socket.get('pair', function(err, pair) {
