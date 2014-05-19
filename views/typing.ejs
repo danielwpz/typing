@@ -1,41 +1,7 @@
-<h3>We are challenging...!</h3>
-
 <% // TODO: handler code here... %>
 <% // Variable 'code' is a char array. %>
 <% // You can use code[i] to get each character. %>
+<h3>We are challenging...!</h3>
 
-<a onclick="sendUpdate()">Update</a>
-<br>
-<%
-var i;
-var first = true;
-var space = true;
-var typing = "typing";
-var hasTyped = "hasTyped";
-var notTyped = "notTyped";
-var wrong = "wrong";
-var returnStr = "return";
-for (i=0;i<code.length;i++) {
-
-	while (code[i]!='\n') {
-		while(code[i]==' '&&space) {
-			%><span>&nbsp;</span><%
-			i++;
-		} 
-			if (first) {
-				%><span class="<%=typing%>"><%=code[i]%></span><%
-				first = false;
-				space = false;
-			} else { 
-				%><span class="<%=notTyped%>"><%=code[i]%></span><%
-			}
-		i++;
-	} 
-		
-	
-	%><span class="<%=notTyped%> <%=returnStr%>"></span><br/><%
-	
-	space = true;
-}
-%>
+<%= code%>
 <p>(c) Stylenet 2014</p>

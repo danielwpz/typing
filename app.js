@@ -270,7 +270,7 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 				console.log('Get socket pair err.\n');
 			}else {
 				// just forward
-				pair.socket.volatile.emit('_Update', data);
+				pair.socket.emit('_Update', data);
 			}
 		});
 	});
