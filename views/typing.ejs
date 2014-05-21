@@ -1,7 +1,88 @@
+
+
 <% // TODO: handler code here... %>
 <% // Variable 'code' is a char array. %>
 <% // You can use code[i] to get each character. %>
+<div class="contest">
 <h3>We are challenging...!</h3>
+<code class="me">
+<%
+var i;
+var first = true;
+var space = true;
+var typing = "typing";
+var hasTyped = "hasTyped";
+var notTyped = "notTyped";
+var wrong = "wrong";
+var returnStr = "return";
+for (i=0;i<code.length;i++) {
 
-<%= code%>
+	while (code[i]!='\n') {
+		while(code[i]==' '&&space) {
+			%><span>&nbsp;</span><%
+			i++;
+		} 
+		space = false;
+			if (first) {
+				%><span class="<%=typing%>"><%=code[i]%></span><%
+				first = false;			
+			} else {
+				if (code[i]==' ') {
+					%><span class="<%=notTyped%>">&nbsp;</span><%
+				} else {
+					%><span class="<%=notTyped%>"><%=code[i]%></span><%
+				}
+			}
+		i++;
+	} 
+		
+	
+	%><span class="<%=notTyped%> <%=returnStr%> hidden hiddenElement">&crarr;</span><br/><%
+	
+	space = true;
+}
+%>
+</code>
+
+<code class="opponent">
+<%
+var i;
+var first = true;
+var space = true;
+var typing = "typing";
+var hasTyped = "hasTyped";
+var notTyped = "notTyped";
+var wrong = "wrong";
+var returnStr = "return";
+for (i=0;i<code.length;i++) {
+
+	while (code[i]!='\n') {
+		while(code[i]==' '&&space) {
+			%><span>&nbsp;</span><%
+			i++;
+		} 
+		space = false;
+			if (first) {
+				%><span class="<%=typing%>"><%=code[i]%></span><%
+				first = false;			
+			} else {
+				if (code[i]==' ') {
+					%><span class="<%=notTyped%>">&nbsp;</span><%
+				} else {
+					%><span class="<%=notTyped%>"><%=code[i]%></span><%
+				}
+			}
+		i++;
+	} 
+		
+	
+	%><span class="<%=notTyped%> <%=returnStr%> hidden hiddenElement">&crarr;</span><br/><%
+	
+	space = true;
+}
+%>
+</code>
+
+<div class='stat'></div>
 <p>(c) Stylenet 2014</p>
+</div>
