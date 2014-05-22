@@ -76,6 +76,7 @@ server.listen(app.get('port'), function() {
 var events = require('events');
 var util = require('util');
 var Player = require('./modules/Player.js');
+var MatchPicker = require('./modules/MatchPicker.js');
 
 /*****************
  *    Classes    *
@@ -91,6 +92,7 @@ util.inherits(Engine, events.EventEmitter);
  *********************/
 var userList = {};
 var pairList = new Array();
+var matchPicker = new MatchPicker();
 
 var engine = new Engine();
 /* Register event for Engine */
@@ -159,8 +161,9 @@ function tryChallenge(name, pairName) {
 
 	player.state = 'waiting';
 
-	if (pair && pair.state != 'racing') {
+	if (pair && pairName != name && pair.state != 'racing') {
 		if (pair.state == 'waiting') {
+			matchPicker.clear(pairName);
 			makePair(player, pair);
 		}else if (pair.state == 'normal') {
 			pair.socket.emit('_Challenge', {name: name});
@@ -236,11 +239,34 @@ sio.on('connection', function(err, socket, session) {
 		}
 	});
 
+	socket.on('Match', function(data) {
+		var name = getName(session);
+		console.log('Match: ' + name + '\n');
+
+		if (name) {
+			var player = userList[name];
+			player.state = 'waiting';
+
+			var pairName = matchPicker.match(name, data);
+			var pair = userList[pairName];
+			if (pair) {
+				makePair(player, pair);
+			}
+		}else {
+			socket.emit('_Reply', {
+				type: 'Match',
+				result: 'unregister'
+			});
+		}
+	});
 });
 
 sio.of('/challenge').on('connection', function(err, socket, session) {
 	// we hold the belief that when a player
 	// gets to this point, his session must be valid.
+	if (!session){
+		return;
+	}
 	var name = getName(session);
 	var pairIndex = session.pairIndex;
 

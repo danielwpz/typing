@@ -23,6 +23,12 @@ function registerListeners(so) {
 		}
 	});
 
+	so.on('_Reply', function(data) {
+		if (data.type == 'Match') {
+			console.log('Match: ' + data.result + '\n');
+		}
+	});
+
 	so.on('_Challenge', function(data) {
 		var name = data.name;
 
@@ -57,6 +63,10 @@ function registerListeners(so) {
 			}
 			}
 		});
+	});
+
+	so.on('disconnect', function() {
+		so.disconnect();
 	});
 }
 

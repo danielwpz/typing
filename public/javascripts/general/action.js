@@ -12,6 +12,8 @@ function challenge() {
 	var pair = $('#pair-name-input').val();
 
 	socket.emit('Challenge', {type: 'try', name: pair});
+}
 
-
+function match() {
+	socket.emit('Match', {lan:'C'});
 }
