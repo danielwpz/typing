@@ -58,7 +58,7 @@
       <div class="container">
         <h1>Hello, world!</h1>
         <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-        <p><a class="btn btn-primary btn-lg" role="button">Learn more »</a></p>
+        <p><button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#registeModal">Registe</button></p>
       </div>
     </div>
 
@@ -89,6 +89,30 @@
       </footer>
     </div> <!-- /container -->
 
+	<!-- Modal Registe -->
+	<div class="modal fade" id="registeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" style="margin-top:auto margin-bottom:auto">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Register</h4>
+	      </div>
+	      <div class="modal-body">
+	        <form role="form">
+	        <div class="input-group" style="width:100%">
+	          <input id="name-input" type="text" class="form-control" placeholder="Username">
+	          <input id="pwd-input" type="text" class="form-control" placeholder="Password">
+	          <input id="pwd2-input" type="text" class="form-control" placeholder="Password Again">
+	        </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" onclick="register()">Sign Up</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

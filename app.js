@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var connect = require('connect');
 var session = require('express-session');
 var sessionStore = new session.MemoryStore();
+var crypto = require('crypto');
 
 var routes = require('./routes/index');
 var typing = require('./routes/typing');
@@ -183,6 +184,14 @@ function rejectChallenge(name, pairName) {
 	pair.socket.emit('_Reply', {type: 'Challenge', result: 'reject'});
 }
 
+function makeOnline(name, socket, session) {
+	userList[name] = new Player(name, socket, session);
+
+	session.name = name;
+	session.save();
+}
+
+
 /*******************
  *    socket.io    *
  *******************/
@@ -198,21 +207,51 @@ sio.on('connection', function(err, socket, session) {
 
 		if (name == null) {
 			name = data.name;
+			var pwd = data.pwd;
+			var pwd2 = data.pwd2;
+
+			// check if pwd is valid
+			if (pwd != pwd2) {
+				socket.emit('_Reply', {
+					type:'Register',
+					result:'inval-pwd'
+				});
+
+				return;
+			}
+
+			var md5 = crypto.createHash('md5');
+			var secretPwd = md5.update(pwd).digest('base64');
 
 			// check whether the name already existed
-			if (!isRegistered(name)) {
-				userList[name] = new Player(name, socket, session);
+			Player.get(name, function(err, player) {
+				if (player == null) {
+					var player = new Player(name, socket, session);
+					player.pwd = secretPwd;
 
-				session.name = data.name;
-				session.save();
-				// reply
-				socket.emit('_Reply', {type: 'Register', result: 'ok'});
-			}else {
-				socket.emit('_Reply', {
-					type: 'Register', 
-					result: 'exist'
-				});
-			}
+					player.save(function(err) {
+						if (err) {
+							console.log('save player error:' + err);
+							socket.emit('_Reply', {
+								type: 'Register',
+								result: 'unknown-err'
+							});
+						}else {
+							makeOnline(name, socket, session);
+
+							socket.emit('_Reply', {
+								type: 'Register',
+								result: 'ok'
+							});
+						}
+					});
+				}else {
+					socket.emit('_Reply', {
+						type: 'Register',
+						result: 'exist'
+					});
+				}
+			});
 		}else {
 			socket.emit('_Reply', {
 				type: 'Register', 
@@ -220,6 +259,37 @@ sio.on('connection', function(err, socket, session) {
 			});
 		}
 	});
+
+	socket.on('SignIn', function(data) {
+		var md5 = crypto.createHash('md5');
+		var secretPwd = md5.update(data.pwd).digest('base64');
+
+		// check whether the name already existed
+		Player.get(data.name, function(err, player) {
+			if (err) {
+				console.log('get player err:' + err);
+				socket.emit('_Reply', {
+					type: 'SignIn',
+					result: 'unknown-err'
+				});
+				return;
+			}
+
+			if (player && player.pwd == secretPwd) {
+				makeOnline(data.name, socket, session);
+				socket.emit('_Reply', {
+					type: 'SignIn',
+					result: 'ok'
+				});
+			}else {
+				socket.emit('_Reply', {
+					type: 'Register',
+					result: 'bad-info'
+				});
+			}
+		});
+	});
+		
 
 	socket.on('Challenge', function(data) {
 		var name = getName(session);

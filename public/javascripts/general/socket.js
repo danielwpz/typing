@@ -7,6 +7,11 @@ function registerListeners(so) {
 			}else {
 				console.log(data);
 			}
+		}else if (data.type == 'SignIn') {
+			console.log('Sign In:' + data.result + '\n');
+			if (data.result == 'ok') {
+				console.log('Sign In OK.\n');
+			}
 		}
 	});
 
