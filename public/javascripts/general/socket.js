@@ -4,6 +4,10 @@ function registerListeners(so) {
 			if (data.result == 'ok') {
 				console.log('Register successfully!\n');
 				$('#registeModal').modal('toggle');
+				// refresh the page
+				var hostPath = window.location.hostname;
+				var hostPort = window.location.port;
+				window.location.assign('http://' + hostPath + ':' + hostPort);
 			}else {
 				console.log(data);
 			}
@@ -11,6 +15,11 @@ function registerListeners(so) {
 			console.log('Sign In:' + data.result + '\n');
 			if (data.result == 'ok') {
 				console.log('Sign In OK.\n');
+				// refresh the page
+				var hostPath = window.location.hostname;
+				var hostPort = window.location.port;
+				window.location.assign('http://' + hostPath + ':' + hostPort);
+
 			}
 		}
 	});

@@ -35,8 +35,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(partials());
 app.use(session({key: 'connect.sid', secret: 'secret', store: sessionStore}));
 
+app.use('/typing/:lan', typing);
 app.use('/', routes);
-app.use('/typing', typing);
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
@@ -101,12 +101,12 @@ engine.on('pair-made', function(p1, p2) {
 	p1.socket.emit('_Reply', {
 		type: 'Challenge', 
 		result: 'start',
-		page: '/typing'
+		page: '/typing/c'
 	});
 	p2.socket.emit('_Reply', {
 		type: 'Challenge', 
 		result: 'start',
-		page: '/typing'
+		page: '/typing/c'
 	});
 });
 

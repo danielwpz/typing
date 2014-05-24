@@ -10,24 +10,38 @@
           <a class="navbar-brand" href="./demob_files/demob.html">Project name</a>
         </div>
         <div class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right" role="form">
-            <div class="form-group">
-              <input id="signin-name" type="text" placeholder="Email" class="form-control">
-              <input id="signin-pwd" type="password" placeholder="Password" class="form-control">
+		  <% if (name == '') { %>
+          <table class="nav navbar-nav navbar-form navbar-right" style="margin-top:8px;">
+	  <tr>
+            <td >
+              <input style="margin-right:5px" id="signin-name" type="text" placeholder="Email" class="form-control">
+            </td>
+            <td>
+              <input style="margin-right:7px" id="signin-pwd" type="password" placeholder="Password" class="form-control">
+            </td>
+            <td>
               <button type="button" class="btn btn-success" onclick="signIn()">Sign in</button>
-            </div>
+            </td>
 
-          </form>
+          </tr>
+	  </table>
+		  <%}else { %>
+		  <ul class="nav navbar-nav navbar-right">
+		    <li>
+		      <a><%=name%></a>
+		    </li>
+		  </ul>
+		  <%} %>
         </div><!--/.navbar-collapse -->
       </div>
     </div>
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
+    <div class="jumbotron" style="margin-top:40px">
       <div class="container">
         <h1>Hello, world!</h1>
         <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-        <p><button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#registeModal">Registe</button></p>
+        <p><button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#registeModal">Register</button></p>
       </div>
     </div>
 
@@ -35,19 +49,19 @@
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-md-4">
-          <h2>Heading</h2>
+          <h2>Practice</h2>
           <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="./demob_files/demob.html" role="button">View details »</a></p>
+          <p><a class="btn btn-success" href="./demob_files/demob.html" role="button">View details »</a></p>
         </div>
         <div class="col-md-4">
-          <h2>Heading</h2>
+          <h2>Challenge</h2>
           <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="./demob_files/demob.html" role="button">View details »</a></p>
+          <p><a class="btn btn-success" href="./demob_files/demob.html" role="button">View details »</a></p>
        </div>
         <div class="col-md-4">
-          <h2>Heading</h2>
+          <h2>Match</h2>
           <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn btn-default" href="./demob_files/demob.html" role="button">View details »</a></p>
+          <p><a class="btn btn-success" role="button" onclick="match()">Match »</a></p>
         </div>
       </div>
 
@@ -67,13 +81,23 @@
 	        <h4 class="modal-title" id="myModalLabel">Register</h4>
 	      </div>
 	      <div class="modal-body">
-	        <form role="form">
-	        <div class="input-group" style="width:100%">
-	          Username:<input id="name-input" type="text" class="form-control" placeholder="Username">
-	          Password:<input id="pwd-input" type="text" class="form-control" placeholder="Password">
-	          Password:<input id="pwd2-input" type="text" class="form-control" placeholder="Password Again">
-	        </div>
-	        </form>
+						<table cellspacing="5" style="width:70%; margin:auto">
+						<tr>
+							<td>Username</td>
+							<td><input id="name-input" type="text" class="form-control" placeholder="" style="margin:5px"></td>
+						</tr>
+						<tr><td></td><td></td></tr>
+						<tr>
+							<td>Password</td>
+							<td><input id="pwd-input" type="password" class="form-control" placeholder="" style="margin:5px"></td>
+						</tr>
+						<tr><td></td><td></td></tr>
+						<tr>
+							<td>Verify</td>
+							<td><input id="pwd2-input" type="password" class="form-control" placeholder="" style="margin:5px"></td>
+						</tr>
+						<tr><td></td><td></td></tr>
+						</table>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
