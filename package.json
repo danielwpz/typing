@@ -18,6 +18,8 @@
 	"session.socket.io": "*",
 	"connect": "*",
 	"express-session": "*",
-	"node-inspector": "*"
+	"node-inspector": "*",
+	"connect-mongo": "*",
+	"mongodb": "*"
   }
 }
