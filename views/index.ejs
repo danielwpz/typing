@@ -51,17 +51,17 @@
         <div class="col-md-4">
           <h2>Practice</h2>
           <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-success" href="./demob_files/demob.html" role="button">View details »</a></p>
+          <p><a class="btn btn-success" data-toggle="modal" data-target="#practiceModal" role="button">Practice »</a></p>
         </div>
         <div class="col-md-4">
           <h2>Challenge</h2>
           <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-success" href="./demob_files/demob.html" role="button">View details »</a></p>
+          <p><a class="btn btn-success" data-toggle="modal" data-target="#challengeModal" role="button">Challenge »</a></p>
        </div>
         <div class="col-md-4">
           <h2>Match</h2>
           <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-          <p><a class="btn btn-success" role="button" onclick="match()">Match »</a></p>
+          <p><a class="btn btn-success" role="button" data-toggle="modal" data-target="#matchModal"">Match »</a></p>
         </div>
       </div>
 
@@ -71,6 +71,9 @@
         <p>© Company 2013</p>
       </footer>
     </div> <!-- /container -->
+
+	<!---------------------------------------------------------------->
+	<!------------------------ Out of Body --------------------------->
 
 	<!-- Modal Registe -->
 	<div class="modal fade" id="registeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -102,6 +105,106 @@
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	        <button type="button" class="btn btn-primary" onclick="register()">Sign Up</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+	<!-- Modal Practice -->
+	<div class="modal fade" id="practiceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" style="margin-top:auto margin-bottom:auto">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Practice</h4>
+	      </div>
+	      <div class="modal-body">
+						<table cellspacing="5" style="width:50%; margin:auto">
+						<tr>
+							<td style="padding-bottom:10px; padding-right:15px"><span>Language</span></td>
+							<td>        
+          				<select id="practice-lanlist" name="lanlist" class="selectpicker" data-size="false">
+										<option value="0"">Choose Language</option>
+										<option value="c">C</option>
+										<option value="java">Java</option>
+										<option value="javascript">JavaScript</option>
+          				</select>
+							</td>
+						</tr>
+						<tr><td></td><td></td></tr>
+						</table>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" onclick="practice()">Start</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+	<!-- Modal Challenge -->
+	<div class="modal fade" id="challengeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" style="margin-top:auto margin-bottom:auto">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Challenge</h4>
+	      </div>
+	      <div class="modal-body">
+						<table cellspacing="5" style="width:50%; margin:auto">
+						<tr>
+							<td style="padding-bottom:10px; padding-right:20px"><span>Language</span></td>
+							<td>        
+          				<select id="challenge-lanlist" name="lanlist" class="selectpicker" data-size="false">
+										<option value="0"">Choose Language</option>
+										<option value="c">C</option>
+										<option value="java">Java</option>
+										<option value="javascript">JavaScript</option>
+          				</select>
+							</td>
+						</tr>
+						<tr><td></td><td></td></tr>
+						<tr>
+							<td>Opponent</td>
+							<td><input id="oppo-input" type="text" class="form-control" placeholder=""></td>
+						</tr>
+						</table>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" onclick="challenge()">Challenge!</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+	<!-- Modal Match -->
+	<div class="modal fade" id="matchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" style="margin-top:auto margin-bottom:auto">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Match</h4>
+	      </div>
+	      <div class="modal-body">
+						<table cellspacing="5" style="width:50%; margin:auto">
+						<tr>
+							<td style="padding-bottom:10px; padding-right:15px"><span>Language</span></td>
+							<td>        
+          				<select id="match-lanlist" name="lanlist" class="selectpicker" data-size="false">
+										<option value="0"">Choose Language</option>
+										<option value="c">C</option>
+										<option value="java">Java</option>
+										<option value="javascript">JavaScript</option>
+          				</select>
+							</td>
+						</tr>
+						<tr><td></td><td></td></tr>
+						</table>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" onclick="match()">Match</button>
 	      </div>
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->

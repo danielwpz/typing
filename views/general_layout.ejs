@@ -53,6 +53,10 @@
 	<script src="/javascripts/general/socket.js"></script>
 	<script src="/javascripts/general/action.js"></script>
     <script>
+		$(function() {
+			$('.selectpicker').selectpicker();
+		});
+
         /* Init socket.io */
         $(function() {
             socket = io.connect('http://localhost:8080');

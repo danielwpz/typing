@@ -97,16 +97,20 @@ var matchPicker = new MatchPicker();
 
 var engine = new Engine();
 /* Register event for Engine */
-engine.on('pair-made', function(p1, p2) {
+engine.on('pair-made', function(index) {
+	var p1 = userList[pairList[index].player1];
+	var p2 = userList[pairList[index].player2];
+	var lan = pairList[index].lan;
+
 	p1.socket.emit('_Reply', {
 		type: 'Challenge', 
 		result: 'start',
-		page: '/typing/c'
+		page: '/typing/' + lan
 	});
 	p2.socket.emit('_Reply', {
 		type: 'Challenge', 
 		result: 'start',
-		page: '/typing/c'
+		page: '/typing/' + lan
 	});
 });
 
@@ -137,7 +141,7 @@ function getName(session) {
 		return null;
 }
 
-function makePair(player1, player2) {
+function makePair(player1, player2, lan) {
 	var index = pairList.length;
 
 	player1.session.pairIndex = index;
@@ -149,14 +153,15 @@ function makePair(player1, player2) {
 		player1: player1.name, 
 		player2: player2.name,
 		player1_online: false,
-		player2_online: false
+		player2_online: false,
+		lan: lan
 	});
 
 	// fire event
-	engine.emit('pair-made', player1, player2);
+	engine.emit('pair-made', index);
 }
 
-function tryChallenge(name, pairName) {
+function tryChallenge(name, pairName, lan) {
 	var player = userList[name];
 	var pair = userList[pairName];
 
@@ -165,9 +170,12 @@ function tryChallenge(name, pairName) {
 	if (pair && pairName != name && pair.state != 'racing') {
 		if (pair.state == 'waiting') {
 			matchPicker.clear(pairName);
-			makePair(player, pair);
+			makePair(player, pair, lan);
 		}else if (pair.state == 'normal') {
-			pair.socket.emit('_Challenge', {name: name});
+			pair.socket.emit('_Challenge', {
+				name: name,
+				lan: lan
+			});
 		}
 	}else {
 		player.socket.emit('_Reply', {type: 'Challenge', result: 'nonavail'});
@@ -295,10 +303,11 @@ sio.on('connection', function(err, socket, session) {
 		var name = getName(session);
 		var pair = data.name;
 		var type = data.type;
-		console.log('Challenge: ' + name + ' -> ' + pair);
+		var lan  = data.lan;
+		console.log('Challenge[' + lan + ']: ' + name + ' -> ' + pair);
 
 		if (name && type == 'try') {
-			tryChallenge(name, pair);
+			tryChallenge(name, pair, lan);
 		}else if (name && type == 'reject'){
 			rejectChallenge(name, pair);
 		}else {
@@ -320,7 +329,7 @@ sio.on('connection', function(err, socket, session) {
 			var pairName = matchPicker.match(name, data);
 			var pair = userList[pairName];
 			if (pair) {
-				makePair(player, pair);
+				makePair(player, pair, data.lan);
 			}
 		}else {
 			socket.emit('_Reply', {

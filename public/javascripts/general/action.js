@@ -29,12 +29,31 @@ function signIn() {
 	});
 }
 
-function challenge() {
-	var pair = $('#pair-name-input').val();
+function practice() {
 
-	socket.emit('Challenge', {type: 'try', name: pair});
+}
+
+function challenge() {
+	var lan = $('#challenge-lanlist').val();
+	var pair = $('#oppo-input').val();
+
+	console.log('lan:' + lan + '\n');
+	console.log('oppo:' + pair + '\n');
+
+	if (lan != '0' && pair != '') {
+		socket.emit('Challenge', {
+			type: 'try', 
+			name: pair,
+			lan: lan
+		});
+	}
 }
 
 function match() {
-	socket.emit('Match', {lan:'C'});
+	var lan = $('#match-lanlist').val();
+	console.log('lan:' + lan + '\n');
+
+	if (lan != '0') {
+		socket.emit('Match', {lan: lan});
+	}
 }
