@@ -2,7 +2,7 @@
 
 function keypress(e)
 {
-	
+
 	var currKey=0,CapsLock=0,e=e||event;
 	currKey=e.keyCode||e.which||e.charCode;
 	//CapsLock=currKey>=65&&currKey<=90;
