@@ -59,6 +59,14 @@
 	<script src="/javascripts/challenge/type.js"></script>
 	<script src="/javascripts/ejs_fulljslint.js"></script>
     <script>
+		/* Init Messenger */
+		$(function() {
+			Messenger.options = {
+				extraClasses: 'messenger-fixed messenger-on-bottom messenger-on-right',
+				theme: 'air'
+			}
+		});
+
         /* Init socket.io */
         $(function() {
             socket = io.connect('http://localhost:8080/challenge');
@@ -70,13 +78,6 @@
 			}
         });
 
-		/* Init Messenger */
-		$(function() {
-			Messenger.options = {
-				extraClasses: 'messenger-fixed messenger-on-bottom messenger-on-right',
-				theme: 'air'
-			}
-		});
     </script>
   </body>
 </html>

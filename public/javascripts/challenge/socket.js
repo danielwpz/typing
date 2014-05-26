@@ -12,6 +12,7 @@ function registerListeners(so) {
 
 	so.on('_Start', function(data) {
 		console.log('start!');
+		doStart();
 	});
 
 	so.on('_Update', function(data) {
@@ -20,11 +21,11 @@ function registerListeners(so) {
 	});
 }
 
-function doUpdate(data) {
-	console.log('Update: ' + data.cnt + '\n');
-}
-
 function sendUpdate(data) {
 	socket.emit('Update', data);
+}
+
+function sendFinish(data) {
+	socket.emit('Finish', data);
 }
 
