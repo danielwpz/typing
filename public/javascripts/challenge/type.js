@@ -39,7 +39,8 @@ function keypress(e)
 		$(".me span.typing").removeClass("hidden");
 	if ($(".me span.hasTyped:last").hasClass("hiddenElement"))
 		$(".me span.hasTyped:last").addClass("hidden");
-	
+	if (!$(".me span").hasClass("typing"))
+		sendFinish();
 
 }
 
@@ -104,6 +105,5 @@ function keydown(e)
 }
 
 
-document.onkeypress=keypress;
-document.onkeydown=keydown;
+
 

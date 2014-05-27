@@ -89,24 +89,32 @@ function handleSpeChars(data) {
 
 
 var c=0;
+var h;
+var m;
+var s;
+var ms;
 
-function startTime()
-{
-var today=new Date()
+function startTime() {
 c = c+1;
-var h=today.getHours()
-var m=today.getMinutes()
-var s=today.getSeconds()
-// add a zero in front of numbers<10
-m=checkTime(m)
-s=checkTime(s)
+
 document.getElementById('txt').innerHTML=c;
 t=setTimeout('startTime()',1000)
 }
 
-function checkTime(i)
-{
-if (i<10) 
-  {i="0" + i}
-  return i
+function doStart() {
+	var today=new Date();
+	h=today.getHours();
+	m=today.getMinutes();
+	s=today.getSeconds();
+	ms=today.getMilliseconds();
+	startTime();
+	document.onkeypress=keypress;
+	document.onkeydown=keydown;
+	alert(ms);
+}
+
+function sendFinish() {
+	var today=new Date();
+	var time = (((today.getHours()-h)*60+(today.getMinutes()-m))*60+(today.getSeconds()-s))*1000+today.getMilliseconds()-ms;
+	alert(time);
 }
