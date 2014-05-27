@@ -1,89 +1,30 @@
-
+var index = 0;
 function doUpdate(data) {
-	var letter = $(".opponent span.typing").text();
-	switch (data.key)
-	{
-	//屏蔽了退格、制表、回车、空格、方向键、删除键
-	case 8: case 32: case 13://case 9:case 13:case 37:case 38:case 39:case 40:case 46:
-	handleSpeChars(data);
-    break;
 	
-   	default:
-   //		alert(currKey);
-   //		alert(String.fromCharCode(currKey));
-   		var k = String.fromCharCode(data.key);
-   		if ($(".opponent span").hasClass("wrong")) {   			   	
-    	   		$(".opponent span.typing").removeClass("typing").addClass("wrong");
-    	   		$(".opponent span.notTyped:first").removeClass("notTyped").addClass("typing");    	     	   	    	   	
-       	} else {
-       		if (k==letter) {
-       			$(".opponent span.typing").removeClass("typing").addClass("hasTyped");
-       			$(".opponent span.notTyped:first").removeClass("notTyped").addClass("typing");
-       		} else {
-       			$(".opponent span.typing").removeClass("typing").addClass("wrong");
-       			$(".opponent span.notTyped:first").removeClass("notTyped").addClass("typing");  
-       		}
-       	}
- 
-	}
-
-	if ($(".opponent span.typing").hasClass("hidden"))
-		$(".opponent span.typing").removeClass("hidden");
-	if ($(".opponent span.hasTyped:last").hasClass("hiddenElement"))
-		$(".opponent span.hasTyped:last").addClass("hidden");
-
-}
-
-function handleSpeChars(data) {
-	if ((data.key>7&&data.key<14)||(data.key>31&&data.key<47))
-   	{
-       	switch (data.key)
-       	{
-       	case 8: 
-    	   	if ($(".opponent span").hasClass("wrong")) {
-				if ($(".opponent span.typing").hasClass("hiddenElement"))
-					$(".opponent span.typing").addClass("hidden");
-    		   	$(".opponent span.typing").removeClass("typing").addClass("notTyped");
-    		   	$(".opponent span.wrong:last").removeClass("wrong").addClass("typing");
-    	   	} else if ($(".opponent span").hasClass("hasTyped")){
-    		   	$(".opponent span.typing").removeClass("typing").addClass("notTyped");
-    		   	$(".opponent span.hasTyped:last").removeClass("hasTyped").addClass("typing");
-			}
-    	   	break;
-       	case 13:
-     		if ($(".opponent span").hasClass("wrong")) {   			   	
-    	   		$(".opponent span.typing").removeClass("typing").addClass("wrong");
-    	   		$(".opponent span.notTyped:first").removeClass("notTyped").addClass("typing");    	     	   	    	   	
-       	} else {
-       		if ($(".opponent span.typing").hasClass("return")) {
-       			$(".opponent span.typing").removeClass("typing").addClass("hasTyped");
-       			$(".opponent span.notTyped:first").removeClass("notTyped").addClass("typing");
-       		} else {
-       			$(".opponent span.typing").removeClass("typing").addClass("wrong");
-       			$(".opponent span.notTyped:first").removeClass("notTyped").addClass("typing");  
-       		}
-       	}
-    	   break;
-       case 32:
-      		if ($(".opponent span").hasClass("wrong")) {   			   	
-    	   		$(".opponent span.typing").removeClass("typing").addClass("wrong");
-    	   		$(".opponent span.notTyped:first").removeClass("notTyped").addClass("typing");    	     	   	    	   	
-       		} else {
-       			if ($(".opponent span.typing").html()=="&nbsp;") {
-       				$(".opponent span.typing").removeClass("typing").addClass("hasTyped");
-       				$(".opponent span.notTyped:first").removeClass("notTyped").addClass("typing");
-       			} else {
-       				$(".opponent span.typing").removeClass("typing").addClass("wrong");
-       				$(".opponent span.notTyped:first").removeClass("notTyped").addClass("typing");  
-       			}
-       		}
-       
-       		break;
-
-       default :  break;
-       }
- 
-   }
+	if (data.key==-1) {
+		index++;
+		$(".me span.o-typing").removeClass("o-typing").addClass("o-hasTyped");
+       	$(".me span.o-notTyped:first").removeClass("o-notTyped").addClass("o-typing");
+	} else if (data.key==-2){
+		index--;
+ 		$(".me span.o-typing").removeClass("o-typing").addClass("o-notTyped");
+    	$(".me span.o-hasTyped:last").removeClass("o-hasTyped").addClass("o-typing");
+	} /*else if (data.key==-3) {
+		sendFinish(false);
+	} else if (data.key==-4) {
+		while (index>0) {
+			index--;
+ 			$(".me span.o-typing").removeClass("o-typing").addClass("o-notTyped");
+    		$(".me span.o-hasTyped:last").removeClass("o-hasTyped").addClass("o-typing");
+		}
+		sendUpdate({key:typedLetters});
+	} else if (data.key>0) {
+		while (data.key>0) {
+			data.key--;
+ 			$(".me span.o-typing").removeClass("o-typing").addClass("o-hasTyped");
+       		$(".me span.o-notTyped:first").removeClass("o-notTyped").addClass("o-typing");
+		}
+	}*/
 }
 
 
@@ -93,15 +34,22 @@ var h;
 var m;
 var s;
 var ms;
+var t;
 
 function startTime() {
 c = c+1;
-
-document.getElementById('txt').innerHTML=c;
+var hour= Math.floor(c/3600);
+var minute=Math.floor(c/60)-hour*60;
+minute = checkTime(minute);
+var sec = c % 60;
+sec = checkTime(sec);
+document.getElementById('time').innerHTML=hour+":"+minute+":"+sec;
 t=setTimeout('startTime()',1000)
 }
 
+//var start = false;
 function doStart() {
+//	if(!start){
 	var today=new Date();
 	h=today.getHours();
 	m=today.getMinutes();
@@ -110,11 +58,35 @@ function doStart() {
 	startTime();
 	document.onkeypress=keypress;
 	document.onkeydown=keydown;
-	alert(ms);
+//	sendUpdate({key:-4});
+//	start = true;
+//	}
 }
 
-function sendFinish() {
+function sendFinish(win) {
 	var today=new Date();
 	var time = (((today.getHours()-h)*60+(today.getMinutes()-m))*60+(today.getSeconds()-s))*1000+today.getMilliseconds()-ms;
-	alert(time);
+//	document.onkeypress=null;
+//	document.onkeydown=null;
+//	clearTimeout(t);
+/*	if(win) {
+		sendUpdate({key:-3});
+		alert(time);
+	} else {
+		alert(time);
+	}
+	
+	start = false;*/
+}
+
+function checkTime(i)
+{
+if (i<10) 
+  {i="0" + i}
+  return i
+}
+
+function updateLetterCount() {
+	document.getElementById('letter-count').innerHTML=typedLetters;
+	document.getElementById('prog').value=typedLetters;
 }
