@@ -20,6 +20,7 @@
 	"express-session": "*",
 	"node-inspector": "*",
 	"connect-mongo": "*",
-	"mongodb": "*"
+	"mongodb": "*",
+	"supervisor": "*"
   }
 }
