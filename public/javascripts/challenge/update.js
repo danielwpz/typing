@@ -66,7 +66,7 @@ function doStart() {
 function finish(win) {
 	var today=new Date();
 	var time = (((today.getHours()-h)*60+(today.getMinutes()-m))*60+(today.getSeconds()-s))*1000+today.getMilliseconds()-ms;
-	sendFinish(time);
+	sendFinish({time: time});
 	document.onkeypress=null;
 	document.onkeydown=null;
 	clearTimeout(t);
@@ -78,6 +78,9 @@ function finish(win) {
 	}
 	
 	start = false;
+}
+
+function doFinish(data) {
 }
 
 function checkTime(i)
