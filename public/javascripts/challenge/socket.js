@@ -1,5 +1,6 @@
 function registerListeners(so) {
 	so.on('_Reply', function(data) {
+		console.log(data + '\n');
 		if (data.type == 'Redir') {
 			var path = data.page;
 			var hostPath = window.location.hostname;

@@ -338,6 +338,18 @@ sio.on('connection', function(err, socket, session) {
 			});
 		}
 	});
+
+	socket.on('disconnect', function() {
+		var name = getName(session);
+		console.log('user "' + name + '" socket off line.\n');
+		if (name && name != '') {
+			// By 'disconnect', we only know that the 
+			// current socket is unavailble, but that
+			// user may still be active because of
+			// page redirections, etc.
+			userList[name].socket = null;
+		}
+	});
 });
 
 sio.of('/challenge').on('connection', function(err, socket, session) {
@@ -355,6 +367,11 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 		if (pairList[pairIndex].player1 == name) {
 			// Tell the pair that I am online.
 			pairList[pairIndex].player1_online = true;
+			// Reply
+			socket.emit('_Reply', {
+				type: 'Established',
+				result: 'ok'
+			});
 			// Check if my component is also online.
 			if (pairList[pairIndex].player2_online) {
 				engine.emit('pair-ready', pairIndex);
@@ -362,6 +379,11 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 		}else if (pairList[pairIndex].player2 == name) {
 			// Tell the pair that I am online.
 			pairList[pairIndex].player2_online = true;
+			// Reply
+			socket.emit('_Reply', {
+				type: 'Established',
+				result: 'ok'
+			});
 			// Check if my component is also online.
 			if (pairList[pairIndex].player1_online) {
 				engine.emit('pair-ready', pairIndex);
@@ -375,11 +397,26 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 				console.log('Get socket pair err.\n');
 			}else {
 				// just forward
-				pair.socket.emit('_Update', data);
+				try {
+					pair.socket.emit('_Update', data);
+				}catch(err) {
+					console.log("On 'Update' error." + err + '\n');
+				}
 			}
 		});
 	});
 
+	socket.on('disconnect', function() {
+		var name = getName(session);
+		console.log('user "' + name + '" socket off line.\n');
+		if (name && name != '') {
+			// By 'disconnect', we only know that the 
+			// current socket is unavailble, but that
+			// user may still be active because of
+			// page redirections, etc.
+			userList[name].socket = null;
+		}
+	});
 });
 
 module.exports = app;
