@@ -1,11 +1,42 @@
+<audio class="hidden" id="sound1" src="/audio/t.wav"></audio>
+<audio class="hidden" id="sound2" src="/audio/t.wav"></audio>
+<audio class="hidden" id="sound0" src="/audio/t.wav"></audio>
+<audio class="hidden" id="sound3" src="/audio/t.wav"></audio>
+<audio class="hidden" id="return0" src="/audio/r.wav"></audio>
+<audio class="hidden" id="return1" src="/audio/r.wav"></audio>
+<audio class="hidden" id="return2" src="/audio/r.wav"></audio>
+<audio class="hidden" id="return3" src="/audio/r.wav"></audio>
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="./demob_files/demob.html">Project name</a>
 
+        </div>
+        <div class="navbar-collapse collapse">
+		 
+		  <ul class="nav navbar-nav navbar-right">
+		    <li>
+		      <a>username</a>
+		    </li>
+		  </ul>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </div>
 
 <% // TODO: handler code here... %>
 <% // Variable 'code' is a char array. %>
 <% // You can use code[i] to get each character. %>
-<div class="contest">
-<h3>We are challenging...!</h3>
-<code class="me">
+<h2 class="contest-title">username VS opponent</h2>
+<div class="wrapper">
+<div class="contest jumbotron">
+
+<div class="me container code">
 <%
 var i;
 var first = true;
@@ -24,65 +55,70 @@ for (i=0;i<code.length;i++) {
 		} 
 		space = false;
 			if (first) {
-				%><span class="<%=typing%>"><%=code[i]%></span><%
+				%><span class="<%=typing%> o-typing"><%=code[i]%></span><%
 				first = false;			
 			} else {
 				if (code[i]==' ') {
-					%><span class="<%=notTyped%>">&nbsp;</span><%
+					%><span class="<%=notTyped%> o-notTyped">&nbsp;</span><%
 				} else {
-					%><span class="<%=notTyped%>"><%=code[i]%></span><%
+					%><span class="<%=notTyped%> o-notTyped"><%=code[i]%></span><%
 				}
 			}
 		i++;
 	} 
 		
 	
-	%><span class="<%=notTyped%> <%=returnStr%> hidden hiddenElement">&crarr;</span><br/><%
+	%><span class="<%=notTyped%> <%=returnStr%> hidden hiddenElement o-notTyped">&crarr;</span><br/><%
 	
 	space = true;
 }
 %>
-</code>
-<br/>
-<code class="opponent">
-<%
-var i;
-var first = true;
-var space = true;
-var typing = "typing";
-var hasTyped = "hasTyped";
-var notTyped = "notTyped";
-var wrong = "wrong";
-var returnStr = "return";
-for (i=0;i<code.length;i++) {
 
-	while (code[i]!='\n') {
-		while(code[i]==' '&&space) {
-			%><span>&nbsp;</span><%
-			i++;
-		} 
-		space = false;
-			if (first) {
-				%><span class="<%=typing%>"><%=code[i]%></span><%
-				first = false;			
-			} else {
-				if (code[i]==' ') {
-					%><span class="<%=notTyped%>">&nbsp;</span><%
-				} else {
-					%><span class="<%=notTyped%>"><%=code[i]%></span><%
-				}
-			}
-		i++;
-	} 
-		
-	
-	%><span class="<%=notTyped%> <%=returnStr%> hidden hiddenElement">&crarr;</span><br/><%
-	
-	space = true;
-}
-%>
-</code>
+</div>
+</div>
 
-<div class='stat'></div>
+<div class='stat-wrapper'>
+<div class='stat'>
+<table>
+
+<tr>
+<td>
+Total letters:
+</td>
+<td id='total'>
+<%=code.length%>
+</td>
+</tr>
+
+<tr>
+<td>
+Typed letters:
+</td>
+<td>
+<span id="letter-count">0</span>
+</td>
+</tr>
+
+<tr>
+<td>
+Time passed:
+</td>
+<td>
+<span id="time"></span>
+</td>
+</tr>
+
+</table>
+</div>
+</div>
+
+</div>
+
+<div class="footer">
 <p>(c) Stylenet 2014</p>
 </div>
+
+
+<progress max=<%=code.length%> value='0' class='prog' id='prog'></progress>
+
+
