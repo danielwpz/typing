@@ -1,6 +1,6 @@
 start:
-	mongod --nojournal --dbpath /home/daniel/programs/data/db > /dev/null 2>&1 &
-	supervisor app.js > /dev/null 2>&1 &
+	mongod --nojournal --dbpath /home/daniel/programs/data/db &
+	supervisor app.js  &
 
 kill:
 	-killall mongod

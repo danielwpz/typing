@@ -322,7 +322,7 @@ sio.on('connection', function(err, socket, session) {
 
 	socket.on('Match', function(data) {
 		var name = getName(session);
-		console.log('Match: ' + name + '\n');
+		console.log('Find Match for: ' + name + '\n');
 
 		if (name) {
 			var player = userList[name];
@@ -331,6 +331,7 @@ sio.on('connection', function(err, socket, session) {
 			var pairName = matchPicker.match(name, data);
 			var pair = userList[pairName];
 			if (pair) {
+				console.log('Match :' + name + ' & ' + pairName + '\n');
 				makePair(player, pair, data.lan);
 			}
 		}else {
@@ -413,32 +414,7 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 	});
 
 	socket.on('Finish', function(data) {
-		socket.get('pair', function(err, pair) {
-			if (err) {
-				console.log('Get socket pair err.\n');
-			}else {
-				// just forward
-				try {
-					pair.socket.emit('_Finish', data);
-					// clear all pair info
-					pairList[pairIndex] = null;
-					// clear user's pair info
-					session.pairIndex = null;
-					session.save();
-					pair.session.pairIndex = null;
-					session.save();
-
-					// change state to normal
-					pair.state = 'normal';
-					userList[name].state = 'normal';
-				}catch(err) {
-					console.log("On 'Finish' error." + err + '\n');
-				}
-			}
-		});
-	});
-
-		
+			
 
 	socket.on('disconnect', function() {
 		var name = getName(session);

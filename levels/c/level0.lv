@@ -3,3 +3,14 @@
 #include <strings.h>
 #include "rtlib.h"
 
+int main() {
+    int a, b, c;
+
+    scanf("%d", &a, &b, &c);
+
+    if (a > b && b > c) {
+        printf("Max is %d\n", a);
+	}
+
+    return 0;
+}

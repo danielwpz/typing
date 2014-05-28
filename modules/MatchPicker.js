@@ -5,13 +5,12 @@ function MatchPicker() {
 		// get the wait list for specific language
 		var thisWaitList = waitList[options.lan];
 		
-		if (thisWaitList == undefined || thisWaitList == null ||
-				thisWaitList.length == 0) {
-			waitList[options.lan] = [name];
+		if (thisWaitList == undefined || thisWaitList == null) {
+			waitList[options.lan] = name;
 			return "";
 		}else {
-			var pairName = thisWaitList[0];
-			thisWaitList = [];
+			var pairName = thisWaitList;
+			thisWaitList = null;
 
 			return pairName;
 		}
@@ -20,7 +19,7 @@ function MatchPicker() {
 	this.clear = function(name) {
 		var subList;
 		for (subList in waitList) {
-			if (subList[0] == name) {
+			if (subList == name) {
 				subList = [];
 			}
 		}
