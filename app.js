@@ -16,11 +16,12 @@ var typing = require('./routes/typing');
 var cookieParser = CookieParser('secret');
 
 var app = express();
+var config = require('./config.js');
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
 var Sio = require('session.socket.io');
 var sio = new Sio(io, sessionStore, cookieParser, 'connect.sid');
-var serverPort = 80;
+var serverPort = config.port;
 
 app.set('port', process.env.PORT || serverPort);
 // view engine setup
@@ -362,13 +363,16 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 	var name = getName(session);
 	var pairIndex = session.pairIndex;
 
+	console.log(name + ' connect to challenge.\n');
 	userList[name].socket = socket;
 	
 	socket.on('Established', function(data) {
+		console.log(name + ' established.\n');
 		if (pairList[pairIndex].player1 == name) {
 			// Tell the pair that I am online.
 			pairList[pairIndex].player1_online = true;
 			// Reply
+			console.log('Reply estab to ' + name + '\n');
 			socket.emit('_Reply', {
 				type: 'Established',
 				result: 'ok'
@@ -381,6 +385,7 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 			// Tell the pair that I am online.
 			pairList[pairIndex].player2_online = true;
 			// Reply
+			console.log('Reply estab to ' + name + '\n');
 			socket.emit('_Reply', {
 				type: 'Established',
 				result: 'ok'

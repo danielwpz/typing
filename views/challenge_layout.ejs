@@ -68,15 +68,16 @@
 			}
 		});
 
-		var socketUrl = 'http://112.124.112.14';
+		var socketUrl = 'http://localhost';
+		//var socketUrl = 'http://112.124.112.14';
         /* Init socket.io */
         $(function() {
             socket = io.connect(socketUrl + '/challenge');
 
 			if (socket) {
 				registerListeners(socket);
+				console.log('send established\n');
 				socket.emit('Established', {});
-				console.log('socket established\n');
 			}
         });
 
