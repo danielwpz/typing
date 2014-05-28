@@ -4,8 +4,22 @@ function registerListeners(so) {
 			if (data.result == 'ok') {
 				console.log('Register successfully!\n');
 				$('#registeModal').modal('toggle');
+				// refresh the page
+				var hostPath = window.location.hostname;
+				var hostPort = window.location.port;
+				window.location.assign('http://' + hostPath + ':' + hostPort);
 			}else {
 				console.log(data);
+			}
+		}else if (data.type == 'SignIn') {
+			console.log('Sign In:' + data.result + '\n');
+			if (data.result == 'ok') {
+				console.log('Sign In OK.\n');
+				// refresh the page
+				var hostPath = window.location.hostname;
+				var hostPort = window.location.port;
+				window.location.assign('http://' + hostPath + ':' + hostPort);
+
 			}
 		}
 	});
@@ -34,14 +48,22 @@ function registerListeners(so) {
 
 		// show messenger
 		var msg = Messenger().post({
-			message: '"' + name + '" wants to challenge you.',
+			message: '"' + name + 
+				'" challenge you on language ' + 
+				data.lan + '.',
 			type: 'info',
+			hideAfter: 100,
 			actions: {
 				accept: {
 					label: 'Accept',
 			action: function() {
 				var spinhtml = '<i class="icon-spinner icon-spin"></i>';
-				so.emit('Challenge', {type: 'try', name: name});
+				// tell server the result
+				so.emit('Challenge', {
+					type: 'try', 
+					name: name,
+					lan: data.lan
+				});
 				return msg.update({
 					message: spinhtml + ' Waiting for begining...',
 					   type: 'success',
@@ -53,6 +75,7 @@ function registerListeners(so) {
 			reject: {
 				label: 'reject',
 			action: function() {
+				// tell server the result
 				so.emit('Challenge', {type: 'reject', name: name});
 				return msg.update({
 					message: 'Rejected.',

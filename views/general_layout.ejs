@@ -11,6 +11,9 @@
     <!-- Loading Flat UI -->
     <link href="/stylesheets/flat-ui.css" rel="stylesheet">
 
+	<!-- Custom css -->
+
+
     <link rel="shortcut icon" href="images/favicon.ico">
 
     <!-- Loading Font Awesome -->
@@ -50,6 +53,10 @@
 	<script src="/javascripts/general/socket.js"></script>
 	<script src="/javascripts/general/action.js"></script>
     <script>
+		$(function() {
+			$('.selectpicker').selectpicker();
+		});
+
         /* Init socket.io */
         $(function() {
             socket = io.connect('http://localhost:8080');
