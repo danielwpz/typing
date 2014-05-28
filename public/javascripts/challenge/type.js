@@ -33,9 +33,9 @@ function keypress(e)
        		if (k==letter) {
        			$(".me span.typing").removeClass("typing").addClass("hasTyped");
        			$(".me span.notTyped:first").removeClass("notTyped").addClass("typing");
-				//sendUpdate({key:-1});
-				//typedLetters++;
-				//updateLetterCount()
+				sendUpdate({key:-1});
+				typedLetters++;
+				updateLetterCount()
        		} else {
        			$(".me span.typing").removeClass("typing").addClass("wrong");
        			$(".me span.notTyped:first").removeClass("notTyped").addClass("typing");  
@@ -48,9 +48,9 @@ function keypress(e)
 		$(".me span.typing").removeClass("hidden");
 	if ($(".me span.hasTyped:last").hasClass("hiddenElement"))
 		$(".me span.hasTyped:last").addClass("hidden");
-	if ((!$(".me span").hasClass("typing"))&&(!$(".me span").hasClass("wrong")))
-		//sendFinish(true);
-
+	if ((!$(".me span").hasClass("typing"))&&(!$(".me span").hasClass("wrong"))){
+		finish(true);
+	}
 }
 
 function keydown(e)
@@ -76,9 +76,9 @@ function keydown(e)
 					$(".me span.typing").addClass("hidden");
     		   	$(".me span.typing").removeClass("typing").addClass("notTyped");
     		   	$(".me span.hasTyped:last").removeClass("hasTyped").addClass("typing");
-				//sendUpdate({key:-2});
-				//typedLetters--;
-				//updateLetterCount()
+				sendUpdate({key:-2});
+				typedLetters--;
+				updateLetterCount()
 			}
     	   	e.keyCode = 0; 
     	   	e.returnValue = false;
@@ -92,9 +92,9 @@ function keydown(e)
        		if ($(".me span.typing").hasClass("return")) {
        			$(".me span.typing").removeClass("typing").addClass("hasTyped");
        			$(".me span.notTyped:first").removeClass("notTyped").addClass("typing");
-				//sendUpdate({key:-1});
-				//typedLetters++;
-				//updateLetterCount()
+				sendUpdate({key:-1});
+				typedLetters++;
+				updateLetterCount()
        		} else {
        			$(".me span.typing").removeClass("typing").addClass("wrong");
        			$(".me span.notTyped:first").removeClass("notTyped").addClass("typing");  
@@ -110,17 +110,17 @@ function keydown(e)
        			if ($(".me span.typing").html()=="&nbsp;") {
        				$(".me span.typing").removeClass("typing").addClass("hasTyped");
        				$(".me span.notTyped:first").removeClass("notTyped").addClass("typing");
-					//sendUpdate({key:-1});
-					//typedLetters++;
-					//updateLetterCount()
+					sendUpdate({key:-1});
+					typedLetters++;
+					updateLetterCount()
        			} else {
        				$(".me span.typing").removeClass("typing").addClass("wrong");
        				$(".me span.notTyped:first").removeClass("notTyped").addClass("typing");  
        			}
        		}
 			
-			//e.keyCode = 0; 
-    	   	//e.returnValue = false;
+			e.keyCode = 0; 
+    	   	e.returnValue = false;
        		return false;
        		break;
 

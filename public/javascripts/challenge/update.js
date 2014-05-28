@@ -9,8 +9,8 @@ function doUpdate(data) {
 		index--;
  		$(".me span.o-typing").removeClass("o-typing").addClass("o-notTyped");
     	$(".me span.o-hasTyped:last").removeClass("o-hasTyped").addClass("o-typing");
-	} /*else if (data.key==-3) {
-		sendFinish(false);
+	} else if (data.key==-3) {
+		finish(false);
 	} else if (data.key==-4) {
 		while (index>0) {
 			index--;
@@ -24,7 +24,7 @@ function doUpdate(data) {
  			$(".me span.o-typing").removeClass("o-typing").addClass("o-hasTyped");
        		$(".me span.o-notTyped:first").removeClass("o-notTyped").addClass("o-typing");
 		}
-	}*/
+	}
 }
 
 
@@ -47,9 +47,9 @@ document.getElementById('time').innerHTML=hour+":"+minute+":"+sec;
 t=setTimeout('startTime()',1000)
 }
 
-//var start = false;
+var start = false;
 function doStart() {
-//	if(!start){
+	if(!start){
 	var today=new Date();
 	h=today.getHours();
 	m=today.getMinutes();
@@ -58,25 +58,26 @@ function doStart() {
 	startTime();
 	document.onkeypress=keypress;
 	document.onkeydown=keydown;
-//	sendUpdate({key:-4});
-//	start = true;
-//	}
+	sendUpdate({key:-4});
+	start = true;
+	}
 }
 
-function sendFinish(win) {
+function finish(win) {
 	var today=new Date();
 	var time = (((today.getHours()-h)*60+(today.getMinutes()-m))*60+(today.getSeconds()-s))*1000+today.getMilliseconds()-ms;
-//	document.onkeypress=null;
-//	document.onkeydown=null;
-//	clearTimeout(t);
-/*	if(win) {
+	sendFinish(time);
+	document.onkeypress=null;
+	document.onkeydown=null;
+	clearTimeout(t);
+	if(win) {
 		sendUpdate({key:-3});
-		alert(time);
+		alert("win "+time);
 	} else {
-		alert(time);
+		alert("lose "+time);
 	}
 	
-	start = false;*/
+	start = false;
 }
 
 function checkTime(i)
