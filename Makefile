@@ -1,5 +1,5 @@
 start:
-	mongod --nojournal --dbpath /home/daniel/Programs/mongodb/data/db &
+	mongod --nojournal --dbpath /home/flossie/db &
 	node app.js &
 
 kill:
