@@ -10,7 +10,7 @@ function MatchPicker() {
 			return "";
 		}else {
 			var pairName = thisWaitList;
-			thisWaitList = null;
+			waitList[options.lan] = null;
 
 			return pairName;
 		}
