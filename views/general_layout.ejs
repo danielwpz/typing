@@ -57,9 +57,11 @@
 			$('.selectpicker').selectpicker();
 		});
 
+		var socketUrl = 'http://112.124.112.14';
+
         /* Init socket.io */
         $(function() {
-            socket = io.connect('http://localhost:8080');
+            socket = io.connect(socketUrl);
 			if (socket)
             	console.log('socket established\n');
 

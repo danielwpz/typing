@@ -20,8 +20,9 @@ var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
 var Sio = require('session.socket.io');
 var sio = new Sio(io, sessionStore, cookieParser, 'connect.sid');
+var serverPort = 80;
 
-app.set('port', process.env.PORT || 8080);
+app.set('port', process.env.PORT || serverPort);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
