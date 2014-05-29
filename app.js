@@ -18,7 +18,7 @@ var cookieParser = CookieParser('secret');
 var app = express();
 var config = require('./config.js');
 var server = require('http').createServer(app);
-var io = require('socket.io').listen(server);
+var io = require('socket.io').listen(server, {'log level': 0});
 var Sio = require('session.socket.io');
 var sio = new Sio(io, sessionStore, cookieParser, 'connect.sid');
 var serverPort = config.port;
@@ -156,6 +156,17 @@ function getName(session) {
 		return null;
 }
 
+function getPairName(index, myName) {
+	var p1Name = pairList[index].player1;
+	var p2Name = pairList[index].player2;
+
+	if (p1Name == myName) {
+		return p2Name;
+	}else {
+		return p1Name;
+	}
+}
+	
 function makePair(player1, player2, lan) {
 	var index = pairList.length;
 
