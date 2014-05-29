@@ -28,7 +28,7 @@ app.set('port', process.env.PORT || serverPort);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use(favicon());
+//app.use(favicon());
 //app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
@@ -37,7 +37,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(partials());
 app.use(session({key: 'connect.sid', secret: 'secret', store: sessionStore}));
 
-app.use('/typing/:lan', typing);
+app.use('/typing/:lan', function(req, res) {
+	if (req.session && req.session.pairIndex >=0) {
+		var myName = req.session.name;
+		var pairName = getPairName(req.session.pairIndex, myName);
+		typing(req, res, myName, pairName);
+	}else {
+		res.end('Unregistered');
+	}
+});
 app.use('/', routes);
 
 /// catch 404 and forwarding to error handler
