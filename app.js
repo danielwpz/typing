@@ -145,8 +145,8 @@ engine.on('pair-ready', function(index) {
 	});
 });
 
-function isRegistered(name) {
-	return (userList[name] != null && userList[name] != undefined);
+function isOnline(name) {
+	return (userList[name] && userList[name].socket);
 }
 
 function getName(session) {
@@ -199,7 +199,7 @@ function tryChallenge(name, pairName, lan) {
 
 		player.socket.emit('_Reply', {
 			type: 'Challenge', 
-			result: 'nonavail'
+			result: 'not-online'
 		});
 	}else {
 		if (pair && pairName != name && pair.state != 'racing') {
@@ -213,9 +213,13 @@ function tryChallenge(name, pairName, lan) {
 				});
 			}
 		}else {
+			var errdesc = 'nonavail';
+			if (pair && pair.state == 'racing') {
+				errdesc = 'racing';
+			}
 			player.socket.emit('_Reply', {
 				type: 'Challenge', 
-				result: 'nonavail'
+				result: errdesc
 			});
 		}
 	}
@@ -229,6 +233,10 @@ function rejectChallenge(name, pairName) {
 	pair.state = 'normal';
 
 	pair.socket.emit('_Reply', {type: 'Challenge', result: 'reject'});
+}
+
+function isOnline(name) {
+	return (userList[name] && userList[name].socket);
 }
 
 function makeOnline(name, socket, session) {
@@ -321,30 +329,37 @@ sio.on('connection', function(err, socket, session) {
 		var md5 = crypto.createHash('md5');
 		var secretPwd = md5.update(data.pwd).digest('base64');
 
-		// check whether the name already existed
-		Player.get(data.name, function(err, player) {
-			if (err) {
-				console.log('get player err:' + err);
-				socket.emit('_Reply', {
-					type: 'SignIn',
-					result: 'unknown-err'
-				});
-				return;
-			}
+		if (isOnline(data.name)) {
+			socket.emit('_Reply', {
+				type: 'SignIn',
+				result: 'already-online'
+			});
+		}else {
+			// check whether the name already existed
+			Player.get(data.name, function(err, player) {
+				if (err) {
+					console.log('get player err:' + err);
+					socket.emit('_Reply', {
+						type: 'SignIn',
+						result: 'unknown-err'
+					});
+					return;
+				}
 
-			if (player && player.pwd == secretPwd) {
-				makeOnline(data.name, socket, session);
-				socket.emit('_Reply', {
-					type: 'SignIn',
-					result: 'ok'
-				});
-			}else {
-				socket.emit('_Reply', {
-					type: 'Register',
-					result: 'bad-info'
-				});
-			}
-		});
+				if (player && player.pwd == secretPwd) {
+					makeOnline(data.name, socket, session);
+					socket.emit('_Reply', {
+						type: 'SignIn',
+						result: 'ok'
+					});
+				}else {
+					socket.emit('_Reply', {
+						type: 'Register',
+						result: 'bad-info'
+					});
+				}
+			});
+		}
 	});
 		
 
@@ -371,7 +386,7 @@ sio.on('connection', function(err, socket, session) {
 		var name = getName(session);
 		console.log('Find Match for: ' + name + '\n');
 
-		if (name) {
+		if (name && data.type == 'try') {
 			var player = userList[name];
 			player.state = 'waiting';
 
@@ -397,6 +412,10 @@ sio.on('connection', function(err, socket, session) {
 				}
 				break;
 			}
+		}else if (name && data.type == 'cancel') {
+			var player = userList[name];
+			player.state = 'normal';
+			matchPicker.clear(name);
 		}else {
 			socket.emit('_Reply', {
 				type: 'Match',
@@ -524,6 +543,7 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 			// user may still be active because of
 			// page redirections, etc.
 			userList[name].socket = null;
+			userList[name].state = 'normal';
 			// match waiting could be removed
 			matchPicker.clear(name);
 		}

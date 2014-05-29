@@ -54,6 +54,15 @@ function match() {
 	console.log('lan:' + lan + '\n');
 
 	if (lan != '0') {
-		socket.emit('Match', {lan: lan});
+		socket.emit('Match', {
+			type: 'try',
+			lan: lan
+		});
 	}
+}
+
+function cancelMatch() {
+	socket.emit('Match', {
+		type: 'cancel'
+	});
 }
