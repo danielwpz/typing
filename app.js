@@ -97,6 +97,10 @@ var userList = {};
 var pairList = new Array();
 var matchPicker = new MatchPicker();
 
+// The first slot of pairList is reversed 
+// for practice mode
+pairList.push({});
+
 var engine = new Engine();
 /* Register event for Engine */
 engine.on('pair-made', function(index) {
@@ -169,18 +173,31 @@ function tryChallenge(name, pairName, lan) {
 
 	player.state = 'waiting';
 
-	if (pair && pairName != name && pair.state != 'racing') {
-		if (pair.state == 'waiting') {
-			matchPicker.clear(pairName);
-			makePair(player, pair, lan);
-		}else if (pair.state == 'normal') {
-			pair.socket.emit('_Challenge', {
-				name: name,
-				lan: lan
+	if (pair && pair.socket == null) {
+		// lazy removing
+		makeOffline(pairName);
+
+		player.socket.emit('_Reply', {
+			type: 'Challenge', 
+			result: 'nonavail'
+		});
+	}else {
+		if (pair && pairName != name && pair.state != 'racing') {
+			if (pair.state == 'waiting') {
+				matchPicker.clear(pairName);
+				makePair(player, pair, lan);
+			}else if (pair.state == 'normal') {
+				pair.socket.emit('_Challenge', {
+					name: name,
+					lan: lan
+				});
+			}
+		}else {
+			player.socket.emit('_Reply', {
+				type: 'Challenge', 
+				result: 'nonavail'
 			});
 		}
-	}else {
-		player.socket.emit('_Reply', {type: 'Challenge', result: 'nonavail'});
 	}
 }
 
@@ -201,6 +218,11 @@ function makeOnline(name, socket, session) {
 	session.save();
 }
 
+function makeOffline(name) {
+	userList[name] = null;
+	delete userList.name;
+	console.log('Make "' + name + '" off line.\n');
+}
 
 /*******************
  *    socket.io    *
@@ -328,11 +350,27 @@ sio.on('connection', function(err, socket, session) {
 			var player = userList[name];
 			player.state = 'waiting';
 
-			var pairName = matchPicker.match(name, data);
-			var pair = userList[pairName];
-			if (pair) {
-				console.log('Match: ' + name + ' & ' + pairName + '\n');
-				makePair(player, pair, data.lan);
+			while(true) {
+				var pairName = matchPicker.match(name, data);
+				var pair = userList[pairName];
+
+				if (pair) {
+					if (pair.socket) {
+						console.log('Match: ' + name + 
+							' & ' + pairName + '\n');
+						makePair(player, pair, data.lan);
+						break;
+					}else {
+						// Pair is off-line, according to lazy-removing
+						// we remove him from userList
+						makeOffline(pairName);
+						// since it seems like there is no previous 
+						// waiting matcher, we re-match current user 
+						// to make him wait
+						continue;
+					}
+				}
+				break;
 			}
 		}else {
 			socket.emit('_Reply', {
@@ -344,13 +382,15 @@ sio.on('connection', function(err, socket, session) {
 
 	socket.on('disconnect', function() {
 		var name = getName(session);
-		console.log('user "' + name + '" socket off line.\n');
 		if (name && name != '') {
+			console.log('"' + name + '" socket break on /.\n');
 			// By 'disconnect', we only know that the 
 			// current socket is unavailble, but that
 			// user may still be active because of
 			// page redirections, etc.
 			userList[name].socket = null;
+			// match waiting could be removed
+			matchPicker.clear(name);
 		}
 	});
 });
@@ -443,13 +483,15 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 
 	socket.on('disconnect', function() {
 		var name = getName(session);
-		console.log('user "' + name + '" socket off line.\n');
 		if (name && name != '') {
+			console.log('"' + name + '" socket break on "challenge"\n');
 			// By 'disconnect', we only know that the 
 			// current socket is unavailble, but that
 			// user may still be active because of
 			// page redirections, etc.
 			userList[name].socket = null;
+			// match waiting could be removed
+			matchPicker.clear(name);
 		}
 	});
 });
