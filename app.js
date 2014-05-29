@@ -94,6 +94,7 @@ util.inherits(Engine, events.EventEmitter);
  *    Global vars    *
  *********************/
 var userList = {};
+userList[""] = null;
 var pairList = new Array();
 var matchPicker = new MatchPicker();
 
@@ -354,7 +355,7 @@ sio.on('connection', function(err, socket, session) {
 				var pairName = matchPicker.match(name, data);
 				var pair = userList[pairName];
 
-				if (pair) {
+				if (pairName != "" && pair) {
 					if (pair.socket) {
 						console.log('Match: ' + name + 
 							' & ' + pairName + '\n');
