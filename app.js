@@ -409,34 +409,43 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 	userList[name].socket = socket;
 	
 	socket.on('Established', function(data) {
-		console.log(name + ' established.\n');
-		if (pairList[pairIndex].player1 == name) {
-			// Tell the pair that I am online.
-			pairList[pairIndex].player1_online = true;
-			// Reply
-			console.log('Reply estab to ' + name + '\n');
+		console.log(name + ' send establish.\n');
+		try{
+			if (pairList[pairIndex].player1 == name) {
+				// Tell the pair that I am online.
+				pairList[pairIndex].player1_online = true;
+				// Reply
+				console.log('Reply estab to ' + name + '\n');
+				socket.emit('_Reply', {
+					type: 'Established',
+					result: 'ok'
+				});
+				// Check if my component is also online.
+				if (pairList[pairIndex].player2_online) {
+					engine.emit('pair-ready', pairIndex);
+				}
+			}else if (pairList[pairIndex].player2 == name) {
+				// Tell the pair that I am online.
+				pairList[pairIndex].player2_online = true;
+				// Reply
+				console.log('Reply estab to ' + name + '\n');
+				socket.emit('_Reply', {
+					type: 'Established',
+					result: 'ok'
+				});
+				// Check if my component is also online.
+				if (pairList[pairIndex].player1_online) {
+					engine.emit('pair-ready', pairIndex);
+				}
+			}
+		}catch(e) {
+			console.log(name + ' establish error:' + e);
 			socket.emit('_Reply', {
 				type: 'Established',
-				result: 'ok'
+				result: 'unknown-err'
 			});
-			// Check if my component is also online.
-			if (pairList[pairIndex].player2_online) {
-				engine.emit('pair-ready', pairIndex);
-			}
-		}else if (pairList[pairIndex].player2 == name) {
-			// Tell the pair that I am online.
-			pairList[pairIndex].player2_online = true;
-			// Reply
-			console.log('Reply estab to ' + name + '\n');
-			socket.emit('_Reply', {
-				type: 'Established',
-				result: 'ok'
-			});
-			// Check if my component is also online.
-			if (pairList[pairIndex].player1_online) {
-				engine.emit('pair-ready', pairIndex);
-			}
 		}
+			
 	});
 
 	socket.on('Update', function(data) {
