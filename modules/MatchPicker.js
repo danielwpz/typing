@@ -10,9 +10,13 @@ function MatchPicker() {
 			return "";
 		}else {
 			var pairName = thisWaitList;
-			waitList[options.lan] = null;
-
-			return pairName;
+			if (pairName == name) {
+				// same person
+				return "";
+			}else {
+				waitList[options.lan] = null;
+				return pairName;
+			}
 		}
 	}
 
