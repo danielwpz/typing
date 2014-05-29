@@ -231,7 +231,12 @@ function makeOffline(name) {
 sio.on('connection', function(err, socket, session) {
 	// check session
 	if (getName(session)) {
-		userList[session.name].socket = socket;
+		if (userList[session.name]) {
+			userList[session.name].socket = socket;
+		}else {
+			// previous off-line, but session log in
+			makeOnline(session.name, socket, session);
+		}
 	}
 
 	socket.on('Register', function(data) {
