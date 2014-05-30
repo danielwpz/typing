@@ -10,17 +10,21 @@ function MatchPicker() {
 			return "";
 		}else {
 			var pairName = thisWaitList;
-			waitList[options.lan] = null;
-
-			return pairName;
+			if (pairName == name) {
+				// same person
+				return "";
+			}else {
+				waitList[options.lan] = null;
+				return pairName;
+			}
 		}
 	}
 
 	this.clear = function(name) {
 		var subList;
 		for (subList in waitList) {
-			if (subList == name) {
-				subList = [];
+			if (waitList[subList] == name) {
+				waitList[subList] = null;
 			}
 		}
 	}
