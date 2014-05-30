@@ -12,6 +12,7 @@ var crypto = require('crypto');
 
 var routes = require('./routes/index');
 var typing = require('./routes/typing');
+var practice = require('./routes/practice');
 
 var cookieParser = CookieParser('secret');
 
@@ -46,6 +47,7 @@ app.use('/typing/:lan', function(req, res) {
 		res.end('Unregistered or no-match');
 	}
 });
+app.use('/practice/:lan', practice);
 app.use('/', routes);
 
 /// catch 404 and forwarding to error handler

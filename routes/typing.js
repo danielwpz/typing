@@ -10,6 +10,7 @@ function doTyping(req, res, myName, pairName) {
 			title: 'Challenge',
 			layout: 'challenge_layout',
 			code: data,
+			mode: 'challenge',
 			myName: myName,
 			pairName: pairName
 		});
