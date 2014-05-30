@@ -1,4 +1,10 @@
 var index = 0;
+//displayed in finish modal 
+var contestResult = false;
+var timeString;
+var time;
+
+
 function doUpdate(data) {
 	
 	if (data.key==-1) {
@@ -65,15 +71,20 @@ function doStart() {
 
 function finish(win) {
 	var today=new Date();
-	var time = (((today.getHours()-h)*60+(today.getMinutes()-m))*60+(today.getSeconds()-s))*1000+today.getMilliseconds()-ms;
+	time = (((today.getHours()-h)*60+(today.getMinutes()-m))*60+(today.getSeconds()-s))*1000+today.getMilliseconds()-ms;
 	sendFinish({time: time});
 	document.onkeypress=null;
 	document.onkeydown=null;
 	clearTimeout(t);
+	timeString = document.getElementById('time').innerHTML;
 	if(win) {
 		sendUpdate({key:-3});
+		contestResult = true;
+		$('#finishModal').modal('show');
 		alert("win "+time);
 	} else {
+		contestResult = false;
+		$('#finishModal').modal('show');
 		alert("lose "+time);
 	}
 	
@@ -93,4 +104,8 @@ if (i<10)
 function updateLetterCount() {
 	document.getElementById('letter-count').innerHTML=typedLetters;
 	document.getElementById('prog').value = typedLetters;
+}
+
+function updateWrongCount() {
+	document.getElementById('wrong').innerHTML=wrongTimes;
 }

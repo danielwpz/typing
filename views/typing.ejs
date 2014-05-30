@@ -44,29 +44,34 @@ var wrong = "wrong";
 var returnStr = "return";
 for (i=0;i<code.length;i++) {
 
-	while (code[i]!='\n') {
-		while(code[i]==' '&&space) {
-			%><span>&nbsp;</span><%
+	if (code[i]!='\n') {
+		while((code[i]==' ')||(code[i]=='\t')&&space) {
+			if(code[i]==' ')
+				%><span>&nbsp;</span><%
+			else
+				%><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span><%
 			i++;
 		} 
 		space = false;
-			if (first) {
-				%><span class="<%=typing%> o-typing"><%=code[i]%></span><%
-				first = false;			
+		if (first) {
+			%><span class="<%=typing%> o-typing"><%=code[i]%></span><%
+			first = false;			
+		} else {
+			if (code[i]==' ') {
+				%><span class="<%=notTyped%> o-notTyped">&nbsp;</span><%
 			} else {
-				if (code[i]==' ') {
-					%><span class="<%=notTyped%> o-notTyped">&nbsp;</span><%
-				} else {
-					%><span class="<%=notTyped%> o-notTyped"><%=code[i]%></span><%
-				}
+				%><span class="<%=notTyped%> o-notTyped"><%=code[i]%></span><%
 			}
-		i++;
-	} 
+		}
+		
+		
+	} else {
 		
 	
 	%><span class="<%=notTyped%> <%=returnStr%> hidden hiddenElement o-notTyped">&crarr;</span><br/><%
 	
 	space = true;
+	}
 }
 %>
 
@@ -95,6 +100,15 @@ Typed letters:
 </td>
 </tr>
 
+<tr style='color:red'>
+<td>
+Wrong hits:
+</td>
+<td>
+<span id="wrong"></span>
+</td>
+</tr>
+
 <tr>
 <td>
 Time passed:
@@ -103,6 +117,8 @@ Time passed:
 <span id="time"></span>
 </td>
 </tr>
+
+
 
 </table>
 </div>
@@ -114,10 +130,44 @@ Time passed:
 <p>(c) Stylenet 2014</p>
 </div>
 
-<<<<<<< HEAD
-
-
-
-=======
 <progress max=<%=code.length%> value='0' class='prog' id='prog'></progress>
->>>>>>> aa9e16461a7cbdf0a745d94fede9954390b2afc9
+
+
+
+	<!------------------------ Out of Body --------------------------->
+
+	<!-- Modal finish -->
+	<div class="modal fade" id="finishModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" style="margin-top:auto margin-bottom:auto">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Register</h4>
+	      </div>
+	      <div class="modal-body">
+						<table cellspacing="5" style="width:70%; margin:auto">
+						<tr>
+							<td>Time</td>
+							<td style="margin:5px"><%=timeString%></td>
+						</tr>
+						<tr><td></td><td></td></tr>
+						<tr>
+							<td>Speed</td>
+							<td style="margin:5px"><%=Math.floor(typedLetters/time*1000*60)%> lpm</td>
+						</tr>
+						<tr><td></td><td></td></tr>
+						<tr>
+							<td>Wrong hits</td>
+							<td style="margin:5px"><%=Math.floor(wrongTimes/typedLetters)%>%</td>
+						</tr>
+						<tr><td></td><td></td></tr>
+						</table>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="back()">Back to homepage</button>
+	        <button type="button" class="btn btn-primary" onclick="playAgain()">Play Again</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
