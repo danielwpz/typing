@@ -73,6 +73,7 @@ function keydown(e)
 			}
     	   	e.keyCode = 0; 
     	   	e.returnValue = false;
+			return false;
     	   	break;
        	case 13:
 
@@ -91,6 +92,9 @@ function keydown(e)
        			$(".me span.notTyped:first").removeClass("notTyped").addClass("typing");  
        		}
        	}
+			e.keyCode = 0; 
+    	   	e.returnValue = false;
+			return false;
     	   break;
        case 32:
 
