@@ -92,8 +92,5 @@ if (i<10)
 
 function updateLetterCount() {
 	document.getElementById('letter-count').innerHTML=typedLetters;
-<<<<<<< HEAD
-=======
 	document.getElementById('prog').value = typedLetters;
->>>>>>> aa9e16461a7cbdf0a745d94fede9954390b2afc9
 }

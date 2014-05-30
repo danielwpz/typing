@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 
-=======
->>>>>>> aa9e16461a7cbdf0a745d94fede9954390b2afc9
 var typedLetters = 0;
 
 function keypress(e)
@@ -18,10 +15,7 @@ function keypress(e)
 	case 8: case 32: case 13:break;
 	
    	default:
-<<<<<<< HEAD
-		
-=======
->>>>>>> aa9e16461a7cbdf0a745d94fede9954390b2afc9
+
    		var k = String.fromCharCode(currKey);
    		if ($(".me span").hasClass("wrong")) {   			   	
     	   		$(".me span.typing").removeClass("typing").addClass("wrong");
@@ -62,10 +56,7 @@ function keydown(e)
        	switch (currKey)
        	{
        	case 8: 
-<<<<<<< HEAD
-			
-=======
->>>>>>> aa9e16461a7cbdf0a745d94fede9954390b2afc9
+
     	   	if ($(".me span").hasClass("wrong")) {
 				if ($(".me span.typing").hasClass("hiddenElement"))
 					$(".me span.typing").addClass("hidden");
@@ -84,10 +75,7 @@ function keydown(e)
     	   	e.returnValue = false;
     	   	break;
        	case 13:
-<<<<<<< HEAD
-			
-=======
->>>>>>> aa9e16461a7cbdf0a745d94fede9954390b2afc9
+
      		if ($(".me span").hasClass("wrong")) {   			   	
     	   		$(".me span.typing").removeClass("typing").addClass("wrong");
     	   		$(".me span.notTyped:first").removeClass("notTyped").addClass("typing");    	     	   	    	   	
@@ -105,10 +93,7 @@ function keydown(e)
        	}
     	   break;
        case 32:
-<<<<<<< HEAD
-			
-=======
->>>>>>> aa9e16461a7cbdf0a745d94fede9954390b2afc9
+
       		if ($(".me span").hasClass("wrong")) {   			   	
     	   		$(".me span.typing").removeClass("typing").addClass("wrong");
     	   		$(".me span.notTyped:first").removeClass("notTyped").addClass("typing");    	     	   	    	   	
