@@ -64,6 +64,9 @@ function registerListeners(so) {
 					name: name,
 					lan: data.lan
 				});
+				// store data in local for reuse
+				sessionStorage.setItem('last_evt', 'Challenge');
+				sessionStorage.setItem('last_data', data);
 				return msg.update({
 					message: spinhtml + ' Waiting for begining...',
 					   type: 'success',

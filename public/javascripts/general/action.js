@@ -54,11 +54,17 @@ function challenge() {
 	console.log('oppo:' + pair + '\n');
 
 	if (lan != '0' && pair != '') {
-		socket.emit('Challenge', {
+		var data = {
 			type: 'try', 
 			name: pair,
 			lan: lan
-		});
+		};
+			
+		socket.emit('Challenge', data);
+
+		// store data in local for reuse
+		sessionStorage.setItem('last_evt', 'Challenge');
+		sessionStorage.setItem('last_data', data);
 	}
 }
 
@@ -67,10 +73,16 @@ function match() {
 	console.log('lan:' + lan + '\n');
 
 	if (lan != '0') {
-		socket.emit('Match', {
+		var data = {
 			type: 'try',
 			lan: lan
-		});
+		};
+
+		socket.emit('Match', data);
+
+		// store data in local for reuse
+		sessionStorage.setItem('last_evt', 'Match');
+		sessionStorage.setItem('last_data', data);
 	}
 }
 
