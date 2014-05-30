@@ -47,49 +47,61 @@ function registerListeners(so) {
 		var name = data.name;
 
 		// show messenger
+		if (data.type == 'try') {
 		var msg = Messenger().post({
 			message: '"' + name + 
 				'" challenge you on language ' + 
 				data.lan + '.',
 			type: 'info',
+			id: name,
+			singleton: false,
 			hideAfter: 100,
 			actions: {
-				accept: {
-					label: 'Accept',
-			action: function() {
-				var spinhtml = '<i class="icon-spinner icon-spin"></i>';
-				var sendData = {
-					type: 'try', 
-					name: name,
-					lan: data.lan
-				};
-				// store data in local for reuse
-				sessionStorage.setItem('last_evt', 'Challenge');
-				sessionStorage.setItem('last_data', JSON.stringify(sendData));
-				// tell server the result
-				so.emit('Challenge', sendData);
-				return msg.update({
-					message: spinhtml + ' Waiting for begining...',
-					   type: 'success',
-					   hideAfter: 100,
-					   actions: false
-				});
-			}
-				},
-			reject: {
-				label: 'reject',
-			action: function() {
-				// tell server the result
-				so.emit('Challenge', {type: 'reject', name: name});
-				return msg.update({
-					message: 'Rejected.',
-					   type: 'error',
-					   actions: false
-				});
-			}
-			}
+					accept: {
+						label: 'Accept',
+						action: function() {
+						var spinhtml = '<i class="icon-spinner icon-spin"></i>';
+						var sendData = {
+							type: 'try', 
+							name: name,
+							lan: data.lan
+						};
+						// store data in local for reuse
+						sessionStorage.setItem('last_evt', 'Challenge');
+						sessionStorage.setItem('last_data', JSON.stringify(sendData));
+						// tell server the result
+						so.emit('Challenge', sendData);
+						return msg.update({
+							message: spinhtml + ' Waiting for begining...',
+							   type: 'success',
+							   hideAfter: 100,
+							   actions: false
+						});
+				}
+					},
+				reject: {
+					label: 'reject',
+					action: function() {
+						// tell server the result
+						so.emit('Challenge', {type: 'reject', name: name});
+						return msg.update({
+							message: 'Rejected.',
+							   type: 'error',
+							   actions: false
+						});
+					}
+				}
 			}
 		});
+		}else if (data.type == 'cancel') {
+			Messenger.post({
+				message: "'"name + "' canceled challenge.",
+				type: 'info',
+				id: name,
+				showCloseButton: true,
+				singleton: false
+			});
+		}
 	});
 
 	so.on('disconnect', function() {

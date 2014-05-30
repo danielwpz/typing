@@ -210,6 +210,7 @@ function tryChallenge(name, pairName, lan) {
 				makePair(player, pair, lan);
 			}else if (pair.state == 'normal') {
 				pair.socket.emit('_Challenge', {
+					type: 'try',
 					name: name,
 					lan: lan
 				});
@@ -236,6 +237,19 @@ function rejectChallenge(name, pairName) {
 
 	pair.socket.emit('_Reply', {type: 'Challenge', result: 'reject'});
 }
+
+function cancelChallenge(name, pairName) {
+	var player = userList[name];
+	var pair = userList[pairName];
+
+	player.state = 'normal';
+
+	pair.socket.emit('_Challenge', {
+		type: 'cancel',
+		name: name
+	});
+}
+
 
 function isOnline(name) {
 	return (userList[name] && userList[name].socket);
@@ -376,6 +390,8 @@ sio.on('connection', function(err, socket, session) {
 			tryChallenge(name, pair, lan);
 		}else if (name && type == 'reject'){
 			rejectChallenge(name, pair);
+		}else if (name && type == 'cancel') {
+			cancelChallenge(name, pair);
 		}else {
 			socket.emit('_Reply', {
 				type: 'Challenge', 

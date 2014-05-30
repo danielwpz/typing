@@ -68,6 +68,21 @@ function challenge() {
 	}
 }
 
+function cancelChallenge() {
+	var pair = $('#oppo-input').val();
+
+	if (pair != '') {
+		var data = {
+			type: 'cancel',
+			name: pair,
+			lan: '0'
+		};
+
+		socket.emit('Challenge', data);
+	}
+}
+
+
 function match() {
 	var lan = $('#match-lanlist').val();
 	console.log('lan:' + lan + '\n');
