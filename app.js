@@ -544,8 +544,6 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 		});
 	});
 
-		
-
 	socket.on('disconnect', function() {
 		var name = getName(session);
 		if (name && name != '') {
@@ -561,5 +559,13 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 		}
 	});
 });
+
+sio.of('/practice').on('connection', function(err, socket, session) {
+	socket.on('Finish', function(data) {
+		var name = getName(session);
+		console.log(name + ' practice finished\n');
+	});
+});
+
 
 module.exports = app;
