@@ -38,7 +38,12 @@ function logout() {
 }
 
 function practice() {
-
+	var lan = $('#practice-lanlist').val();
+	// redirect the page
+	var hostPath = window.location.hostname;
+	var hostPort = window.location.port;
+	window.location.assign('http://' + hostPath + ':' + hostPort
+			+ '/practice/' + lan);
 }
 
 function challenge() {
