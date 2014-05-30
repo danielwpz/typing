@@ -92,5 +92,4 @@ if (i<10)
 
 function updateLetterCount() {
 	document.getElementById('letter-count').innerHTML=typedLetters;
-	document.getElementById('prog').value=typedLetters;
 }
