@@ -6,7 +6,11 @@ function challenge() {
 
 function tryAgain() {
 	var evet = sessionStorage.getItem('last_evt');
-	var data = sessionStorage.getItem('last_data');
+	var dataStr = sessionStorage.getItem('last_data');
+	var data = JSON.parse(dataStr);
+
+	console.log('last_evt:' + evet + ', last_data:\n');
+	console.log(data);
 
 	if (data && evet) {
 		var indexSocket = io.connect(socketUrl);

@@ -60,11 +60,11 @@ function challenge() {
 			lan: lan
 		};
 			
-		socket.emit('Challenge', data);
-
 		// store data in local for reuse
 		sessionStorage.setItem('last_evt', 'Challenge');
-		sessionStorage.setItem('last_data', data);
+		sessionStorage.setItem('last_data', JSON.stringify(data));
+
+		socket.emit('Challenge', data);
 	}
 }
 
@@ -78,11 +78,11 @@ function match() {
 			lan: lan
 		};
 
-		socket.emit('Match', data);
-
 		// store data in local for reuse
 		sessionStorage.setItem('last_evt', 'Match');
-		sessionStorage.setItem('last_data', data);
+		sessionStorage.setItem('last_data', JSON.stringify(data));
+		
+		socket.emit('Match', data);
 	}
 }
 

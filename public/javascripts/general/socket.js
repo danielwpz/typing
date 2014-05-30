@@ -58,15 +58,16 @@ function registerListeners(so) {
 					label: 'Accept',
 			action: function() {
 				var spinhtml = '<i class="icon-spinner icon-spin"></i>';
-				// tell server the result
-				so.emit('Challenge', {
+				var sendData = {
 					type: 'try', 
 					name: name,
 					lan: data.lan
-				});
+				};
 				// store data in local for reuse
 				sessionStorage.setItem('last_evt', 'Challenge');
-				sessionStorage.setItem('last_data', data);
+				sessionStorage.setItem('last_data', JSON.stringify(sendData));
+				// tell server the result
+				so.emit('Challenge', sendData);
 				return msg.update({
 					message: spinhtml + ' Waiting for begining...',
 					   type: 'success',
