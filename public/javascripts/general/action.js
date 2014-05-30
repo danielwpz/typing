@@ -29,6 +29,14 @@ function signIn() {
 	});
 }
 
+function logout() {
+	socket.emit('Logout', {});
+	// refresh the page
+	var hostPath = window.location.hostname;
+	var hostPort = window.location.port;
+	window.location.assign('http://' + hostPath + ':' + hostPort);
+}
+
 function practice() {
 
 }
@@ -65,4 +73,5 @@ function cancelMatch() {
 	socket.emit('Match', {
 		type: 'cancel'
 	});
+
 }

@@ -38,12 +38,12 @@ app.use(partials());
 app.use(session({key: 'connect.sid', secret: 'secret', store: sessionStore}));
 
 app.use('/typing/:lan', function(req, res) {
-	if (req.session && req.session.pairIndex >=0) {
+	if (req.session && req.session.pairIndex && req.session.pairIndex >=0) {
 		var myName = req.session.name;
 		var pairName = getPairName(req.session.pairIndex, myName);
 		typing(req, res, myName, pairName);
 	}else {
-		res.end('Unregistered');
+		res.end('Unregistered or no-match');
 	}
 });
 app.use('/', routes);
@@ -416,12 +416,22 @@ sio.on('connection', function(err, socket, session) {
 			var player = userList[name];
 			player.state = 'normal';
 			matchPicker.clear(name);
+			console.log(name + ' cancel match.\n');
 		}else {
 			socket.emit('_Reply', {
 				type: 'Match',
 				result: 'unregister'
 			});
 		}
+	});
+
+	socket.on('Logout', function() {
+		var name = getName(session);
+		makeOffline(name);
+		matchPicker.clear(name);
+		session.name = null;
+		session.pairIndex = null;
+		session.save();
 	});
 
 	socket.on('disconnect', function() {

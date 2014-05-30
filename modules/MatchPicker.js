@@ -23,8 +23,8 @@ function MatchPicker() {
 	this.clear = function(name) {
 		var subList;
 		for (subList in waitList) {
-			if (subList == name) {
-				subList = [];
+			if (waitList[subList] == name) {
+				waitList[subList] = null;
 			}
 		}
 	}
