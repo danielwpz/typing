@@ -447,9 +447,11 @@ sio.on('connection', function(err, socket, session) {
 		var name = getName(session);
 		makeOffline(name);
 		matchPicker.clear(name);
-		session.name = null;
-		session.pairIndex = null;
-		session.save();
+		if (session) {
+			session.name = null;
+			session.pairIndex = null;
+			session.save();
+		}
 	});
 
 	socket.on('disconnect', function() {

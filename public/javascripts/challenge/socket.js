@@ -8,6 +8,8 @@ function registerListeners(so) {
 			// do redirection
 			window.location.assign('http://' + hostPath + ':' +
 				hostPort + path);
+		}else if (data.type == 'Challenge') {
+			console.log('Result:' + data.result);
 		}
 	});
 
