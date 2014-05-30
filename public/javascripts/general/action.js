@@ -29,6 +29,14 @@ function signIn() {
 	});
 }
 
+function logout() {
+	socket.emit('Logout', {});
+	// refresh the page
+	var hostPath = window.location.hostname;
+	var hostPort = window.location.port;
+	window.location.assign('http://' + hostPath + ':' + hostPort);
+}
+
 function practice() {
 
 }
@@ -54,6 +62,16 @@ function match() {
 	console.log('lan:' + lan + '\n');
 
 	if (lan != '0') {
-		socket.emit('Match', {lan: lan});
+		socket.emit('Match', {
+			type: 'try',
+			lan: lan
+		});
 	}
+}
+
+function cancelMatch() {
+	socket.emit('Match', {
+		type: 'cancel'
+	});
+
 }
