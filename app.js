@@ -541,6 +541,7 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 			}else {
 				// just forward
 				try {
+					console.log('pair[' + pairIndex + '] finish');
 					pair.socket.emit('_Finish', data);
 					// clear all pair info
 					pairList[pairIndex] = null;
