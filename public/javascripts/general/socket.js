@@ -95,7 +95,7 @@ function registerListeners(so) {
 		});
 		}else if (data.type == 'cancel') {
 			Messenger.post({
-				message: "'"name + "' canceled challenge.",
+				message: "'" + name + "' canceled challenge.",
 				type: 'info',
 				id: name,
 				showCloseButton: true,
