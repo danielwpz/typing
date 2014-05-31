@@ -56,16 +56,18 @@ t=setTimeout('startTime()',1000)
 var start = false;
 function doStart() {
 	if(!start){
-	var today=new Date();
-	h=today.getHours();
-	m=today.getMinutes();
-	s=today.getSeconds();
-	ms=today.getMilliseconds();
-	startTime();
-	document.onkeypress=keypress;
-	document.onkeydown=keydown;
-	sendUpdate({key:-4});
-	start = true;
+		var today=new Date();
+		h=today.getHours();
+		m=today.getMinutes();
+		s=today.getSeconds();
+		ms=today.getMilliseconds();
+		startTime();
+		$('#gameLoad').addClass('hidden');
+		$('#gameStart').removeClass('hidden');
+		document.onkeypress=keypress;
+		document.onkeydown=keydown;
+		sendUpdate({key:-4});
+		start = true;
 	}
 }
 

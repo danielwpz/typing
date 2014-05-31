@@ -12,6 +12,7 @@ var crypto = require('crypto');
 
 var routes = require('./routes/index');
 var typing = require('./routes/typing');
+var practice = require('./routes/practice');
 
 var cookieParser = CookieParser('secret');
 
@@ -46,6 +47,7 @@ app.use('/typing/:lan', function(req, res) {
 		res.end('Unregistered or no-match');
 	}
 });
+app.use('/practice/:lan', practice);
 app.use('/', routes);
 
 /// catch 404 and forwarding to error handler
@@ -208,6 +210,7 @@ function tryChallenge(name, pairName, lan) {
 				makePair(player, pair, lan);
 			}else if (pair.state == 'normal') {
 				pair.socket.emit('_Challenge', {
+					type: 'try',
 					name: name,
 					lan: lan
 				});
@@ -234,6 +237,19 @@ function rejectChallenge(name, pairName) {
 
 	pair.socket.emit('_Reply', {type: 'Challenge', result: 'reject'});
 }
+
+function cancelChallenge(name, pairName) {
+	var player = userList[name];
+	var pair = userList[pairName];
+
+	player.state = 'normal';
+
+	pair.socket.emit('_Challenge', {
+		type: 'cancel',
+		name: name
+	});
+}
+
 
 function isOnline(name) {
 	return (userList[name] && userList[name].socket);
@@ -374,6 +390,8 @@ sio.on('connection', function(err, socket, session) {
 			tryChallenge(name, pair, lan);
 		}else if (name && type == 'reject'){
 			rejectChallenge(name, pair);
+		}else if (name && type == 'cancel') {
+			cancelChallenge(name, pair);
 		}else {
 			socket.emit('_Reply', {
 				type: 'Challenge', 
@@ -429,9 +447,11 @@ sio.on('connection', function(err, socket, session) {
 		var name = getName(session);
 		makeOffline(name);
 		matchPicker.clear(name);
-		session.name = null;
-		session.pairIndex = null;
-		session.save();
+		if (session) {
+			session.name = null;
+			session.pairIndex = null;
+			session.save();
+		}
 	});
 
 	socket.on('disconnect', function() {
@@ -523,6 +543,7 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 			}else {
 				// just forward
 				try {
+					console.log('pair[' + pairIndex + '] finish');
 					pair.socket.emit('_Finish', data);
 					// clear all pair info
 					pairList[pairIndex] = null;
@@ -542,8 +563,6 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 		});
 	});
 
-		
-
 	socket.on('disconnect', function() {
 		var name = getName(session);
 		if (name && name != '') {
@@ -559,5 +578,13 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 		}
 	});
 });
+
+sio.of('/practice').on('connection', function(err, socket, session) {
+	socket.on('Finish', function(data) {
+		var name = getName(session);
+		console.log(name + ' practice finished\n');
+	});
+});
+
 
 module.exports = app;

@@ -25,7 +25,21 @@
 <% // TODO: handler code here... %>
 <% // Variable 'code' is a char array. %>
 <% // You can use code[i] to get each character. %>
-<h2 class="contest-title"><span style="color:#1abc9c"><%=myName%></span> VS <span style="color:#ecbe06"><%=pairName%></span></h2>
+<div id="gameLoad">
+<h2 class="contest-title">Connecting...</h2>
+<p class="lead">Hint: Please refresh the page if it took too much time to connect.</p>
+</div>
+<div id="gameStart" class="hidden">
+<%
+	if(mode=="practice") {
+%>
+	<h2 class="contest-title">Practice</h2>
+<%} else {%>
+<h2 class="contest-title"><span style="color:#1abc9c">[<%=myName%>]</span> VS <span style="color:#ecbe06">[<%=pairName%>]</span></h2>
+<%}%>
+<p class="lead">Hint: Press 'Ctrl' to scroll down the page when needed.</p>
+</div>
+
 <div class="wrapper">
 <div class="contest jumbotron">
 
@@ -81,44 +95,41 @@ for (i=0;i<code.length;i++) {
 <div class='stat-wrapper'>
 <div class='stat'>
 <table>
+	<tr>
+		<td>
+			Total letters:
+		</td>
+		<td id='total'>
+			<%=code.length%>
+		</td>
+	</tr>
 
-<tr>
-<td>
-Total letters:
-</td>
-<td id='total'>
-<%=code.length%>
-</td>
-</tr>
+	<tr>
+		<td>
+			Typed letters:
+		</td>
+		<td>
+			<span id="letter-count">0</span>
+		</td>
+	</tr>
 
-<tr>
-<td>
-Typed letters:
-</td>
-<td>
-<span id="letter-count">0</san>
-</td>
-</tr>
+	<tr class="wrong">
+		<td>
+			Wrong hits:
+		</td>
+		<td>
+			<span id="wrong">0</span>
+		</td>
+	</tr>
 
-<tr style='color:red'>
-<td>
-Wrong hits:
-</td>
-<td>
-<span id="wrong"></span>
-</td>
-</tr>
-
-<tr>
-<td>
-Time passed:
-</td>
-<td>
-<span id="time"></span>
-</td>
-</tr>
-
-
+	<tr>
+		<td>
+			Time passed:
+		</td>
+		<td>
+			<span id="time">00:00:00</span>
+		</td>
+	</tr>
 
 </table>
 </div>
@@ -131,8 +142,6 @@ Time passed:
 </div>
 
 <progress max=<%=code.length%> value='0' class='prog' id='prog'></progress>
-
-
 
 	<!------------------------ Out of Body --------------------------->
 
@@ -164,8 +173,8 @@ Time passed:
 						</table>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="back()">Cancel</button>
-	        <button type="button" class="btn btn-primary" onclick="playAgain()">Play Again</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="back()">Back</button>
+	        <button type="button" class="btn btn-primary" onclick="tryAgain()">Play Again</button>
 	      </div>
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->

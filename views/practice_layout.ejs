@@ -11,17 +11,21 @@
     <!-- Loading Flat UI -->
     <link href="/stylesheets/flat-ui.css" rel="stylesheet">
 
-	<!-- Custom css -->
-
-
     <link rel="shortcut icon" href="images/favicon.ico">
 
-    <!-- Loading Font Awesome -->
+    <!-- Loading Fonts -->
     <link rel="stylesheet" href="/stylesheets/css-font-aws/font-awesome.min.css">
+	<link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'>
 
     <!-- Loading Messenger -->
     <link rel="stylesheet" href="/stylesheets/css-messenger/messenger.css">
     <link rel="stylesheet" href="/stylesheets/css-messenger/messenger-theme-air.css">
+
+    <!-- Loading letter stylesheet -->
+    <link rel="stylesheet" href="/stylesheets/letter.css">
+
+    <!-- Loading view stylesheet -->
+    <link rel="stylesheet" href="/stylesheets/view.css">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
     <!--[if lt IE 9]>
@@ -50,27 +54,12 @@
     <script src="/javascripts/messenger/messenger.min.js"></script>
     <script src="/javascripts/messenger/messenger-theme-future.js"></script>
     <script src="/javascripts/socket.io/socket.io.min.js"></script>
-	<script src="/javascripts/general/socket.js"></script>
-	<script src="/javascripts/general/action.js"></script>
+    <script src="/javascripts/practice/socket.js"></script>
+    <script src="/javascripts/challenge/action.js"></script>
+	<script src="/javascripts/practice/update.js"></script>
+	<script src="/javascripts/practice/type.js"></script>
+	<script src="/javascripts/ejs_fulljslint.js"></script>
     <script>
-		$(function() {
-			$('.selectpicker').selectpicker();
-		});
-
-
-		//var socketUrl = 'http://112.124.112.14';
-		var socketUrl = 'http://localhost';
-
-
-        /* Init socket.io */
-        $(function() {
-            socket = io.connect(socketUrl);
-			if (socket)
-            	console.log('socket established\n');
-
-			registerListeners(socket);
-        });
-
 		/* Init Messenger */
 		$(function() {
 			Messenger.options = {
@@ -78,6 +67,19 @@
 				theme: 'air'
 			}
 		});
+
+		//var socketUrl = 'http://localhost';
+		var socketUrl = 'http://112.124.112.14';
+        /* Init socket.io */
+        $(function() {
+            socket = io.connect(socketUrl + '/practice');
+
+			if (socket) {
+				registerListeners(socket);
+				doStart();
+			}
+        });
+
     </script>
   </body>
 </html>

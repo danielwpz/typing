@@ -1,7 +1,10 @@
-
+.lead {
+	font-size:20px;
+	color:#e74c3c;
+}
 .contest {
 	width:800px;
-	margin-top:30px;
+	margin-top:25px;
 
 }
 
@@ -18,7 +21,7 @@
 .stat {
 	position:fixed;
 	left:960px;
-  	top:170px;
+  	top:200px;
 }
 
 td {

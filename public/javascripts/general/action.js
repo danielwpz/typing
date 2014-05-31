@@ -38,7 +38,12 @@ function logout() {
 }
 
 function practice() {
-
+	var lan = $('#practice-lanlist').val();
+	// redirect the page
+	var hostPath = window.location.hostname;
+	var hostPort = window.location.port;
+	window.location.assign('http://' + hostPath + ':' + hostPort
+			+ '/practice/' + lan);
 }
 
 function challenge() {
@@ -49,23 +54,50 @@ function challenge() {
 	console.log('oppo:' + pair + '\n');
 
 	if (lan != '0' && pair != '') {
-		socket.emit('Challenge', {
+		var data = {
 			type: 'try', 
 			name: pair,
 			lan: lan
-		});
+		};
+			
+		// store data in local for reuse
+		sessionStorage.setItem('last_evt', 'Challenge');
+		sessionStorage.setItem('last_data', JSON.stringify(data));
+
+		socket.emit('Challenge', data);
 	}
 }
+
+function cancelChallenge() {
+	var pair = $('#oppo-input').val();
+
+	if (pair != '') {
+		var data = {
+			type: 'cancel',
+			name: pair,
+			lan: '0'
+		};
+
+		socket.emit('Challenge', data);
+	}
+}
+
 
 function match() {
 	var lan = $('#match-lanlist').val();
 	console.log('lan:' + lan + '\n');
 
 	if (lan != '0') {
-		socket.emit('Match', {
+		var data = {
 			type: 'try',
 			lan: lan
-		});
+		};
+
+		// store data in local for reuse
+		sessionStorage.setItem('last_evt', 'Match');
+		sessionStorage.setItem('last_data', JSON.stringify(data));
+		
+		socket.emit('Match', data);
 	}
 }
 
