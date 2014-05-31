@@ -34,15 +34,7 @@ function keypress(e)
 				updateWrongCount();
        		}
        	}
- 
-	}
-
-	if ($(".me span.typing").hasClass("hidden"))
-		$(".me span.typing").removeClass("hidden");
-	if ($(".me span.hasTyped:last").hasClass("hiddenElement"))
-		$(".me span.hasTyped:last").addClass("hidden");
-	if ((!$(".me span").hasClass("typing"))&&(!$(".me span").hasClass("wrong"))){
-		finish(true);
+		statusCheck();
 	}
 }
 
@@ -75,6 +67,7 @@ function keydown(e)
 			}
     	   	e.keyCode = 0; 
     	   	e.returnValue = false;
+			statusCheck();
 			return false;
     	   	break;
        	case 13:
@@ -98,6 +91,7 @@ function keydown(e)
        		}
 			e.keyCode = 0; 
     	   	e.returnValue = false;
+			statusCheck();
 			return false;
     	   	break;
        case 32:
@@ -122,6 +116,7 @@ function keydown(e)
 			
 			e.keyCode = 0; 
     	   	e.returnValue = false;
+			statusCheck();
        		return false;
        		break;
 
@@ -129,6 +124,18 @@ function keydown(e)
        }
  
    }
+}
+
+function statusCheck() {
+	if ($(".me span.typing").hasClass("hidden")) {
+		$(".me span.typing").removeClass("hidden");
+	}
+	if ($(".me span.hasTyped:last").hasClass("hiddenElement")) {
+		$(".me span.hasTyped:last").addClass("hidden");
+	}
+	if ((!$(".me span").hasClass("typing"))&&(!$(".me span").hasClass("wrong"))){
+		finish(true);
+	}
 }
 
 

@@ -13,3 +13,13 @@ function challenge() {
 
 	socket.emit('Challenge', {type: 'try', name: pair});
 }
+
+//back to homepage after game
+function back() {
+
+}
+
+//play again with the same mode 
+function playAgain() {
+
+}

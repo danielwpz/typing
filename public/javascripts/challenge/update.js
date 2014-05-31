@@ -1,8 +1,8 @@
 var index = 0;
 //displayed in finish modal 
-var contestResult = false;
 var timeString;
 var time;
+var gameResult;
 
 
 function doUpdate(data) {
@@ -71,27 +71,37 @@ function doStart() {
 
 function finish(win) {
 	var today=new Date();
+	var wrongRate = new Number(wrongTimes/typedLetters*100);
 	time = (((today.getHours()-h)*60+(today.getMinutes()-m))*60+(today.getSeconds()-s))*1000+today.getMilliseconds()-ms;
 	sendFinish({time: time});
 	document.onkeypress=null;
 	document.onkeydown=null;
 	clearTimeout(t);
 	timeString = document.getElementById('time').innerHTML;
+	$('#timeString').html(timeString);
+	$('#speed').html(Math.floor(typedLetters/time*1000*60));
+	if(typedLetters==0) {
+		$('#wrongHits').html("0%");
+	} else {
+		$('#wrongHits').html(wrongRate.toFixed(1)+"%");
+	}
+
 	if(win) {
 		sendUpdate({key:-3});
-		contestResult = true;
+		$('#myModalLabel').html("You win!");
 		$('#finishModal').modal('show');
-		alert("win "+time);
+		//alert("win "+time);
 	} else {
-		contestResult = false;
+		$('#myModalLabel').html("You lose!");
 		$('#finishModal').modal('show');
-		alert("lose "+time);
+		//alert("lose "+time);
 	}
 	
 	start = false;
 }
 
 function doFinish(data) {
+	finish(false);
 }
 
 function checkTime(i)

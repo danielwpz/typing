@@ -12,15 +12,17 @@
 	color: red;
 }
 
+.o-typing {
+	/*text-shadow: 2px 2px 1px #444;*/
+	background-color: #ecbe06;
+}
+
 .typing {
 	color: #eee;
 	background-color: #1abc9c;
 	
 }
 
-.o-typing {
-	/*text-shadow: 2px 2px 1px #444;*/
-	background-color: #ecbe06;
-}
+
 
 

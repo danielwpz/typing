@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 
-=======
->>>>>>> aa9e16461a7cbdf0a745d94fede9954390b2afc9
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -28,11 +25,12 @@
 <% // TODO: handler code here... %>
 <% // Variable 'code' is a char array. %>
 <% // You can use code[i] to get each character. %>
-<h2 class="contest-title"><%=myName%> VS <%=pairName%></h2>
+<h2 class="contest-title"><span style="color:#1abc9c"><%=myName%></span> VS <span style="color:#ecbe06"><%=pairName%></span></h2>
 <div class="wrapper">
 <div class="contest jumbotron">
 
 <div class="me container code">
+
 <%
 var i;
 var first = true;
@@ -45,11 +43,12 @@ var returnStr = "return";
 for (i=0;i<code.length;i++) {
 
 	if (code[i]!='\n') {
-		while((code[i]==' ')||(code[i]=='\t')&&space) {
-			if(code[i]==' ')
+		while((code[i]==' '||code[i]=='\t')&&space) {
+			if(code[i]==' ') {
 				%><span>&nbsp;</span><%
-			else
+			} else {
 				%><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span><%
+			}
 			i++;
 		} 
 		space = false;
@@ -75,6 +74,7 @@ for (i=0;i<code.length;i++) {
 }
 %>
 
+
 </div>
 </div>
 
@@ -96,7 +96,7 @@ Total letters:
 Typed letters:
 </td>
 <td>
-<span id="letter-count">0</span>
+<span id="letter-count">0</san>
 </td>
 </tr>
 
@@ -142,32 +142,33 @@ Time passed:
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	        <h4 class="modal-title" id="myModalLabel">Register</h4>
+	        <h4 class="modal-title" id="myModalLabel"></h4>
 	      </div>
 	      <div class="modal-body">
 						<table cellspacing="5" style="width:70%; margin:auto">
 						<tr>
 							<td>Time</td>
-							<td style="margin:5px"><%=timeString%></td>
+							<td id="timeString" ></td>
 						</tr>
 						<tr><td></td><td></td></tr>
 						<tr>
-							<td>Speed</td>
-							<td style="margin:5px"><%=Math.floor(typedLetters/time*1000*60)%> lpm</td>
+							<td>Speed (Letters per min)</td>
+							<td id="speed" ></td>
 						</tr>
 						<tr><td></td><td></td></tr>
 						<tr>
 							<td>Wrong hits</td>
-							<td style="margin:5px"><%=Math.floor(wrongTimes/typedLetters)%>%</td>
+							<td id="wrongHits"></td>
 						</tr>
 						<tr><td></td><td></td></tr>
 						</table>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="back()">Back to homepage</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="back()">Cancel</button>
 	        <button type="button" class="btn btn-primary" onclick="playAgain()">Play Again</button>
 	      </div>
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
+
 
