@@ -1,0 +1,39 @@
+/*index page*/
+#img1 {
+	float:left;
+	width:300px;
+}
+
+#index-leading {
+	width:840px;
+	float:left;
+	height:408px;
+}
+
+#index-option {
+	clear:both;
+}
+
+#index-announce-table {
+	font-size:20px;
+	margin-top:30px;
+
+}
+
+#index-announce-table tr {
+	height:40px;
+}
+
+#index-announce-table td {
+	width:150px;
+}
+
+
+#index-announce-table td+td {
+	width:400px;
+}
+
+.index-stat {
+	font-size:17px;
+}
+

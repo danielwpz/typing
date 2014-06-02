@@ -1,3 +1,4 @@
+/*challenge page*/
 .lead {
 	font-size:20px;
 	color:#e74c3c;
@@ -13,7 +14,9 @@
 	
 }
 
-
+#share-button {
+	float:left;
+}
 
 .stat-wrapper {
 	
@@ -21,7 +24,7 @@
 .stat {
 	position:fixed;
 	left:960px;
-  	top:200px;
+  	top:205px;
 }
 
 td {
@@ -38,8 +41,8 @@ td + td {
 	font-size:12pt;
 }
 
-.footer {
-
+footer {
+margin-bottom:15px;
 }
 
 .prog {
@@ -50,6 +53,7 @@ td + td {
 	left:0px;
 	right:0px;
 	overflow: hidden;
+	/*margin-bottom:0px;*/
 	/*-webkit-appearance: none;
    	appearance: none;*/
 }
@@ -73,3 +77,41 @@ progress::-webkit-progress-value {
     border-radius: 2px; 
     background-size: 35px 20px, 100% 100%, 100% 100%;
 }*/
+
+
+
+.progress .bar {
+float: left;
+width: 0;
+height: 100%;
+font-size: 12px;
+color: #fff;
+text-align: center;
+text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
+background-color: #0e90d2;
+background-image: -moz-linear-gradient(top,#149bdf,#0480be);
+background-image: -webkit-gradient(linear,0 0,0 100%,from(#149bdf),to(#0480be));
+background-image: -webkit-linear-gradient(top,#149bdf,#0480be);
+background-image: -o-linear-gradient(top,#149bdf,#0480be);
+background-image: linear-gradient(to bottom,#149bdf,#0480be);
+background-repeat: repeat-x;
+filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff149bdf',endColorstr='#ff0480be',GradientType=0);
+-webkit-box-shadow: inset 0 -1px 0 rgba(0,0,0,0.15);
+-moz-box-shadow: inset 0 -1px 0 rgba(0,0,0,0.15);
+box-shadow: inset 0 -1px 0 rgba(0,0,0,0.15);
+-webkit-box-sizing: border-box;
+-moz-box-sizing: border-box;
+box-sizing: border-box;
+-webkit-transition: width .6s ease;
+-moz-transition: width .6s ease;
+-o-transition: width .6s ease;
+transition: width .6s ease;
+}
+
+.progress .bar, .ui-slider .bar {
+background: #1abc9c;
+-webkit-box-shadow: none !important;
+-moz-box-shadow: none !important;
+box-shadow: none !important;
+filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}

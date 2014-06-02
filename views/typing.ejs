@@ -67,7 +67,11 @@ for (i=0;i<code.length;i++) {
 		} 
 		space = false;
 		if (first) {
-			%><span class="<%=typing%> o-typing"><%=code[i]%></span><%
+			if (mode=="practice") {
+				%><span class="<%=typing%>"><%=code[i]%></span><%
+			} else {
+				%><span class="<%=typing%> o-typing"><%=code[i]%></span><%
+			}
 			first = false;			
 		} else {
 			if (code[i]==' ') {
@@ -136,13 +140,15 @@ for (i=0;i<code.length;i++) {
 </div>
 
 </div>
+<hr>
 
-<div class="footer">
-<p>(c) Stylenet 2014</p>
-</div>
+      <footer>
+        <p>©2014 Daniel Wang and Florrie Cheng. All rights reserved.</p>
+      </footer>
 
 <progress max=<%=code.length%> value='0' class='prog' id='prog'></progress>
 
+</div>
 	<!------------------------ Out of Body --------------------------->
 
 	<!-- Modal finish -->
@@ -173,6 +179,7 @@ for (i=0;i<code.length;i++) {
 						</table>
 	      </div>
 	      <div class="modal-footer">
+			<button id="share-button" type="button" class="btn btn-danger" onclick="share()">Share to Others</button>
 	        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="back()">Back</button>
 	        <button type="button" class="btn btn-primary" onclick="tryAgain()">Play Again</button>
 	      </div>

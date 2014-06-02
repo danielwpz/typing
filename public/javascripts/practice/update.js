@@ -5,33 +5,6 @@ var time;
 var gameResult;
 
 
-function doUpdate(data) {
-	
-	if (data.key==-1) {
-		index++;
-		$(".me span.o-typing").removeClass("o-typing").addClass("o-hasTyped");
-       	$(".me span.o-notTyped:first").removeClass("o-notTyped").addClass("o-typing");
-	} else if (data.key==-2){
-		index--;
- 		$(".me span.o-typing").removeClass("o-typing").addClass("o-notTyped");
-    	$(".me span.o-hasTyped:last").removeClass("o-hasTyped").addClass("o-typing");
-	} else if (data.key==-3) {
-		finish(false);
-	} else if (data.key==-4) {
-		while (index>0) {
-			index--;
- 			$(".me span.o-typing").removeClass("o-typing").addClass("o-notTyped");
-    		$(".me span.o-hasTyped:last").removeClass("o-hasTyped").addClass("o-typing");
-		}
-		sendUpdate({key:typedLetters});
-	} else if (data.key>0) {
-		while (data.key>0) {
-			data.key--;
- 			$(".me span.o-typing").removeClass("o-typing").addClass("o-hasTyped");
-       		$(".me span.o-notTyped:first").removeClass("o-notTyped").addClass("o-typing");
-		}
-	}
-}
 
 
 
@@ -66,12 +39,11 @@ function doStart() {
 		$('#gameStart').removeClass('hidden');
 		document.onkeypress=keypress;
 		document.onkeydown=keydown;
-		sendUpdate({key:-4});
 		start = true;
 	}
 }
 
-function finish(win) {
+function finish() {
 	var today=new Date();
 	var wrongRate = new Number(wrongTimes/typedLetters*100);
 	time = (((today.getHours()-h)*60+(today.getMinutes()-m))*60+(today.getSeconds()-s))*1000+today.getMilliseconds()-ms;
@@ -88,22 +60,16 @@ function finish(win) {
 		$('#wrongHits').html(wrongRate.toFixed(1)+"%");
 	}
 
-	if(win) {
-		sendUpdate({key:-3});
-		$('#myModalLabel').html("You win!");
-		$('#finishModal').modal('show');
-		//alert("win "+time);
-	} else {
-		$('#myModalLabel').html("You lose!");
-		$('#finishModal').modal('show');
-		//alert("lose "+time);
-	}
+	$('#myModalLabel').html("Completed!");
+	$('#finishModal').modal('show');
+	//alert("win "+time);
+
 	
 	start = false;
 }
 
 function doFinish(data) {
-	finish(false);
+	finish();
 }
 
 function checkTime(i)
@@ -116,10 +82,7 @@ if (i<10)
 function updateLetterCount() {
 	document.getElementById('letter-count').innerHTML=typedLetters;
 	document.getElementById('prog').value = typedLetters;
-	//document.getElementById('letter-count').innerHTML=typedLetters;
-	//var totalLetters = parseInt(document.getElementById('total').innerHtml);
-	//var w1 = Math.round(typedLetters/totalLetters*100) + "%";
-	//document.getElementById('prog').style.width = w1;
+
 }
 
 function updateWrongCount() {

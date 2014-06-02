@@ -23,12 +23,14 @@ function tryAgain() {
 	}
 }
 
+function share() {
+
+}
 //back to homepage after game
 function back() {
 
 }
 
-//play again with the same mode 
 function playAgain() {
 
 }
