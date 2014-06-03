@@ -39,6 +39,9 @@ function logout() {
 
 function practice() {
 	var lan = $('#practice-lanlist').val();
+	// store data in local for reuse
+	sessionStorage.setItem('last_evt', 'Practice');
+	sessionStorage.setItem('last_data', 'Practice');
 	// redirect the page
 	var hostPath = window.location.hostname;
 	var hostPort = window.location.port;

@@ -13,12 +13,16 @@ function tryAgain() {
 	console.log(data);
 
 	if (data && evet) {
-		var indexSocket = io.connect(socketUrl);
+		if (evet == 'Practice') {
+			location.reload(true);
+		}else {
+			var indexSocket = io.connect(socketUrl);
 
-		if (indexSocket) {
-			registerIndexListeners(indexSocket);
+			if (indexSocket) {
+				registerIndexListeners(indexSocket);
 
-			indexSocket.emit(evet, data);
+				indexSocket.emit(evet, data);
+			}
 		}
 	}
 }

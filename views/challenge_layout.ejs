@@ -15,11 +15,10 @@
 
     <!-- Loading Fonts -->
     <link rel="stylesheet" href="/stylesheets/css-font-aws/font-awesome.min.css">
-	<link href='http://fonts.googleapis.com/css?family=Ubuntu+Mono' rel='stylesheet' type='text/css'>
 
     <!-- Loading Messenger -->
     <link rel="stylesheet" href="/stylesheets/css-messenger/messenger.css">
-    <link rel="stylesheet" href="/stylesheets/css-messenger/messenger-theme-air.css">
+    <link rel="stylesheet" href="/stylesheets/css-messenger/messenger-theme-flat.css">
 
     <!-- Loading letter stylesheet -->
     <link rel="stylesheet" href="/stylesheets/letter.css">
@@ -64,13 +63,13 @@
 		$(function() {
 			Messenger.options = {
 				extraClasses: 'messenger-fixed messenger-on-bottom messenger-on-right',
-				theme: 'air'
+				theme: 'flat'
 			}
 		});
 
 
-		var socketUrl = 'http://localhost';
-		//var socketUrl = 'http://112.124.112.14';
+		//var socketUrl = 'http://localhost';
+		var socketUrl = 'http://112.124.112.14';
 
         /* Init socket.io */
         $(function() {
