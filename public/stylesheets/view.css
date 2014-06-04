@@ -36,7 +36,7 @@ td + td {
 	width:100px;
 }
 .code {
-	font-family: 'Ubuntu Mono';
+	font-family: ubuntu-mono;
 	line-height:20px;
 	font-size:12pt;
 }

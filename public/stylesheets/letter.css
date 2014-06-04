@@ -20,9 +20,9 @@
 .typing {
 	color: #eee;
 	background-color: #1abc9c;
-	
 }
 
-
-
-
+@font-face {
+    font-family:ubuntu-mono;
+    src:url(/fonts/UbuntuMono-R.ttf);
+}
