@@ -5,13 +5,15 @@ function doIndex(req, res) {
 		res.render('index', { 
 			title: 'Express',
 			layout: 'general_layout',
-			name: req.session.name	
+			name: req.session.name,	
+			onlineNum: 0
 		});
 	}else {
 		res.render('index', { 
 			title: 'Express',
 			layout: 'general_layout',
-			name: ''
+			name: '',
+			onlineNum: 0
 		});
 	}
 

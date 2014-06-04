@@ -12,7 +12,7 @@ function listenModalEvents() {
 	});
 }
 
-checkValid(name, pwd) {
+function checkValid(name, pwd) {
 	var i;
 
 	if (name.length > 8)
@@ -34,7 +34,7 @@ function register() {
 		// name invalid
 		console.log('name invalid');
 		return;
-	}else (checkValid(name, pwd) == 2) {
+	}else if (checkValid(name, pwd) == 2) {
 		// pwd invalid
 		console.log('pwd invalid');
 		return;
