@@ -21,7 +21,7 @@
 
     <!-- Loading Messenger -->
     <link rel="stylesheet" href="/stylesheets/css-messenger/messenger.css">
-    <link rel="stylesheet" href="/stylesheets/css-messenger/messenger-theme-air.css">
+    <link rel="stylesheet" href="/stylesheets/css-messenger/messenger-theme-flat.css">
 
     <!-- Loading view stylesheet -->
     <link rel="stylesheet" href="/stylesheets/index.css">
@@ -58,12 +58,14 @@
     <script>
 		$(function() {
 			$('.selectpicker').selectpicker();
+
+			/* Listen events on Modal close */
+			listenModalEvents();
 		});
 
 
-		//var socketUrl = 'http://112.124.112.14';
-		var socketUrl = 'http://localhost';
-
+		var socketUrl = 'http://112.124.112.14';
+		//var socketUrl = 'http://localhost';
 
         /* Init socket.io */
         $(function() {
@@ -78,7 +80,7 @@
 		$(function() {
 			Messenger.options = {
 				extraClasses: 'messenger-fixed messenger-on-bottom messenger-on-right',
-				theme: 'air'
+				theme: 'flat'
 			}
 		});
     </script>

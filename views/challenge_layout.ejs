@@ -11,14 +11,14 @@
     <!-- Loading Flat UI -->
     <link href="/stylesheets/flat-ui.css" rel="stylesheet">
 
-    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="shortcut icon" href="/images/favicon.ico">
 
     <!-- Loading Fonts -->
     <link rel="stylesheet" href="/stylesheets/css-font-aws/font-awesome.min.css">
 
     <!-- Loading Messenger -->
     <link rel="stylesheet" href="/stylesheets/css-messenger/messenger.css">
-    <link rel="stylesheet" href="/stylesheets/css-messenger/messenger-theme-air.css">
+    <link rel="stylesheet" href="/stylesheets/css-messenger/messenger-theme-flat.css">
 
     <!-- Loading letter stylesheet -->
     <link rel="stylesheet" href="/stylesheets/letter.css">
@@ -53,8 +53,8 @@
     <script src="/javascripts/messenger/messenger.min.js"></script>
     <script src="/javascripts/messenger/messenger-theme-future.js"></script>
     <script src="/javascripts/socket.io/socket.io.min.js"></script>
-    <script src="/javascripts/challenge/socket.js"></script>
     <script src="/javascripts/challenge/action.js"></script>
+    <script src="/javascripts/challenge/socket.js"></script>
 	<script src="/javascripts/challenge/update.js"></script>
 	<script src="/javascripts/challenge/type.js"></script>
 	<script src="/javascripts/ejs_fulljslint.js"></script>
@@ -63,13 +63,15 @@
 		$(function() {
 			Messenger.options = {
 				extraClasses: 'messenger-fixed messenger-on-bottom messenger-on-right',
-				theme: 'air'
+				theme: 'flat'
 			}
 		});
 
 
-		var socketUrl = 'http://localhost';
-		//var socketUrl = 'http://112.124.112.14';
+		//var socketUrl = 'http://localhost';
+		var socketUrl = 'http://112.124.112.14';
+
+		init();
 
         /* Init socket.io */
         $(function() {

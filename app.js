@@ -42,9 +42,18 @@ app.use('/typing/:lan', function(req, res) {
 	if (req.session && req.session.pairIndex && req.session.pairIndex >=0) {
 		var myName = req.session.name;
 		var pairName = getPairName(req.session.pairIndex, myName);
+		console.log(myName + ' request /typing with ' + pairName);
 		typing(req, res, myName, pairName);
 	}else {
-		res.end('Unregistered or no-match');
+		var errDes = '';
+		if (!req.session) {
+			errDes = 'no session';
+		}else if (!req.session.pairIndex) {
+			errDes = 'no pairIndex';
+		}else {
+			errDes = 'pairIndex invalid';
+		}
+		res.end('Request denied.' + errDes);
 	}
 });
 app.use('/practice/:lan', practice);
@@ -244,10 +253,14 @@ function cancelChallenge(name, pairName) {
 
 	player.state = 'normal';
 
-	pair.socket.emit('_Challenge', {
-		type: 'cancel',
-		name: name
-	});
+	try{
+		pair.socket.emit('_Challenge', {
+			type: 'cancel',
+			name: name
+		});
+	}catch(e) {
+		console.log('cancel challenge err:' + e);
+	}
 }
 
 
@@ -258,8 +271,12 @@ function isOnline(name) {
 function makeOnline(name, socket, session) {
 	userList[name] = new Player(name, socket, session);
 
-	session.name = name;
-	session.save();
+	try{
+		session.name = name;
+		session.save();
+	}catch(e) {
+		console.log('make on line error:' + e);
+	}
 }
 
 function makeOffline(name) {
