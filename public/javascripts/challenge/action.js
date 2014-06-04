@@ -28,9 +28,11 @@ function tryAgain() {
 
 	console.log('last_evt:' + evet + ', last_data:' + dataStr);
 	if (dataStr && evet) {
+		// change the look of 'Play Again' button
+		$('#play_again_btn').addClass('disabled');
+		$('#play_again_btn').text('Waiting...');
 		if (evet == 'Practice') {
-			window.location.reload(true);
-			window.location.href = window.location.href;
+			refresh();
 		}else {
 			var data = JSON.parse(dataStr);
 			var indexSocket = io.connect(socketUrl);
@@ -49,9 +51,8 @@ function share() {
 }
 //back to homepage after game
 function back() {
-
-}
-
-function playAgain() {
-
+	var hostPath = window.location.hostname;
+	var hostPort = window.location.port;
+	// do redirection
+	window.location.assign('http://' + hostPath + ':' + hostPort);
 }

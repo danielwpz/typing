@@ -35,7 +35,11 @@
 %>
 	<h2 class="contest-title">Practice</h2>
 <%} else {%>
-<h2 class="contest-title"><span style="color:#1abc9c">[<%=myName%>]</span> VS <span style="color:#ecbe06">[<%=pairName%>]</span></h2>
+<h2 class="contest-title" >
+	<span style="color:#1abc9c"><%=myName%></span>
+	<span style="font-size:29px">VS</span>
+	<span style="color:#ecbe06"><%=pairName%></span>
+</h2>
 <%}%>
 <p class="lead">Hint: Press 'Ctrl' to scroll down the page when needed.</p>
 </div>
@@ -179,9 +183,9 @@ for (i=0;i<code.length;i++) {
 						</table>
 	      </div>
 	      <div class="modal-footer">
-			<button id="share-button" type="button" class="btn btn-danger" onclick="share()">Share to Others</button>
+			<button id="share-button" type="button" class="btn btn-danger" onclick="share()">My Rank</button>
 	        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="back()">Back</button>
-	        <button type="button" class="btn btn-primary" onclick="tryAgain()">Play Again</button>
+	        <button id="play_again_btn" type="button" class="btn btn-primary" onclick="tryAgain()">Play Again</button>
 	      </div>
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->

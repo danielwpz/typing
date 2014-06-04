@@ -1,8 +1,44 @@
+function listenModalEvents() {
+	$('#challengeModal').on('hidden.bs.modal', function(e) {
+		makeAble('#challenge_btn', 'Challenge');
+		cancelChallenge();
+	});
+	$('#matchModal').on('hidden.bs.modal', function (e) {
+		makeAble('#match_btn', 'Match');
+		cancelMatch();
+	});
+	$('#practiceModal').on('hidden.bs.modal', function(e) {
+		makeAble('#practice_btn', 'Start');
+	});
+}
+
+checkValid(name, pwd) {
+	var i;
+
+	if (name.length > 8)
+		return 1;
+	
+	if (pwd.length > 16)
+		return 2;
+
+	return 0;
+}
+
 function register() {
 	var name = $('#name-input').val();
-	console.log(name);
 	var pwd = $('#pwd-input').val();
 	var pwd2 = $('#pwd2-input').val();
+	console.log('register for ' + name);
+
+	if (checkValid(name, pwd) == 1) {
+		// name invalid
+		console.log('name invalid');
+		return;
+	}else (checkValid(name, pwd) == 2) {
+		// pwd invalid
+		console.log('pwd invalid');
+		return;
+	}
 
 	if (pwd != pwd2) {
 		console.log('Password doesnt match');
@@ -37,7 +73,18 @@ function logout() {
 	window.location.assign('http://' + hostPath + ':' + hostPort);
 }
 
+function makeAble(id, text) {
+	$(id).removeClass('disabled');
+	$(id).text(text);
+}
+
+function makeDisable(id, text) {
+	$(id).addClass('disabled');
+	$(id).text(text);
+}
+
 function practice() {
+	makeDisable('#practice_btn', 'Waiting...');
 	var lan = $('#practice-lanlist').val();
 	// store data in local for reuse
 	sessionStorage.setItem('last_evt', 'Practice');
@@ -57,6 +104,7 @@ function challenge() {
 	console.log('oppo:' + pair + '\n');
 
 	if (lan != '0' && pair != '') {
+		makeDisable('#challenge_btn', 'Waiting...');
 		var data = {
 			type: 'try', 
 			name: pair,
@@ -91,6 +139,7 @@ function match() {
 	console.log('lan:' + lan + '\n');
 
 	if (lan != '0') {
+		makeDisable('#match_btn', 'Waiting...');
 		var data = {
 			type: 'try',
 			lan: lan

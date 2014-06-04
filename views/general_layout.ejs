@@ -58,12 +58,14 @@
     <script>
 		$(function() {
 			$('.selectpicker').selectpicker();
+
+			/* Listen events on Modal close */
+			listenModalEvents();
 		});
 
 
 		var socketUrl = 'http://112.124.112.14';
 		//var socketUrl = 'http://localhost';
-
 
         /* Init socket.io */
         $(function() {
