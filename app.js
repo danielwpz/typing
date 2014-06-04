@@ -42,6 +42,7 @@ app.use('/typing/:lan', function(req, res) {
 	if (req.session && req.session.pairIndex && req.session.pairIndex >=0) {
 		var myName = req.session.name;
 		var pairName = getPairName(req.session.pairIndex, myName);
+		console.log(myName + ' request /typing with ' + pairName);
 		typing(req, res, myName, pairName);
 	}else {
 		res.end('Unregistered or no-match');

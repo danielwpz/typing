@@ -17,6 +17,9 @@ function registerListeners(so) {
 				window.location.assign('http://' + hostPath + ':' + hostPort + path);
 			}
 			console.log('Result:' + data.result);
+		}else if (data.type == 'Established') {
+			console.log('deinit()');
+			deinit();
 		}
 	});
 
