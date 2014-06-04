@@ -17,7 +17,6 @@
 #index-announce-table {
 	font-size:20px;
 	margin-top:30px;
-
 }
 
 #index-announce-table tr {
@@ -26,6 +25,7 @@
 
 #index-announce-table td {
 	width:150px;
+	font-family:yahei;
 }
 
 
@@ -37,3 +37,7 @@
 	font-size:17px;
 }
 
+@font-face {
+    font-family:lato;
+    src:url(/fonts/yahei.TTF);
+}
