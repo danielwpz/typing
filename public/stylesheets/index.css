@@ -41,3 +41,7 @@
     font-family:lato;
     src:url(/fonts/yahei.TTF);
 }
+
+.title {
+	text-align:center;
+}
