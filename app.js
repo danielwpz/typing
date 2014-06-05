@@ -57,7 +57,9 @@ app.use('/typing/:lan', function(req, res) {
 	}
 });
 app.use('/practice/:lan', practice);
-app.use('/', routes);
+app.use('/', function(req, res) {
+	routes(req, res, onlineNum);
+});
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
@@ -116,6 +118,7 @@ var userList = {};
 userList[""] = null;
 var pairList = new Array();
 var matchPicker = new MatchPicker();
+var onlineNum = 0;
 
 // The first slot of pairList is reversed 
 // for practice mode
@@ -141,7 +144,7 @@ engine.on('pair-made', function(index) {
 });
 
 engine.on('pair-ready', function(index) {
-	console.log('Pair[' + index + '] ready.\n');
+	console.log('>>>Pair[' + index + '] ready.\n');
 	var player1 = userList[pairList[index].player1];
 	var player2 = userList[pairList[index].player2];
 
@@ -274,15 +277,19 @@ function makeOnline(name, socket, session) {
 	try{
 		session.name = name;
 		session.save();
+		onlineNum++;
+		console.log('+++make online:' + name);
 	}catch(e) {
 		console.log('make on line error:' + e);
+		delete userList.name;
 	}
 }
 
 function makeOffline(name) {
 	userList[name] = null;
 	delete userList.name;
-	console.log('Make "' + name + '" off line.\n');
+	onlineNum--;
+	console.log('---make offline:' + name);
 }
 
 /*******************
@@ -387,7 +394,7 @@ sio.on('connection', function(err, socket, session) {
 					});
 				}else {
 					socket.emit('_Reply', {
-						type: 'Register',
+						type: 'SignIn',
 						result: 'bad-info'
 					});
 				}
@@ -560,7 +567,7 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 			}else {
 				// just forward
 				try {
-					console.log('pair[' + pairIndex + '] finish');
+					console.log('<<pair[' + pairIndex + '] finish');
 					pair.socket.emit('_Finish', data);
 					// clear all pair info
 					pairList[pairIndex] = null;
