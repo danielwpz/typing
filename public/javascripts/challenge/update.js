@@ -76,7 +76,7 @@ function finish(win) {
 	var wrongRate = new Number(wrongTimes/typedLetters*100);
 	time = (((today.getHours()-h)*60+(today.getMinutes()-m))*60+(today.getSeconds()-s))*1000+today.getMilliseconds()-ms;
 	var typeSpeed = Math.floor(typedLetters/time*1000*60);
-	sendFinish({time:time,typed:typedLetters,speed:typeSpeed,wrongTimes:wrongTimes});
+	sendFinish({time:time,typedLetters:typedLetters,speed:typeSpeed,wrongTimes:wrongTimes});
 	document.onkeypress=null;
 	document.onkeydown=null;
 	clearTimeout(t);
