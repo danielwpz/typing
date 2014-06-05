@@ -19,21 +19,37 @@ function registerListeners(so) {
 				var hostPath = window.location.hostname;
 				var hostPort = window.location.port;
 				window.location.assign('http://' + hostPath + ':' + hostPort);
-
+			}else {
+				$('#signin-name').addClass('error');
+				$('#signin-pwd').addClass('error');
 			}
 		}
 	});
 
 	so.on('_Reply', function(data) {
 		if (data.type == 'Challenge') {
+			var result = data.result;
+			var errDes = '';
 			console.log(data);
-			if (data.result == 'start') {
+
+			if (result == 'start') {
+				// redirect to given location
 				var path = data.page;
 				var hostPath = window.location.hostname;
 				var hostPort = window.location.port;
-				// redirect to given location
 				window.location.assign('http://' + hostPath + ':' + hostPort + path);
+
+				return;
+			}else if (result == 'not-online') {
+				errDes = 'Opponent is not online.';
+			}else if (result == 'racing') {
+				errDes = 'Opponent is being racing.';
+			}else if (result == 'nonavail') {
+				errDes = 'Opponent name is invalid.';
 			}
+
+			$('#challenge_pair_err').text(errDes);
+			makeAble('#challenge_btn', 'Challenge');
 		}
 	});
 
