@@ -20,8 +20,8 @@ function registerListeners(so) {
 				var hostPort = window.location.port;
 				window.location.assign('http://' + hostPath + ':' + hostPort);
 			}else {
-				$('#signin-name').addClass('error');
-				$('#signin-pwd').addClass('error');
+				$('#signin-name').addClass('error_input');
+				$('#signin-pwd').addClass('error_input');
 			}
 		}
 	});
@@ -45,7 +45,7 @@ function registerListeners(so) {
 			}else if (result == 'racing') {
 				errDes = 'Opponent is being racing.';
 			}else if (result == 'nonavail') {
-				errDes = 'Opponent name is invalid.';
+				errDes = 'Opponent is unavailable.';
 			}
 
 			$('#challenge_pair_err').text(errDes);

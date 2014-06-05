@@ -14,10 +14,10 @@
           <table class="nav navbar-nav navbar-form navbar-right" style="margin-top:8px;">
 	  <tr>
             <td >
-              <input style="margin-right:5px" id="signin-name" type="text" placeholder="Username" class="form-control control-group">
+              <input style="margin-right:5px" id="signin-name" type="text" placeholder="Username" class="form-control">
             </td>
             <td>
-              <input style="margin-right:7px" id="signin-pwd" type="password" placeholder="Password" class="form-control control-group">
+              <input style="margin-right:7px" id="signin-pwd" type="password" placeholder="Password" class="form-control">
             </td>
             <td>
               <button type="button" class="btn btn-success" onclick="signIn()">Sign in</button>
@@ -125,17 +125,17 @@
 							<td>Username</td>
 							<td><input id="name-input" type="text" class="form-control" placeholder="" style="margin:5px"></td>
 						</tr>
-						<tr><td></td><td id="register_name_err"></td></tr>
+						<tr><td></td><td><span id="register_name_err" class="err_hint"></span></td></tr>
 						<tr>
 							<td>Password</td>
 							<td><input id="pwd-input" type="password" class="form-control" placeholder="" style="margin:5px"></td>
 						</tr>
-						<tr><td></td><td id="register_pwd_err"></td></tr>
+						<tr><td></td><td><span id="register_pwd_err" class="err_hint"></span></td></tr>
 						<tr>
 							<td>Verify</td>
 							<td><input id="pwd2-input" type="password" class="form-control" placeholder="" style="margin:5px"></td>
 						</tr>
-						<tr><td></td><td id="register_pwd2_err"></td></tr>
+						<tr><td></td><td><span id="register_pwd2_err" class="err_hint"></span></td></tr>
 						</table>
 	      </div>
 	      <div class="modal-footer">
@@ -199,12 +199,12 @@
           				</select>
 							</td>
 						</tr>
-						<tr><td></td><td id="challenge_lan_err"></td></tr>
+						<tr><td></td><td><span id="challenge_lan_err" class="err_hint"></span></td></tr>
 						<tr>
 							<td>Opponent</td>
 							<td><input id="oppo-input" type="text" class="form-control" placeholder=""></td>
 						</tr>
-						<tr><td></td><td id="challenge_pair_err"></td></tr>
+						<tr><td></td><td><span id="challenge_pair_err" class="err_hint"></span></td></tr>
 						</table>
 	      </div>
 	      <div class="modal-footer">
@@ -236,7 +236,7 @@
           				</select>
 							</td>
 						</tr>
-						<tr><td></td><td id="match_lan_err"></td></tr>
+						<tr><td></td><td><span id="match_lan_err" class="err_hint"></span></td></tr>
 						</table>
 	      </div>
 	      <div class="modal-footer">

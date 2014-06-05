@@ -394,7 +394,7 @@ sio.on('connection', function(err, socket, session) {
 					});
 				}else {
 					socket.emit('_Reply', {
-						type: 'Register',
+						type: 'SignIn',
 						result: 'bad-info'
 					});
 				}
