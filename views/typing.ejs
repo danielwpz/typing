@@ -1,88 +1,193 @@
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" >CodeRush</a>
 
+        </div>
+        <div class="navbar-collapse collapse">
+		 
+		  <ul class="nav navbar-nav navbar-right">
+		    <li>
+		      <a><%=myName%></a>
+		    </li>
+		  </ul>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </div>
 
 <% // TODO: handler code here... %>
 <% // Variable 'code' is a char array. %>
 <% // You can use code[i] to get each character. %>
-<div class="contest">
-<h3>We are challenging...!</h3>
-<code class="me">
-<%
-var i;
-var first = true;
-var space = true;
-var typing = "typing";
-var hasTyped = "hasTyped";
-var notTyped = "notTyped";
-var wrong = "wrong";
-var returnStr = "return";
-for (i=0;i<code.length;i++) {
-
-	while (code[i]!='\n') {
-		while(code[i]==' '&&space) {
-			%><span>&nbsp;</span><%
-			i++;
-		} 
-		space = false;
-			if (first) {
-				%><span class="<%=typing%>"><%=code[i]%></span><%
-				first = false;			
-			} else {
-				if (code[i]==' ') {
-					%><span class="<%=notTyped%>">&nbsp;</span><%
-				} else {
-					%><span class="<%=notTyped%>"><%=code[i]%></span><%
-				}
-			}
-		i++;
-	} 
-		
-	
-	%><span class="<%=notTyped%> <%=returnStr%> hidden hiddenElement">&crarr;</span><br/><%
-	
-	space = true;
-}
-%>
-</code>
-<br/>
-<code class="opponent">
-<%
-var i;
-var first = true;
-var space = true;
-var typing = "typing";
-var hasTyped = "hasTyped";
-var notTyped = "notTyped";
-var wrong = "wrong";
-var returnStr = "return";
-for (i=0;i<code.length;i++) {
-
-	while (code[i]!='\n') {
-		while(code[i]==' '&&space) {
-			%><span>&nbsp;</span><%
-			i++;
-		} 
-		space = false;
-			if (first) {
-				%><span class="<%=typing%>"><%=code[i]%></span><%
-				first = false;			
-			} else {
-				if (code[i]==' ') {
-					%><span class="<%=notTyped%>">&nbsp;</span><%
-				} else {
-					%><span class="<%=notTyped%>"><%=code[i]%></span><%
-				}
-			}
-		i++;
-	} 
-		
-	
-	%><span class="<%=notTyped%> <%=returnStr%> hidden hiddenElement">&crarr;</span><br/><%
-	
-	space = true;
-}
-%>
-</code>
-
-<div class='stat'></div>
-<p>(c) Stylenet 2014</p>
+<div id="gameLoad">
+<h2 class="contest-title">Connecting...</h2>
+<p class="lead">Hint: Please refresh the page if it took too much time to connect.</p>
 </div>
+<div id="gameStart" class="hidden">
+<%
+	if(mode=="practice") {
+%>
+	<h2 class="contest-title">Practice</h2>
+<%} else {%>
+<h2 class="contest-title" >
+	<span style="color:#1abc9c"><%=myName%></span>
+	<span style="font-size:29px">VS</span>
+	<span style="color:#ecbe06"><%=pairName%></span>
+</h2>
+<%}%>
+<p class="lead">Hint: Press 'Ctrl' to scroll down the page when needed.</p>
+</div>
+
+<div class="wrapper">
+<div class="contest jumbotron">
+
+<div class="me container code">
+
+<%
+var i;
+var first = true;
+var space = true;
+var typing = "typing";
+var hasTyped = "hasTyped";
+var notTyped = "notTyped";
+var wrong = "wrong";
+var returnStr = "return";
+for (i=0;i<code.length;i++) {
+
+	if (code[i]!='\n') {
+		while((code[i]==' '||code[i]=='\t')&&space) {
+			if(code[i]==' ') {
+				%><span>&nbsp;</span><%
+			} else {
+				%><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span><%
+			}
+			i++;
+		} 
+		space = false;
+		if (first) {
+			if (mode=="practice") {
+				%><span class="<%=typing%>"><%=code[i]%></span><%
+			} else {
+				%><span class="<%=typing%> o-typing"><%=code[i]%></span><%
+			}
+			first = false;			
+		} else {
+			if (code[i]==' ') {
+				%><span class="<%=notTyped%> o-notTyped">&nbsp;</span><%
+			} else {
+				%><span class="<%=notTyped%> o-notTyped"><%=code[i]%></span><%
+			}
+		}
+		
+		
+	} else {
+		
+	
+	%><span class="<%=notTyped%> <%=returnStr%> hidden hiddenElement o-notTyped">&crarr;</span><br/><%
+	
+	space = true;
+	}
+}
+%>
+
+
+</div>
+</div>
+
+<div class='stat-wrapper'>
+<div class='stat'>
+<table>
+	<tr>
+		<td>
+			Total letters:
+		</td>
+		<td id='total'>
+			<%=code.length%>
+		</td>
+	</tr>
+
+	<tr>
+		<td>
+			Typed letters:
+		</td>
+		<td>
+			<span id="letter-count">0</span>
+		</td>
+	</tr>
+
+	<tr class="wrong">
+		<td>
+			Wrong hits:
+		</td>
+		<td>
+			<span id="wrong">0</span>
+		</td>
+	</tr>
+
+	<tr>
+		<td>
+			Time passed:
+		</td>
+		<td>
+			<span id="time">00:00:00</span>
+		</td>
+	</tr>
+
+</table>
+</div>
+</div>
+
+</div>
+<hr>
+
+      <footer>
+        <p>©2014 Daniel Wang and Florrie Cheng. All rights reserved.</p>
+      </footer>
+
+<progress max=<%=code.length%> value='0' class='prog' id='prog'></progress>
+
+</div>
+	<!------------------------ Out of Body --------------------------->
+
+	<!-- Modal finish -->
+	<div class="modal fade" id="finishModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" style="margin-top:auto margin-bottom:auto">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel"></h4>
+	      </div>
+	      <div class="modal-body">
+						<table cellspacing="5" style="width:70%; margin:auto">
+						<tr>
+							<td>Time</td>
+							<td id="timeString" ></td>
+						</tr>
+						<tr><td></td><td></td></tr>
+						<tr>
+							<td>Speed (Letters per min)</td>
+							<td id="speed" ></td>
+						</tr>
+						<tr><td></td><td></td></tr>
+						<tr>
+							<td>Wrong hits</td>
+							<td id="wrongHits"></td>
+						</tr>
+						<tr><td></td><td></td></tr>
+						</table>
+	      </div>
+	      <div class="modal-footer">
+			<button id="share-button" type="button" class="btn btn-danger" onclick="share()">My Rank</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="back()">Back</button>
+	        <button id="play_again_btn" type="button" class="btn btn-primary" onclick="tryAgain()">Play Again</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+

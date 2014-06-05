@@ -1,5 +1,6 @@
 function registerListeners(so) {
 	so.on('_Reply', function(data) {
+		console.log('[C]Reply:' + data.type + '\n');
 		if (data.type == 'Redir') {
 			var path = data.page;
 			var hostPath = window.location.hostname;
@@ -7,6 +8,18 @@ function registerListeners(so) {
 			// do redirection
 			window.location.assign('http://' + hostPath + ':' +
 				hostPort + path);
+		}else if (data.type == 'Challenge') {
+			if (data.result == 'start') {
+				var path = data.page;
+				var hostPath = window.location.hostname;
+				var hostPort = window.location.port;
+				// redirect to given location
+				window.location.assign('http://' + hostPath + ':' + hostPort + path);
+			}
+			console.log('Result:' + data.result);
+		}else if (data.type == 'Established') {
+			console.log('deinit()');
+			deinit();
 		}
 	});
 
@@ -21,6 +34,28 @@ function registerListeners(so) {
 	});
 }
 
+function registerIndexListeners(so) {
+	so.on('_Reply', function(data) {
+		console.log('[/]Reply:' + data.type + '\n');
+		if (data.type == 'Challenge') {
+			console.log(data);
+			if (data.result == 'start') {
+				var path = data.page;
+				var hostPath = window.location.hostname;
+				var hostPort = window.location.port;
+				// redirect to given location
+				window.location.assign('http://' + hostPath + ':' + hostPort + path);
+			}
+		}
+	});
+
+	so.on('_Reply', function(data) {
+		if (data.type == 'Match') {
+			console.log('Match: ' + data.result + '\n');
+		}
+	});
+}
+
 function sendUpdate(data) {
 	socket.emit('Update', data);
 }
@@ -28,4 +63,3 @@ function sendUpdate(data) {
 function sendFinish(data) {
 	socket.emit('Finish', data);
 }
-

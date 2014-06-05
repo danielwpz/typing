@@ -24,7 +24,6 @@ function keypress(e)
        		if (k==letter) {
        			$(".me span.typing").removeClass("typing").addClass("hasTyped");
        			$(".me span.notTyped:first").removeClass("notTyped").addClass("typing");
-				sendUpdate({key:-1});
 				typedLetters++;
 				updateLetterCount();
        		} else {
@@ -61,7 +60,6 @@ function keydown(e)
 					$(".me span.typing").addClass("hidden");
     		   	$(".me span.typing").removeClass("typing").addClass("notTyped");
     		   	$(".me span.hasTyped:last").removeClass("hasTyped").addClass("typing");
-				sendUpdate({key:-2});
 				typedLetters--;
 				updateLetterCount();
 			}
@@ -79,7 +77,6 @@ function keydown(e)
        			if ($(".me span.typing").hasClass("return")) {
        				$(".me span.typing").removeClass("typing").addClass("hasTyped");
        				$(".me span.notTyped:first").removeClass("notTyped").addClass("typing");
-					sendUpdate({key:-1});
 					typedLetters++;
 					updateLetterCount();
        			} else {
@@ -103,7 +100,6 @@ function keydown(e)
        			if ($(".me span.typing").html()=="&nbsp;") {
        				$(".me span.typing").removeClass("typing").addClass("hasTyped");
        				$(".me span.notTyped:first").removeClass("notTyped").addClass("typing");
-					sendUpdate({key:-1});
 					typedLetters++;
 					updateLetterCount();
        			} else {
@@ -134,7 +130,7 @@ function statusCheck() {
 		$(".me span.hasTyped:last").addClass("hidden");
 	}
 	if ((!$(".me span").hasClass("typing"))&&(!$(".me span").hasClass("wrong"))){
-		finish(true);
+		finish();
 	}
 }
 

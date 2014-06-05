@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>CodeRush</title>
+    <title>Flat UI Free</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Loading Bootstrap -->
@@ -11,7 +11,7 @@
     <!-- Loading Flat UI -->
     <link href="/stylesheets/flat-ui.css" rel="stylesheet">
 
-    <link rel="shortcut icon" href="/images/favicon.ico">
+    <link rel="shortcut icon" href="images/favicon.ico">
 
     <!-- Loading Fonts -->
     <link rel="stylesheet" href="/stylesheets/css-font-aws/font-awesome.min.css">
@@ -53,10 +53,10 @@
     <script src="/javascripts/messenger/messenger.min.js"></script>
     <script src="/javascripts/messenger/messenger-theme-future.js"></script>
     <script src="/javascripts/socket.io/socket.io.min.js"></script>
+    <script src="/javascripts/practice/socket.js"></script>
     <script src="/javascripts/challenge/action.js"></script>
-    <script src="/javascripts/challenge/socket.js"></script>
-	<script src="/javascripts/challenge/update.js"></script>
-	<script src="/javascripts/challenge/type.js"></script>
+	<script src="/javascripts/practice/update.js"></script>
+	<script src="/javascripts/practice/type.js"></script>
 	<script src="/javascripts/ejs_fulljslint.js"></script>
     <script>
 		/* Init Messenger */
@@ -67,20 +67,15 @@
 			}
 		});
 
-
 		//var socketUrl = 'http://localhost';
 		var socketUrl = 'http://112.124.112.14';
-
-		init();
-
         /* Init socket.io */
         $(function() {
-            socket = io.connect(socketUrl + '/challenge');
+            socket = io.connect(socketUrl + '/practice');
 
 			if (socket) {
 				registerListeners(socket);
-				console.log('send established\n');
-				socket.emit('Established', {});
+				doStart();
 			}
         });
 

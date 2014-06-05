@@ -1,10 +1,22 @@
-var express = require('express');
-var router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req, res) {
-  res.render('index', { title: 'Express',
-						layout: 'general_layout' });
-});
+function doIndex(req, res, onlineNum) {
+	if (req.session && req.session.name) {
+		res.render('index', { 
+			title: 'Express',
+			layout: 'general_layout',
+			name: req.session.name,	
+			onlineNum: onlineNum
+		});
+	}else {
+		res.render('index', { 
+			title: 'Express',
+			layout: 'general_layout',
+			name: '',
+			onlineNum: onlineNum
+		});
+	}
 
-module.exports = router;
+}
+
+module.exports = doIndex;

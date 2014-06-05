@@ -1,2 +1,6 @@
 core
 *~
+node_modules/*
+Makefile
+node.log
+*.log

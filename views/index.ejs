@@ -1,34 +1,248 @@
-<h1>Hello ejs.</h1>
-<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#registeModal">
-	Registe
-</button>
-<input id="pair-name-input" type="text" class="form-control" placeholder="Username">
-<button class="btn btn-primary btn-lg" onclick="challenge()">
-	Challenge
-</button>
-<button class="btn btn-primary btn-lg" onclick="match()">
-	Match
-</button>
-
-<!-- Modal Registe -->
-<div class="modal fade" id="registeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog" style="margin-top:auto margin-bottom:auto">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Register</h4>
-      </div>
-      <div class="modal-body">
-        <form role="form">
-        <div class="input-group" style="width:100%">
-          <input id="name-input" type="text" class="form-control" placeholder="Username">
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" >CodeRush</a>
         </div>
-        </form>
+        <div class="navbar-collapse collapse">
+		  <% if (name == '') { %>
+          <table class="nav navbar-nav navbar-form navbar-right" style="margin-top:8px;">
+	  <tr>
+            <td >
+              <input style="margin-right:5px" id="signin-name" type="text" placeholder="Email" class="form-control">
+            </td>
+            <td>
+              <input style="margin-right:7px" id="signin-pwd" type="password" placeholder="Password" class="form-control">
+            </td>
+            <td>
+              <button type="button" class="btn btn-success" onclick="signIn()">Sign in</button>
+            </td>
+
+          </tr>
+	  </table>
+		  <%}else { %>
+		  <ul class="nav navbar-nav navbar-right">
+		    <li>
+		      <a style="padding-left:5px; padding-right:5px"><%=name%></a>
+		    </li>
+			<li>
+			  <a onclick="logout()">Logout</a>
+			</li>
+		  </ul>
+		  <%} %>
+        </div><!--/.navbar-collapse -->
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" onclick="register()">Register Now</button>
+    </div>
+
+<% if (name == '') { %>
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div id="index-leading" class="jumbotron" style="margin-top:40px">
+        <h1>Hello, world!</h1>
+        <p>This is a website for typing practice and competition. All texts are extracted from open source code. </p><p>Dear Programmers, register and enjoy your show time now!</p>
+        <p><button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#registeModal">Register</button></p>
+    </div>
+	<img id="img1" src="image/1.jpg"></img>
+<%}else { %>
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div id="index-leading" class="jumbotron" style="margin-top:40px">
+        <h1>What's New</h1>
+		<table id="index-announce-table">
+			<tr>
+				<td>
+					2014.6.2
+				</td>
+				<td>
+					<a herf="">复旦大学2014年 “代码竞速” 大赛活动公告 </a>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					2014.6.2
+				</td>
+				<td>
+					<a herf="">CodeRush排名系统即将上线，敬请期待！ </a>
+				</td>
+			</tr>
+
+			<tr>
+
+			</tr>
+			<tr>
+
+			</tr>
+		</table>
+		<p class="index-stat">当前在线人数：<%=onlineNum%></p>
+    </div>
+	<img id="img1" src="image/1.jpg"></img>
+
+<%} %>
+    <div id="index-option" class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="col-md-4">
+          <h2>Practice</h2>
+          <p>Practice code typing in single mode.</p>
+          <p><a class="btn btn-success" data-toggle="modal" data-target="#practiceModal" role="button">Practice »</a></p>
+        </div>
+        <div class="col-md-4">
+          <h2>Challenge</h2>
+          <p>Choose a specified user to compete with.</p>
+          <p><a class="btn btn-success" data-toggle="modal" data-target="#challengeModal" role="button">Challenge »</a></p>
+       </div>
+        <div class="col-md-4">
+          <h2>Match</h2>
+          <p>Compete with a random user.</p>
+          <p><a class="btn btn-success" role="button" data-toggle="modal" data-target="#matchModal"">Match »</a></p>
+        </div>
       </div>
-    </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+
+      <hr>
+
+      <footer>
+        <p>©2014 Daniel Wang and Florrie Cheng. All rights reserved.</p>
+      </footer>
+    </div> <!-- /container -->
+
+	<!---------------------------------------------------------------->
+	<!------------------------ Out of Body --------------------------->
+
+	<!-- Modal Registe -->
+	<div class="modal fade" id="registeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" style="margin-top:auto margin-bottom:auto">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Register</h4>
+	      </div>
+	      <div class="modal-body">
+						<table cellspacing="5" style="width:70%; margin:auto">
+						<tr>
+							<td>Username</td>
+							<td><input id="name-input" type="text" class="form-control" placeholder="" style="margin:5px"></td>
+						</tr>
+						<tr><td></td><td></td></tr>
+						<tr>
+							<td>Password</td>
+							<td><input id="pwd-input" type="password" class="form-control" placeholder="" style="margin:5px"></td>
+						</tr>
+						<tr><td></td><td></td></tr>
+						<tr>
+							<td>Verify</td>
+							<td><input id="pwd2-input" type="password" class="form-control" placeholder="" style="margin:5px"></td>
+						</tr>
+						<tr><td></td><td></td></tr>
+						</table>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-primary" onclick="register()">Sign Up</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+	<!-- Modal Practice -->
+	<div class="modal fade" id="practiceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" style="margin-top:auto margin-bottom:auto">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Practice</h4>
+	      </div>
+	      <div class="modal-body">
+						<table cellspacing="5" style="width:50%; margin:auto">
+						<tr>
+							<td style="padding-bottom:10px; padding-right:15px"><span>Language</span></td>
+							<td>        
+          				<select id="practice-lanlist" name="lanlist" class="selectpicker" data-size="false">
+										<option value="0"">Choose Language</option>
+										<option value="c">C</option>
+										<option value="java">Java</option>
+										<option value="javascript">JavaScript</option>
+          				</select>
+							</td>
+						</tr>
+						<tr><td></td><td></td></tr>
+						</table>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	        <button id="practice_btn" type="button" class="btn btn-primary" onclick="practice()">Start</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+	<!-- Modal Challenge -->
+	<div class="modal fade" id="challengeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" style="margin-top:auto margin-bottom:auto">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Challenge</h4>
+	      </div>
+	      <div class="modal-body">
+						<table cellspacing="5" style="width:50%; margin:auto">
+						<tr>
+							<td style="padding-bottom:10px; padding-right:20px"><span>Language</span></td>
+							<td>        
+          				<select id="challenge-lanlist" name="lanlist" class="selectpicker" data-size="false">
+										<option value="0"">Choose Language</option>
+										<option value="c">C</option>
+										<option value="java">Java</option>
+										<option value="javascript">JavaScript</option>
+          				</select>
+							</td>
+						</tr>
+						<tr><td></td><td></td></tr>
+						<tr>
+							<td>Opponent</td>
+							<td><input id="oppo-input" type="text" class="form-control" placeholder=""></td>
+						</tr>
+						</table>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal" >Cancel</button>
+	        <button id="challenge_btn" type="button" class="btn btn-primary" onclick="challenge()">Challenge!</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+
+	<!-- Modal Match -->
+	<div class="modal fade" id="matchModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" style="margin-top:auto margin-bottom:auto">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">Match</h4>
+	      </div>
+	      <div class="modal-body">
+						<table cellspacing="5" style="width:50%; margin:auto">
+						<tr>
+							<td style="padding-bottom:10px; padding-right:15px"><span>Language</span></td>
+							<td>        
+          				<select id="match-lanlist" name="lanlist" class="selectpicker" data-size="false">
+										<option value="0"">Choose Language</option>
+										<option value="c">C</option>
+										<option value="java">Java</option>
+										<option value="javascript">JavaScript</option>
+          				</select>
+							</td>
+						</tr>
+						<tr><td></td><td></td></tr>
+						</table>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal" >Cancel</button>
+	        <button id="match_btn" type="button" class="btn btn-primary" onclick="match()">Match</button>
+	      </div>
+	    </div><!-- /.modal-content -->
+	  </div><!-- /.modal-dialog -->
+	</div><!-- /.modal -->
+

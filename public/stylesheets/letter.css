@@ -1,22 +1,28 @@
 @CHARSET "UTF-8";
 
 .notTyped {
-	color: #000;
+	color: #34495e;
 }
 
 .hasTyped {
-	color: gray;
+	color: #aaa;
 }
 
 .wrong {
-	color: red;
+	color: #e74c3c;
+}
+
+.o-typing {
+	/*text-shadow: 2px 2px 1px #444;*/
+	background-color: #ecbe06;
 }
 
 .typing {
-	color: #000;
-	background-color: #0f0;
-	
+	color: #eee;
+	background-color: #1abc9c;
 }
 
-
-
+@font-face {
+    font-family:ubuntu-mono;
+    src:url(/fonts/UbuntuMono-R.ttf);
+}

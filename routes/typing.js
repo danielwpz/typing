@@ -1,21 +1,26 @@
-var express = require('express');
 var levelManager = require('../modules/LevelManager.js');
-var router = express.Router();
 
 
 /* GET users listing. */
-router.get('/', function(req, res) {
-	if (req.session && req.session.pairIndex >= 0) {
-		levelManager({levelPath: './levels/'}, function(err, data) {
+function doTyping(req, res, myName, pairName) {
+	var lan = req.params.lan;
+	var path = './levels/' + lan + '/';
+	levelManager({levelPath: path}, function(err, data) {
+		if (err) {
+			console.log('levelmanager err:' + err);
+		}else {
+			console.log('render typing for ' + myName);
+			res.set('Cache-Control', 'no-cache');			
 			res.render('typing', {
 				title: 'Challenge',
 				layout: 'challenge_layout',
-				code: data
+				code: data,
+				mode: 'challenge',
+				myName: myName,
+				pairName: pairName
 			});
-		});
-	}else {
-		res.end('You should register or challenge first.');
-	}
-});
+		}
+	});
+}
 
-module.exports = router;
+module.exports = doTyping;

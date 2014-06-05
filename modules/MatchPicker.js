@@ -5,23 +5,26 @@ function MatchPicker() {
 		// get the wait list for specific language
 		var thisWaitList = waitList[options.lan];
 		
-		if (thisWaitList == undefined || thisWaitList == null ||
-				thisWaitList.length == 0) {
-			waitList[options.lan] = [name];
+		if (thisWaitList == undefined || thisWaitList == null) {
+			waitList[options.lan] = name;
 			return "";
 		}else {
-			var pairName = thisWaitList[0];
-			thisWaitList = [];
-
-			return pairName;
+			var pairName = thisWaitList;
+			if (pairName == name) {
+				// same person
+				return "";
+			}else {
+				waitList[options.lan] = null;
+				return pairName;
+			}
 		}
 	}
 
 	this.clear = function(name) {
 		var subList;
 		for (subList in waitList) {
-			if (subList[0] == name) {
-				subList = [];
+			if (waitList[subList] == name) {
+				waitList[subList] = null;
 			}
 		}
 	}

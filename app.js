@@ -8,24 +8,28 @@ var bodyParser = require('body-parser');
 var connect = require('connect');
 var session = require('express-session');
 var sessionStore = new session.MemoryStore();
+var crypto = require('crypto');
 
 var routes = require('./routes/index');
 var typing = require('./routes/typing');
+var practice = require('./routes/practice');
 
 var cookieParser = CookieParser('secret');
 
 var app = express();
+var config = require('./config.js');
 var server = require('http').createServer(app);
-var io = require('socket.io').listen(server);
+var io = require('socket.io').listen(server, {'log level': 0});
 var Sio = require('session.socket.io');
 var sio = new Sio(io, sessionStore, cookieParser, 'connect.sid');
+var serverPort = config.port;
 
-app.set('port', process.env.PORT || 8080);
+app.set('port', process.env.PORT || serverPort);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use(favicon());
+//app.use(favicon());
 //app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
@@ -34,8 +38,28 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(partials());
 app.use(session({key: 'connect.sid', secret: 'secret', store: sessionStore}));
 
-app.use('/', routes);
-app.use('/typing', typing);
+app.use('/typing/:lan', function(req, res) {
+	if (req.session && req.session.pairIndex && req.session.pairIndex >=0) {
+		var myName = req.session.name;
+		var pairName = getPairName(req.session.pairIndex, myName);
+		console.log(myName + ' request /typing with ' + pairName);
+		typing(req, res, myName, pairName);
+	}else {
+		var errDes = '';
+		if (!req.session) {
+			errDes = 'no session';
+		}else if (!req.session.pairIndex) {
+			errDes = 'no pairIndex';
+		}else {
+			errDes = 'pairIndex invalid';
+		}
+		res.end('Request denied.' + errDes);
+	}
+});
+app.use('/practice/:lan', practice);
+app.use('/', function(req, res) {
+	routes(req, res, onlineNum);
+});
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
@@ -91,26 +115,36 @@ util.inherits(Engine, events.EventEmitter);
  *    Global vars    *
  *********************/
 var userList = {};
+userList[""] = null;
 var pairList = new Array();
 var matchPicker = new MatchPicker();
+var onlineNum = 0;
+
+// The first slot of pairList is reversed 
+// for practice mode
+pairList.push({});
 
 var engine = new Engine();
 /* Register event for Engine */
-engine.on('pair-made', function(p1, p2) {
+engine.on('pair-made', function(index) {
+	var p1 = userList[pairList[index].player1];
+	var p2 = userList[pairList[index].player2];
+	var lan = pairList[index].lan;
+
 	p1.socket.emit('_Reply', {
 		type: 'Challenge', 
 		result: 'start',
-		page: '/typing'
+		page: '/typing/' + lan
 	});
 	p2.socket.emit('_Reply', {
 		type: 'Challenge', 
 		result: 'start',
-		page: '/typing'
+		page: '/typing/' + lan
 	});
 });
 
 engine.on('pair-ready', function(index) {
-	console.log('Pair[' + index + '] ready.\n');
+	console.log('>>>Pair[' + index + '] ready.\n');
 	var player1 = userList[pairList[index].player1];
 	var player2 = userList[pairList[index].player2];
 
@@ -125,8 +159,8 @@ engine.on('pair-ready', function(index) {
 	});
 });
 
-function isRegistered(name) {
-	return (userList[name] != null && userList[name] != undefined);
+function isOnline(name) {
+	return (userList[name] && userList[name].socket);
 }
 
 function getName(session) {
@@ -136,7 +170,18 @@ function getName(session) {
 		return null;
 }
 
-function makePair(player1, player2) {
+function getPairName(index, myName) {
+	var p1Name = pairList[index].player1;
+	var p2Name = pairList[index].player2;
+
+	if (p1Name == myName) {
+		return p2Name;
+	}else {
+		return p1Name;
+	}
+}
+	
+function makePair(player1, player2, lan) {
 	var index = pairList.length;
 
 	player1.session.pairIndex = index;
@@ -148,28 +193,50 @@ function makePair(player1, player2) {
 		player1: player1.name, 
 		player2: player2.name,
 		player1_online: false,
-		player2_online: false
+		player2_online: false,
+		lan: lan
 	});
 
 	// fire event
-	engine.emit('pair-made', player1, player2);
+	engine.emit('pair-made', index);
 }
 
-function tryChallenge(name, pairName) {
+function tryChallenge(name, pairName, lan) {
 	var player = userList[name];
 	var pair = userList[pairName];
 
 	player.state = 'waiting';
 
-	if (pair && pairName != name && pair.state != 'racing') {
-		if (pair.state == 'waiting') {
-			matchPicker.clear(pairName);
-			makePair(player, pair);
-		}else if (pair.state == 'normal') {
-			pair.socket.emit('_Challenge', {name: name});
-		}
+	if (pair && pair.socket == null) {
+		// lazy removing
+		makeOffline(pairName);
+
+		player.socket.emit('_Reply', {
+			type: 'Challenge', 
+			result: 'not-online'
+		});
 	}else {
-		player.socket.emit('_Reply', {type: 'Challenge', result: 'nonavail'});
+		if (pair && pairName != name && pair.state != 'racing') {
+			if (pair.state == 'waiting') {
+				matchPicker.clear(pairName);
+				makePair(player, pair, lan);
+			}else if (pair.state == 'normal') {
+				pair.socket.emit('_Challenge', {
+					type: 'try',
+					name: name,
+					lan: lan
+				});
+			}
+		}else {
+			var errdesc = 'nonavail';
+			if (pair && pair.state == 'racing') {
+				errdesc = 'racing';
+			}
+			player.socket.emit('_Reply', {
+				type: 'Challenge', 
+				result: errdesc
+			});
+		}
 	}
 }
 
@@ -183,13 +250,60 @@ function rejectChallenge(name, pairName) {
 	pair.socket.emit('_Reply', {type: 'Challenge', result: 'reject'});
 }
 
+function cancelChallenge(name, pairName) {
+	var player = userList[name];
+	var pair = userList[pairName];
+
+	player.state = 'normal';
+
+	try{
+		pair.socket.emit('_Challenge', {
+			type: 'cancel',
+			name: name
+		});
+	}catch(e) {
+		console.log('cancel challenge err:' + e);
+	}
+}
+
+
+function isOnline(name) {
+	return (userList[name] && userList[name].socket);
+}
+
+function makeOnline(name, socket, session) {
+	userList[name] = new Player(name, socket, session);
+
+	try{
+		session.name = name;
+		session.save();
+		onlineNum++;
+		console.log('+++make online:' + name);
+	}catch(e) {
+		console.log('make on line error:' + e);
+		delete userList.name;
+	}
+}
+
+function makeOffline(name) {
+	userList[name] = null;
+	delete userList.name;
+	onlineNum--;
+	console.log('---make offline:' + name);
+}
+
 /*******************
  *    socket.io    *
  *******************/
 sio.on('connection', function(err, socket, session) {
 	// check session
 	if (getName(session)) {
-		userList[session.name].socket = socket;
+		if (userList[session.name]) {
+			userList[session.name].socket = socket;
+		}else {
+			// previous off-line, but session log in
+			makeOnline(session.name, socket, session);
+		}
 	}
 
 	socket.on('Register', function(data) {
@@ -198,21 +312,51 @@ sio.on('connection', function(err, socket, session) {
 
 		if (name == null) {
 			name = data.name;
+			var pwd = data.pwd;
+			var pwd2 = data.pwd2;
+
+			// check if pwd is valid
+			if (pwd != pwd2) {
+				socket.emit('_Reply', {
+					type:'Register',
+					result:'inval-pwd'
+				});
+
+				return;
+			}
+
+			var md5 = crypto.createHash('md5');
+			var secretPwd = md5.update(pwd).digest('base64');
 
 			// check whether the name already existed
-			if (!isRegistered(name)) {
-				userList[name] = new Player(name, socket, session);
+			Player.get(name, function(err, player) {
+				if (player == null) {
+					var player = new Player(name, socket, session);
+					player.pwd = secretPwd;
 
-				session.name = data.name;
-				session.save();
-				// reply
-				socket.emit('_Reply', {type: 'Register', result: 'ok'});
-			}else {
-				socket.emit('_Reply', {
-					type: 'Register', 
-					result: 'exist'
-				});
-			}
+					player.save(function(err) {
+						if (err) {
+							console.log('save player error:' + err);
+							socket.emit('_Reply', {
+								type: 'Register',
+								result: 'unknown-err'
+							});
+						}else {
+							makeOnline(name, socket, session);
+
+							socket.emit('_Reply', {
+								type: 'Register',
+								result: 'ok'
+							});
+						}
+					});
+				}else {
+					socket.emit('_Reply', {
+						type: 'Register',
+						result: 'exist'
+					});
+				}
+			});
 		}else {
 			socket.emit('_Reply', {
 				type: 'Register', 
@@ -221,16 +365,57 @@ sio.on('connection', function(err, socket, session) {
 		}
 	});
 
+	socket.on('SignIn', function(data) {
+		var md5 = crypto.createHash('md5');
+		var secretPwd = md5.update(data.pwd).digest('base64');
+
+		if (isOnline(data.name)) {
+			socket.emit('_Reply', {
+				type: 'SignIn',
+				result: 'already-online'
+			});
+		}else {
+			// check whether the name already existed
+			Player.get(data.name, function(err, player) {
+				if (err) {
+					console.log('get player err:' + err);
+					socket.emit('_Reply', {
+						type: 'SignIn',
+						result: 'unknown-err'
+					});
+					return;
+				}
+
+				if (player && player.pwd == secretPwd) {
+					makeOnline(data.name, socket, session);
+					socket.emit('_Reply', {
+						type: 'SignIn',
+						result: 'ok'
+					});
+				}else {
+					socket.emit('_Reply', {
+						type: 'Register',
+						result: 'bad-info'
+					});
+				}
+			});
+		}
+	});
+		
+
 	socket.on('Challenge', function(data) {
 		var name = getName(session);
 		var pair = data.name;
 		var type = data.type;
-		console.log('Challenge: ' + name + ' -> ' + pair);
+		var lan  = data.lan;
+		console.log('Challenge[' + lan + ']: ' + name + ' -> ' + pair);
 
 		if (name && type == 'try') {
-			tryChallenge(name, pair);
+			tryChallenge(name, pair, lan);
 		}else if (name && type == 'reject'){
 			rejectChallenge(name, pair);
+		}else if (name && type == 'cancel') {
+			cancelChallenge(name, pair);
 		}else {
 			socket.emit('_Reply', {
 				type: 'Challenge', 
@@ -241,22 +426,69 @@ sio.on('connection', function(err, socket, session) {
 
 	socket.on('Match', function(data) {
 		var name = getName(session);
-		console.log('Match: ' + name + '\n');
+		console.log('Find Match for: ' + name + '\n');
 
-		if (name) {
+		if (name && data.type == 'try') {
 			var player = userList[name];
 			player.state = 'waiting';
 
-			var pairName = matchPicker.match(name, data);
-			var pair = userList[pairName];
-			if (pair) {
-				makePair(player, pair);
+			while(true) {
+				var pairName = matchPicker.match(name, data);
+				var pair = userList[pairName];
+
+				if (pairName != "" && pair) {
+					if (pair.socket) {
+						console.log('Match: ' + name + 
+							' & ' + pairName + '\n');
+						makePair(player, pair, data.lan);
+						break;
+					}else {
+						// Pair is off-line, according to lazy-removing
+						// we remove him from userList
+						makeOffline(pairName);
+						// since it seems like there is no previous 
+						// waiting matcher, we re-match current user 
+						// to make him wait
+						continue;
+					}
+				}
+				break;
 			}
+		}else if (name && data.type == 'cancel') {
+			var player = userList[name];
+			player.state = 'normal';
+			matchPicker.clear(name);
+			console.log(name + ' cancel match.\n');
 		}else {
 			socket.emit('_Reply', {
 				type: 'Match',
 				result: 'unregister'
 			});
+		}
+	});
+
+	socket.on('Logout', function() {
+		var name = getName(session);
+		makeOffline(name);
+		matchPicker.clear(name);
+		if (session) {
+			session.name = null;
+			session.pairIndex = null;
+			session.save();
+		}
+	});
+
+	socket.on('disconnect', function() {
+		var name = getName(session);
+		if (name && name != '') {
+			console.log('"' + name + '" socket break on /.\n');
+			// By 'disconnect', we only know that the 
+			// current socket is unavailble, but that
+			// user may still be active because of
+			// page redirections, etc.
+			userList[name].socket = null;
+			// match waiting could be removed
+			matchPicker.clear(name);
 		}
 	});
 });
@@ -270,24 +502,47 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 	var name = getName(session);
 	var pairIndex = session.pairIndex;
 
+	console.log(name + ' connect to challenge.\n');
 	userList[name].socket = socket;
 	
 	socket.on('Established', function(data) {
-		if (pairList[pairIndex].player1 == name) {
-			// Tell the pair that I am online.
-			pairList[pairIndex].player1_online = true;
-			// Check if my component is also online.
-			if (pairList[pairIndex].player2_online) {
-				engine.emit('pair-ready', pairIndex);
+		console.log(name + ' send establish.\n');
+		try{
+			if (pairList[pairIndex].player1 == name) {
+				// Tell the pair that I am online.
+				pairList[pairIndex].player1_online = true;
+				// Reply
+				console.log('Reply estab to ' + name + '\n');
+				socket.emit('_Reply', {
+					type: 'Established',
+					result: 'ok'
+				});
+				// Check if my component is also online.
+				if (pairList[pairIndex].player2_online) {
+					engine.emit('pair-ready', pairIndex);
+				}
+			}else if (pairList[pairIndex].player2 == name) {
+				// Tell the pair that I am online.
+				pairList[pairIndex].player2_online = true;
+				// Reply
+				console.log('Reply estab to ' + name + '\n');
+				socket.emit('_Reply', {
+					type: 'Established',
+					result: 'ok'
+				});
+				// Check if my component is also online.
+				if (pairList[pairIndex].player1_online) {
+					engine.emit('pair-ready', pairIndex);
+				}
 			}
-		}else if (pairList[pairIndex].player2 == name) {
-			// Tell the pair that I am online.
-			pairList[pairIndex].player2_online = true;
-			// Check if my component is also online.
-			if (pairList[pairIndex].player1_online) {
-				engine.emit('pair-ready', pairIndex);
-			}
+		}catch(e) {
+			console.log(name + ' establish error:' + e);
+			socket.emit('_Reply', {
+				type: 'Established',
+				result: 'unknown-err'
+			});
 		}
+			
 	});
 
 	socket.on('Update', function(data) {
@@ -296,11 +551,64 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 				console.log('Get socket pair err.\n');
 			}else {
 				// just forward
-				pair.socket.emit('_Update', data);
+				try {
+					pair.socket.emit('_Update', data);
+				}catch(err) {
+					console.log("On 'Update' error." + err + '\n');
+				}
 			}
 		});
 	});
 
+	socket.on('Finish', function(data) {
+		socket.get('pair', function(err, pair) {
+			if (err) {
+				console.log('Get socket pair err.\n');
+			}else {
+				// just forward
+				try {
+					console.log('<<pair[' + pairIndex + '] finish');
+					pair.socket.emit('_Finish', data);
+					// clear all pair info
+					pairList[pairIndex] = null;
+					// clear user's pair info
+					session.pairIndex = null;
+					session.save();
+					pair.session.pairIndex = null;
+					session.save();
+
+					// change state to normal
+					pair.state = 'normal';
+					userList[name].state = 'normal';
+				}catch(err) {
+					console.log("On 'Finish' error." + err + '\n');
+				}
+			}
+		});
+	});
+
+	socket.on('disconnect', function() {
+		var name = getName(session);
+		if (name && name != '') {
+			console.log('"' + name + '" socket break on "challenge"\n');
+			// By 'disconnect', we only know that the 
+			// current socket is unavailble, but that
+			// user may still be active because of
+			// page redirections, etc.
+			userList[name].socket = null;
+			userList[name].state = 'normal';
+			// match waiting could be removed
+			matchPicker.clear(name);
+		}
+	});
 });
+
+sio.of('/practice').on('connection', function(err, socket, session) {
+	socket.on('Finish', function(data) {
+		var name = getName(session);
+		console.log(name + ' practice finished\n');
+	});
+});
+
 
 module.exports = app;
