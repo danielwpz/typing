@@ -75,13 +75,14 @@ function finish(win) {
 	var today=new Date();
 	var wrongRate = new Number(wrongTimes/typedLetters*100);
 	time = (((today.getHours()-h)*60+(today.getMinutes()-m))*60+(today.getSeconds()-s))*1000+today.getMilliseconds()-ms;
-	sendFinish({time: time});
+	var typeSpeed = Math.floor(typedLetters/time*1000*60);
+	sendFinish({time:time,typed:typedLetters,speed:typeSpeed,wrongTimes:wrongTimes});
 	document.onkeypress=null;
 	document.onkeydown=null;
 	clearTimeout(t);
 	timeString = document.getElementById('time').innerHTML;
 	$('#timeString').html(timeString);
-	$('#speed').html(Math.floor(typedLetters/time*1000*60));
+	$('#speed').html(typeSpeed);
 	if(typedLetters==0) {
 		$('#wrongHits').html("0%");
 	} else {
