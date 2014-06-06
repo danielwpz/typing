@@ -47,8 +47,16 @@ function tryAgain() {
 }
 
 function share() {
-
+	var rrShareParam = {
+		resourceUrl : 'http://coderush.duapp.com',	//分享的资源Url
+		srcUrl : 'http://coderush.duapp.com',	//分享的资源来源Url,默认为header中的Referer,如果分享失败可以调整此值为resourceUrl试试
+		pic : 'http://112.124.112.14/image/logo.png',		//分享的主题图片Url
+		title : 'CodeRush代码竞速游戏',		//分享的标题
+		description : '我的代码速度是 '+typeSpeed+' lpm，快来和我比试吧！'	//分享的详细描述
+	};
+	rrShareOnclick(rrShareParam);
 }
+
 //back to homepage after game
 function back() {
 	var hostPath = window.location.hostname;
