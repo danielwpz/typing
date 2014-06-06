@@ -72,11 +72,7 @@ function applyInfo() {
 	var studentID = $('#id-input').val();
 	var phone = $('#phone-input').val();
 	var username = $('#username').html();
-	socket.emit('Register', {
-		name: username,
-		studentID: studentID,
-		phone: phone
-	});
+	sendApply({name: username, studentID: studentID, phone: phone});
 }
 
 function signIn() {
