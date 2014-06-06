@@ -36,6 +36,88 @@ function Player(name, socket, session) {
 			});
 		});
 	};
+
+	this.recordScore = function(lan, record, callback) {
+		this.getBest(lan, function(err, lastBest) {
+			if (lastBest && lastBest.speed > record.speed) {
+				callback(err, null);
+			}else {
+				if (lastBest) {
+					mongodb.open(function(err, db) {
+						if (err) {
+							mongodb.close();
+							return callback(err);
+						}
+
+						db.collection(lan, function(err, collection) {
+							if (err) {
+								mongodb.close();
+								return callback(err);
+							}
+
+							collection.update({name: this.name},
+								{$set:record},
+								{safe:true},
+								function(err, result) {
+									mongodb.close();
+									callback(err, result);
+								});
+						});
+					});
+				}else {
+					mongodb.open(function(err, db) {
+						if (err) {
+							mongodb.close();
+							return callback(err);
+						}
+
+						db.collection(lan, function(err, collection) {
+							if (err) {
+								mongodb.close();
+								return callback(err);
+							}
+
+							record[name] = this.name;
+							collection.insert(record,
+								{safe:true},
+								function(err, result) {
+									mongodb.close();
+									callback(err, result);
+								});
+						});
+					});
+				}
+			}
+		});
+	};
+
+
+	this.getBest = function(lan, callback) {
+		mongodb.open(function(err, db) {
+			if (err) {
+				return callback(err);
+			}
+
+			db.collection(lan, function(err, collection) {
+				if (err) {
+					mongodb.close();
+					return callback(err);
+				}
+
+				collection.findOne({name: this.name},
+					function(err, doc) {
+						mongodb.close();
+						if (doc) {
+							callback(err, doc);
+						}else {
+							callback(err, null);
+						}
+					}
+					);
+			});
+		});
+	};
+
 }
 
 

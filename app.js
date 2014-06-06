@@ -568,6 +568,16 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 				// just forward
 				try {
 					console.log('<<pair[' + pairIndex + '] finish');
+					if (name && userList[name]) {
+						var p = userList{name];
+						p.recordScore(pairList[pairIndex].lan,
+							data, function(err, r) {
+								if (err) {
+									console.log('recordScore err:' + err);
+								}else {
+									console.log('recordScore:' + name);
+								}
+							});
 					pair.socket.emit('_Finish', data);
 					// clear all pair info
 					pairList[pairIndex] = null;
