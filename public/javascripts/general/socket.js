@@ -13,7 +13,7 @@ function registerListeners(so) {
 				var hostPort = window.location.port;
 				window.location.assign('http://' + hostPath + ':' + hostPort);
 			}else if (result == 'exist') {
-				nameErr = 'Username is existed.';
+				nameErr = 'Username exists.';
 			}else {
 				nameErr = 'Uppose, something wrong happened.';
 			}
