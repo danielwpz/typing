@@ -40,7 +40,13 @@ function Player(name, socket, session) {
 	this.recordScore = function(lan, record, callback) {
 		console.log(this.name + ' recordScore');
 		this.getBest(lan, function(err, lastBest) {
+			if (err) {
+				return callback(err);
+			}
+
 			if (lastBest && lastBest.speed >= record.speed) {
+				console.log('no need to update');
+				console.log(JSON.stringify(lastBest));
 				callback(err, null);
 			}else {
 				if (lastBest) {
@@ -60,6 +66,7 @@ function Player(name, socket, session) {
 								{$set:record},
 								{safe:true},
 								function(err, result) {
+									console.log('update finish');
 									mongodb.close();
 									callback(err, result);
 								});
@@ -83,6 +90,7 @@ function Player(name, socket, session) {
 							collection.insert(record,
 								{safe:true},
 								function(err, result) {
+									console.log('insert finish');
 									mongodb.close();
 									callback(err, result);
 								});
