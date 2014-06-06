@@ -1,21 +1,14 @@
-public static List<Map<Integer, String>>
-        getRegResult(String content, String regX) {
-	if (content == null || content.equals("")) return null;
-	if (regX == null || regX.equals("")) return null;
+public class Solution {
+	boolean hasSameCharacterAt(String[] strs, int pos) {
+		if (pos >= strs[0].length())
+			return false;
 
-	List<Map<Integer, String>> list = new ArrayList<Map<Integer, String>>();
-
-	Matcher m = Pattern.compile(regX).matcher(content);
-	while (m.find()) {
-		Map<Integer,String> mp = new HashMap<Integer,String>();
-
-		int gc = m.groupCount();
-		if (gc > 0) {
-			for (int k = 1; k <= gc; k++) {
-				mp.put(k, m.group(k));			
-			}
-			list.add(mp);
+		char c = strs[0].charAt(pos);
+		for (int i = 1; i < strs.length; ++i) {
+			if (pos >= strs[i].length() || strs[i].charAt(pos) != c)
+				return false;
 		}
+
+		return true;
 	}
-	return list;
 }
