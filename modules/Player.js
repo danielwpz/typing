@@ -38,8 +38,9 @@ function Player(name, socket, session) {
 	};
 
 	this.recordScore = function(lan, record, callback) {
+		console.log(this.name + ' recordScore');
 		this.getBest(lan, function(err, lastBest) {
-			if (lastBest && lastBest.speed > record.speed) {
+			if (lastBest && lastBest.speed >= record.speed) {
 				callback(err, null);
 			}else {
 				if (lastBest) {
@@ -77,7 +78,8 @@ function Player(name, socket, session) {
 								return callback(err);
 							}
 
-							record[name] = this.name;
+							collection.ensureIndex('name', {unique: true});
+							record['name'] = this.name;
 							collection.insert(record,
 								{safe:true},
 								function(err, result) {
@@ -93,6 +95,7 @@ function Player(name, socket, session) {
 
 
 	this.getBest = function(lan, callback) {
+		console.log(this.name + ' getBest');
 		mongodb.open(function(err, db) {
 			if (err) {
 				return callback(err);
