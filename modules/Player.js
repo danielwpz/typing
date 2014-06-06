@@ -77,7 +77,7 @@ function Player(name, socket, session) {
 								return callback(err);
 							}
 
-							record[name] = this.name;
+							record['name'] = this.name;
 							collection.insert(record,
 								{safe:true},
 								function(err, result) {
