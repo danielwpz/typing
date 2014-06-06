@@ -1,5 +1,5 @@
 module.exports = {
-	port: 8080,
+	port: 80,
 	db:  'typing-db',
 	host:  'localhost',
 	secret:  'typing!@#'
