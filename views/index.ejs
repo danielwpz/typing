@@ -28,7 +28,7 @@
 		  <%}else { %>
 		  <ul class="nav navbar-nav navbar-right">
 		    <li>
-		      <a style="padding-left:5px; padding-right:5px"><%=name%></a>
+		      <a style="padding-left:5px; padding-right:5px" id="username"><%=name%></a>
 		    </li>
 			<li>
 			  <a onclick="logout()">Logout</a>
@@ -57,7 +57,7 @@
 					2014.6.2
 				</td>
 				<td>
-					<a data-toggle="modal" data-target="#announceModal">复旦大学2014年 “代码竞速” 大赛活动公告</a>
+					<a data-toggle="modal" data-target="#announceModal">复旦大学计算机学院 ‘CodeRush’代码竞速大赛活动公告</a>
 				</td>
 			</tr>
 			<tr>
@@ -82,6 +82,20 @@
 
 <%} %>
     <div id="index-option" class="container">
+<% if (name == '') { %>
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="col-md-4">
+          <h2>Trial</h2>
+          <p>Practice typing without signing in.</p>
+          <p><a class="btn btn-success" data-toggle="modal" data-target="#practiceModal" role="button">Practice »</a></p>
+        </div>
+        <div class="col-md-8 announce">
+          <h2>Attention!</h2>
+          <p>复旦大学计算机学院代码竞速大赛火热进行中，注册后点击公告即可报名，更有神秘礼品相赠</p>
+       </div>
+      </div>
+<% }else{ %>
       <!-- Example row of columns -->
       <div class="row">
         <div class="col-md-4">
@@ -100,7 +114,7 @@
           <p><a class="btn btn-success" role="button" data-toggle="modal" data-target="#matchModal"">Match »</a></p>
         </div>
       </div>
-
+<% } %>
       <hr>
 
       <footer>
@@ -249,45 +263,52 @@
 
 	<!-- Modal Announcement -->
 	<div class="modal fade" id="announceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	  <div class="modal-dialog" style="margin-top:auto; margin-bottom:auto; width:800px"">
+	  <div class="modal-dialog" style="margin-top:auto; margin-bottom:auto; width:900px"">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 	        <h4 class="modal-title" id="myModalLabel">Announcement</h4>
 	      </div>
-	      <div class="modal-body">
+	      <div class="modal-body announce">
 			<div>
-				<p><h3 class="title">复旦大学2014‘CodeRush’代码竞速大赛</h3></p>
+				<p><h3 class="title">复旦大学计算机学院‘CodeRush’代码竞速大赛</h3></p>
 				<p><h6 class="title">主办方：计算机团学联</h6></p>
-				<p>写代码时觉得手速跟不上脑速吗？</p>
-				<p>想练成科幻作品中飞一般的写代码速度吗？</p>
-				<p>想一展才华成为复旦代码之神吗？</p>
-				<p>CodeRush为你提供代码竞速对战平台，并携手计算机团学联举办代码竞速大赛，欢迎你的参与。</p>
+				<br/>
+				<p class="title">写代码时觉得手速跟不上脑速吗？</p>
+				<p class="title">想练成科幻作品中飞一般的写代码速度吗？</p>
+				<p class="title">想一展才华成为复旦代码之神吗？</p>
+				<p class="title">一键报名，一键成名！</p>
+				<br/>
 				<p><h4 class="title">初赛</h4></p>
-				<p><span><strong>时间:</strong></span><span>6.6至6.11</span></p>
-				<p><span><strong>地点:</strong></span><span>线上进行</span></p>
-				<p><span><strong>参与方式:</strong></span><span>注册后在此页提交学号和手机</span></p>
-				<p><span><strong>比赛规则:</strong></span><span>三种模式自由参与，系统会记录你所达到过的最快打字速度，并在后台进行排名。初赛结束后邀请TOP32位选手进行线下的对战赛。</span></p>
+				<p><span><strong>时间：</strong></span><span>6.6至6.11</span></p>
+				<p><span><strong>地点：</strong></span><span>线上进行</span></p>
+				<p><span><strong>参与方式：</strong></span><span>注册后在此页提交学号和手机</span></p>
+				<p><span><strong>比赛规则：</strong></span><span>三种模式自由参与，系统会记录你所达到过的最快打字速度，并在后台进行排名。初赛结束后邀请TOP16或32位选手进行线下的对战赛。</span></p>
+				<br/>
 				<p><h4 class="title">决赛</h4></p>
-				<p><span><strong>时间:</strong></span><span>待定</span></p>
-				<p><span><strong>地点:</strong></span><span>张江校区软件楼IBM会议室</span></p>
-				<p><span><strong>参与方式:</strong></span><span>在初赛中脱颖而出</span></p>
-				<p><span><strong>比赛规则:</strong></span><span>现场进行1V1淘汰赛，即32进16，16进8，以此类推。最后决出冠亚季军以及5名优胜奖。</span></p>
+				<p><span><strong>时间：</strong></span><span>待定</span></p>
+				<p><span><strong>地点：</strong></span><span>张江校区软件楼IBM会议室</span></p>
+				<p><span><strong>参与方式：</strong></span><span>在初赛中脱颖而出</span></p>
+				<p><span><strong>比赛规则：</strong></span><span>现场进行1V1淘汰赛，即32进16，16进8，以此类推。最后决出冠亚季军以及若干名优胜奖。</span></p>
 
+				<br/>
 				<p><h4 class="title">奖品</h4></p>
-				<p><span><strong>冠军：</strong></span><span></span></p>
-				<p><span><strong>亚军：</strong></span><span></span></p>
-				<p><span><strong>季军：</strong></span><span></span></p>
-				<p><span><strong>优胜奖：</strong></span><span></span></p>
+				<p><span><strong>冠军：</strong></span><span>传说级神秘奖品</span></p>
+				<p><span><strong>亚军：</strong></span><span>史诗级神秘奖品</span></p>
+				<p><span><strong>季军：</strong></span><span>稀有级神秘奖品</span></p>
+				<p><span><strong>优胜奖：</strong></span><span>鼠标垫</span></p>
 			</div>
+				<br/>
+				<hr/>
+				<p><h4 class="title">报名</h4></p>
 						<table cellspacing="5" style="width:70%; margin:auto">
 						<tr>
-							<td>Student ID</td>
+							<td>学号</td>
 							<td><input id="id-input" type="text" class="form-control" placeholder="" style="margin:5px"></td>
 						</tr>
 						<tr><td></td><td></td></tr>
 						<tr>
-							<td>Cell Phone</td>
+							<td>手机</td>
 							<td><input id="phone-input" type="text" class="form-control" placeholder="" style="margin:5px"></td>
 						</tr>
 						<tr><td></td><td></td></tr>
@@ -296,7 +317,7 @@
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary" onclick="register()">Sign Up</button>
+	        <button type="button" class="btn btn-primary" onclick="applyInfo()">Confirm</button>
 	      </div>
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->

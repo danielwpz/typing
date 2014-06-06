@@ -68,6 +68,17 @@ function register() {
 	}
 }
 
+function applyInfo() {
+	var studentID = $('#id-input').val();
+	var phone = $('#phone-input').val();
+	var username = $('#username').html();
+	socket.emit('Register', {
+		name: username,
+		studentID: studentID,
+		phone: phone
+	});
+}
+
 function signIn() {
 	var name = $('#signin-name').val();
 	var pwd = $('#signin-pwd').val();

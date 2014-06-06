@@ -25,12 +25,12 @@
 
 #index-announce-table td {
 	width:150px;
-	font-family:yahei;
+	font-family:lato;
 }
 
 
 #index-announce-table td+td {
-	width:400px;
+	width:530px;
 }
 
 .index-stat {
@@ -48,9 +48,13 @@
 
 @font-face {
     font-family:lato;
-    src:url(/fonts/yahei.TTF);
+    src:url(/fonts/lato/lato-regular.ttf);
 }
 
 .title {
 	text-align:center;
+}
+
+.announce {
+	font-family:lato;
 }
