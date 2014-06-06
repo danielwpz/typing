@@ -13,9 +13,7 @@
 		  <% if (name == '') { %>
           <table class="nav navbar-nav navbar-form navbar-right" style="margin-top:8px;">
 	  <tr>
-			<td>
-				<a style="padding-left:5px; padding-right:15px" data-toggle="modal" data-target="#contactModal">Contact us</a>
-			</td>
+			
             <td >
               <input style="margin-right:5px" id="signin-name" type="text" placeholder="Username" class="form-control">
             </td>
@@ -31,7 +29,7 @@
 		  <%}else { %>
 		  <ul class="nav navbar-nav navbar-right">
 		    <li>
-		      <a style="padding-left:5px; padding-right:15px" data-toggle="modal" data-target="#contactModal">Contact us</a>
+		      <a style="padding-left:5px; margin-right:15px" data-toggle="modal" data-target="#contactModal">Contact us</a>
 		    </li>
 		    <li>
 		      <a style="padding-left:5px; padding-right:5px" id="username"><%=name%></a>

@@ -25,12 +25,12 @@
 
 #index-announce-table td {
 	width:150px;
-	font-family:lato;
 }
 
 
 #index-announce-table td+td {
 	width:530px;
+	font-family:"微软雅黑";
 }
 
 .index-stat {
@@ -46,15 +46,10 @@
 	border-color:#e74c3c #e74c3c !important;
 }
 
-@font-face {
-    font-family:lato;
-    src:url(/fonts/lato/lato-regular.ttf);
-}
-
 .title {
 	text-align:center;
 }
 
 .announce {
-	font-family:lato;
+	font-family:"微软雅黑";
 }
