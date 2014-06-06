@@ -6,6 +6,8 @@ function doPractice(req, res) {
 	var path = './levels/' + lan + '/';
 	if (req.session && req.session.name) {
 		name = req.session;
+		req.session.lan = lan;
+		req.session.save();
 	}
 
 	levelManager({levelPath: path}, function(err, data) {

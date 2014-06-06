@@ -185,7 +185,9 @@ function makePair(player1, player2, lan) {
 	var index = pairList.length;
 
 	player1.session.pairIndex = index;
+	player1.session.lan = lan;
 	player2.session.pairIndex = index;
+	player2.session.lan = lan;
 	player1.session.save();
 	player2.session.save();
 	
@@ -570,8 +572,11 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 					console.log('<<pair[' + pairIndex + '] finish');
 					if (name && userList[name]) {
 						var p = userList[name];
-						p.recordScore(pairList[pairIndex].lan,
-							data, function(err, r) {
+						var lan = session.lan;
+						p.recordScore(
+							lan,
+							data, 
+							function(err, r) {
 								if (err) {
 									console.log('recordScore err:' + err);
 								}else {
@@ -584,9 +589,11 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 					pairList[pairIndex] = null;
 					// clear user's pair info
 					session.pairIndex = null;
+					session.lan = null;
 					session.save();
 					pair.session.pairIndex = null;
-					session.save();
+					pair.session.lan = null;
+					pair.session.save();
 
 					// change state to normal
 					pair.state = 'normal';
@@ -618,6 +625,21 @@ sio.of('/practice').on('connection', function(err, socket, session) {
 	socket.on('Finish', function(data) {
 		var name = getName(session);
 		console.log(name + ' practice finished\n');
+		// save score
+		if (name && userList[name]) {
+			var p = userList[name];
+			var lan = session.lan;
+			p.recordScore(
+				lan,
+				data, 
+				function(err, r) {
+					if (err) {
+						console.log('recordScore err:' + err);
+					}else {
+						console.log('recordScore:' + name);
+					}
+				});
+		}
 	});
 });
 
