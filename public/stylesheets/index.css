@@ -43,7 +43,7 @@
 }
 
 .err_input {
-	border-color:#e74c3c !important;
+	border-color:#e74c3c #e74c3c !important;
 }
 
 @font-face {
