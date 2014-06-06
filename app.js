@@ -569,7 +569,7 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 				try {
 					console.log('<<pair[' + pairIndex + '] finish');
 					if (name && userList[name]) {
-						var p = userList{name];
+						var p = userList[name];
 						p.recordScore(pairList[pairIndex].lan,
 							data, function(err, r) {
 								if (err) {
@@ -578,6 +578,7 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 									console.log('recordScore:' + name);
 								}
 							});
+					}
 					pair.socket.emit('_Finish', data);
 					// clear all pair info
 					pairList[pairIndex] = null;
