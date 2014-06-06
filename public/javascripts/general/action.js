@@ -75,6 +75,10 @@ function applyInfo() {
 	sendApply({name: username, studentID: studentID, phone: phone});
 }
 
+function sendApply(data) {
+	socket.emit('Apply', data);
+}
+
 function signIn() {
 	var name = $('#signin-name').val();
 	var pwd = $('#signin-pwd').val();

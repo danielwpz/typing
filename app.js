@@ -1,6 +1,7 @@
 var express = require('express');
 var partials = require('express-partials');
 var path = require('path');
+var fs = require('fs');
 var favicon = require('static-favicon');
 var logger = require('morgan');
 var CookieParser = require('cookie-parser');
@@ -402,6 +403,17 @@ sio.on('connection', function(err, socket, session) {
 				}
 			});
 		}
+	});
+
+	socket.on('Apply', function(data) {
+		var dataStr = JSON.stringify(data) + '\n';
+		fs.appendFile('apply.txt', dataStr, function(err) {
+			if (err) {
+				console.log('Apply err:' + err);
+			}else {
+				console.log('Apply:' + dataStr);
+			}
+		});
 	});
 		
 
