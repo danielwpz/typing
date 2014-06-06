@@ -1,21 +1,21 @@
-public static List<Map<Integer, String>>
-        getRegResult(String content, String regX) {
-	if (content == null || content.equals("")) return null;
-	if (regX == null || regX.equals("")) return null;
+#include "Sudoku.h"
+#include <iostream>
+#include <string>
 
-	List<Map<Integer, String>> list = new ArrayList<Map<Integer, String>>();
+using namespace std;
 
-	Matcher m = Pattern.compile(regX).matcher(content);
-	while (m.find()) {
-		Map<Integer,String> mp = new HashMap<Integer,String>();
-
-		int gc = m.groupCount();
-		if (gc > 0) {
-			for (int k = 1; k <= gc; k++) {
-				mp.put(k, m.group(k));			
-			}
-			list.add(mp);
+void Sudoku::init() {
+	//denote that the number is checked and confirmed.
+	confirm = -2;
+	for (int i = 0; i < 9; i++) {
+		for (int j = 0; j < 9; j++) {
+			//511=0b111111111 means the candidate for a cell can be 1-9
+			sudoku[i][j] = 511;
+			//the current status of the cell.
+			//0: empty
+			//-1: given
+			//-2: filled and checked
+			stage[i][j] = 0;
 		}
 	}
-	return list;
 }

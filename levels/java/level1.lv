@@ -1,13 +1,3 @@
-package Demo;
-
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Toolkit;
-
-import javax.swing.JFrame;
-
-@SuppressWarnings("serial")
 class Cardioid extends JFrame
 {
 	//定义窗口大小
@@ -36,34 +26,5 @@ class Cardioid extends JFrame
 		this.setVisible(true);
 		//设置窗口默认关闭方式
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-	}
-	public void paint(Graphics g){
-		double  x,y,r;
-		Image image = this.createImage(WIDTH, HEIGHT);
-		Graphics pic = image.getGraphics();
-
-		//绘制图形
-		for (int i = 0; i < 100; i++) {
-			for (int j = 0; j < 100; j++) {
-				r = Math.PI / 45 + Math.PI / 45 * i * 
-						(1 - Math.sin(Math.PI / 45 * j)) * 18;  
-
-				x = r * Math.cos(Math.PI / 45 * j) *
-						Math.sin(Math.PI / 45 * i)  + WIDTH / 2;
-
-				y = -r*Math.sin(Math.PI / 45 * j) + HEIGHT / 2;
-
-				pic.setColor(Color.MAGENTA);
-				pic.fillOval((int)x, (int)y, 2, 2);
-			}
-			//生成图片
-			g.drawImage(image,0,0,this);
-		}
-	}
-}
-
-public class CardioidDemo{
-	public static void main(String[] args){
-		new Cardioid();
 	}
 }

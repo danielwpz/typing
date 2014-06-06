@@ -1,0 +1,37 @@
+void Sudoku::basicSolve() {
+	//Step 1: update candidate according the cell confirmed.
+	updateCandidateForAll();
+	//Step 2: iterative method. search the cell with only one candidate and update the cells in same row or col or box.
+	bool again;
+	do {
+		again = false;
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				if (stage[i][j] >= 0) {
+					// as long as find ont, do the loop again.
+					again |= findUniqueCandidate(i, j);
+				}
+			}
+		}
+	} while (again);
+	//Step 3: find the two cells which have the same two candidates.
+	int x,y;
+	bool find;
+	do {
+		again = false;
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				if (stage[i][j] >= 0 && countBits(sudoku[i][j]) == 2) {
+					x = i;
+					y = j;
+					find = findMutEx(&x,&y);
+					if (find) {
+						stage[i][j] = 1;
+						updateCandidateByMutexCells(i, j, x, y);
+						again = true;
+					}
+				}
+			}
+		}
+	} while (again);
+}

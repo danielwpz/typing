@@ -1,0 +1,11 @@
+//直接插入排序
+void InsertionSort(int input[], int len) {
+	int i, j, temp;
+	for (i = 1; i < len; i++) {
+		temp = input[i];
+		for (j = i-1; j > -1 && input[j] > temp; j--) {
+			input[j+1] = input[j];
+			input[j] = temp;
+		}
+	}
+}

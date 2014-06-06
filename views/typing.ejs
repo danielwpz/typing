@@ -56,6 +56,7 @@ var hasTyped = "hasTyped";
 var notTyped = "notTyped";
 var wrong = "wrong";
 var returnStr = "return";
+var totalLetters = code.length;
 for (i=0;i<code.length;i++) {
 
 	if (code[i]!='\n') {
@@ -65,8 +66,19 @@ for (i=0;i<code.length;i++) {
 			} else {
 				%><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span><span>&nbsp;</span><%
 			}
+			totalLetters--;
 			i++;
-		} 
+		}
+		if (code[i]=='/' && code[i+1]=='/') {
+			while(code[i]!='\n') {
+				%><span class="notes"><%=code[i]%></span><%
+				totalLetters--;
+				i++;
+			}
+			%><br/><%
+			totalLetters--;
+			continue;
+		}
 		space = false;
 		if (first) {
 			if (mode=="practice") {
@@ -106,7 +118,7 @@ for (i=0;i<code.length;i++) {
 			Total letters:
 		</td>
 		<td id='total'>
-			<%=code.length%>
+			<%=totalLetters%>
 		</td>
 	</tr>
 
@@ -148,7 +160,7 @@ for (i=0;i<code.length;i++) {
         <p>©2014 Daniel Wang and Florrie Cheng. All rights reserved.</p>
       </footer>
 
-<progress max=<%=code.length%> value='0' class='prog' id='prog'></progress>
+<progress max=<%=totalLetters%> value='0' class='prog' id='prog'></progress>
 
 </div>
 	<!------------------------ Out of Body --------------------------->
