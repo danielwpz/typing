@@ -29,9 +29,6 @@
 		  <%}else { %>
 		  <ul class="nav navbar-nav navbar-right">
 		    <li>
-		      <a style="padding-left:5px; margin-right:15px" data-toggle="modal" data-target="#contactModal">Contact us</a>
-		    </li>
-		    <li>
 		      <a style="padding-left:5px; padding-right:5px" id="username"><%=name%></a>
 		    </li>
 			<li>
@@ -122,7 +119,9 @@
       <hr>
 
       <footer>
-        <p>©2014 Daniel Wang and Florrie Cheng. All rights reserved.</p>
+        <span>©2014 Daniel Wang and Florrie Cheng. All rights reserved.
+		      <a data-toggle="modal" data-target="#contactModal">Contact us</a>
+	      </span>
       </footer>
     </div> <!-- /container -->
 
@@ -353,22 +352,27 @@
 
 	<!-- Modal Contact -->
 	<div class="modal fade" id="contactModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	  <div class="modal-dialog" style="margin-top:auto; margin-bottom:auto;"">
+	  <div class="modal-dialog" style="margin-top:auto margin-bottom:auto">
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	        <h4 class="modal-title" id="myModalLabel">Contact us</h4>
+	        <h4 class="modal-title" id="myModalLabel">Match</h4>
 	      </div>
-	      <div class="modal-body announce">
-			<div>
-				<p>11302010004@fudan.edu.cn</p>
-				<p>11302010050@fudan.edu.cn</p>
-				<p>有任何建议，欢迎来信沟通</p>
-			</div>
+	      <div class="modal-body">
+						<table cellspacing="5" style="width:50%; margin:auto">
+						<tr>
+							<td><span>Daniel Wang</span></td>
+							<td>11302010004@fudan.edu.cn</td>
+						</tr>
+						<tr>
+              <td>Florrie Cheng</td>
+              <td><span>11302010050@fudan.edu.cn</span></td>
+            </tr>
+						</table>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-	        </div>
+	        <button type="button" class="btn btn-default" data-dismiss="modal" >Close</button>
+	      </div>
 	    </div><!-- /.modal-content -->
 	  </div><!-- /.modal-dialog -->
 	</div><!-- /.modal -->
