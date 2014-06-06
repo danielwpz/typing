@@ -1,16 +1,26 @@
 function registerListeners(so) {
 	so.on('_Reply', function(data) {
 		if (data.type == 'Register') {
-			if (data.result == 'ok') {
+			var result = data.result;
+			var nameErr = '';
+			console.log(data);
+
+			if (result == 'ok') {
 				console.log('Register successfully!\n');
 				$('#registeModal').modal('toggle');
 				// refresh the page
 				var hostPath = window.location.hostname;
 				var hostPort = window.location.port;
 				window.location.assign('http://' + hostPath + ':' + hostPort);
+			}else if (result == 'exist') {
+				nameErr = 'Username is existed.';
 			}else {
-				console.log(data);
+				nameErr = 'Uppose, something wrong happened.';
 			}
+
+			// show error promot
+			$('#register_name_err').text(nameErr);
+
 		}else if (data.type == 'SignIn') {
 			console.log('Sign In:' + data.result + '\n');
 			if (data.result == 'ok') {

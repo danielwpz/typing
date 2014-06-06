@@ -30,20 +30,33 @@ function register() {
 	var pwd2 = $('#pwd2-input').val();
 	console.log('register for ' + name);
 
+	var nameErr = '';
+	var pwdErr = '';
+	var pwd2Err = '';
+
 	if (checkValid(name, pwd) == 1) {
 		// name invalid
 		console.log('name invalid');
+		nameErr = 'At most 8 letters.';
 		return;
 	}else if (checkValid(name, pwd) == 2) {
 		// pwd invalid
 		console.log('pwd invalid');
+		pwdErr = 'At most 16 letters.';
 		return;
 	}
 
 	if (pwd != pwd2) {
 		console.log('Password doesnt match');
+		pwd2Err = 'Not same as password.';
 		return;
 	}
+
+	// show error promot
+	$('#register_name_err').text(nameErr);
+	$('#register_pwd_err').text(pwdErr);
+	$('#register_pwd2_err').text(pwd2Err);
+
 
 	// register to server
 	socket.emit('Register', {
