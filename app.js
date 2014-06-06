@@ -332,34 +332,39 @@ sio.on('connection', function(err, socket, session) {
 			var secretPwd = md5.update(pwd).digest('base64');
 
 			// check whether the name already existed
-			Player.get(name, function(err, player) {
-				if (player == null) {
-					var player = new Player(name, socket, session);
-					player.pwd = secretPwd;
+			try{
+				Player.get(name, function(err, player) {
+					if (player == null) {
+						var player = new Player(name, socket, session);
+						player.pwd = secretPwd;
 
-					player.save(function(err) {
-						if (err) {
-							console.log('save player error:' + err);
-							socket.emit('_Reply', {
-								type: 'Register',
-								result: 'unknown-err'
-							});
-						}else {
-							makeOnline(name, socket, session);
+						player.save(function(err) {
+							if (err) {
+								console.log('save player error:' + err);
+								socket.emit('_Reply', {
+									type: 'Register',
+									result: 'unknown-err'
+								});
+							}else {
+								makeOnline(name, socket, session);
 
-							socket.emit('_Reply', {
-								type: 'Register',
-								result: 'ok'
-							});
-						}
-					});
-				}else {
-					socket.emit('_Reply', {
-						type: 'Register',
-						result: 'exist'
-					});
-				}
-			});
+								socket.emit('_Reply', {
+									type: 'Register',
+									result: 'ok'
+								});
+							}
+						});
+					}else {
+						socket.emit('_Reply', {
+							type: 'Register',
+							result: 'exist'
+						});
+					}
+				});
+			}catch(e) {
+				console.log('Try to register user ' + name + ' err:'
+						+ err);
+			}
 		}else {
 			socket.emit('_Reply', {
 				type: 'Register', 
