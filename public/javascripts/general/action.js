@@ -1,4 +1,8 @@
 function listenModalEvents() {
+	$('#registeModal').on('hidden.bs.modal', function(e) {
+		makeAble('#register_btn', 'Sign Up');
+		cancelChallenge();
+	});
 	$('#challengeModal').on('hidden.bs.modal', function(e) {
 		makeAble('#challenge_btn', 'Challenge');
 		cancelChallenge();
@@ -59,6 +63,7 @@ function register() {
 		$('#register_pwd_err').text(pwdErr);
 		$('#register_pwd2_err').text(pwd2Err);
 	}else {
+		makeDisable('#register_btn', 'Waiting...');
 		// register to server
 		socket.emit('Register', {
 			name: name,
