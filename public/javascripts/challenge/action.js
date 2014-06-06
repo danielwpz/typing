@@ -32,6 +32,7 @@ function tryAgain() {
 		$('#play_again_btn').addClass('disabled');
 		$('#play_again_btn').text('Waiting...');
 		if (evet == 'Practice') {
+			shouldRefresh = true;
 			refresh();
 		}else {
 			var data = JSON.parse(dataStr);
