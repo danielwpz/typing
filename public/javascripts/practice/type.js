@@ -1,17 +1,6 @@
 var wrongTimes = 0;
 var typedLetters = 0;
 
-var sound = 0;
-var sound2 = 0;
-function playSound() {
-	sound++;
-	document.getElementById("sound"+sound%4).play();
-}
-function playSound2() {
-	sound2++;
-	document.getElementById("return"+sound2%4).play();
-}
-
 function keypress(e)
 {
 
@@ -26,7 +15,7 @@ function keypress(e)
 	case 8: case 32: case 13:break;
 	
    	default:
-		playSound();
+
    		var k = String.fromCharCode(currKey);
    		if ($(".me span").hasClass("wrong")) {   			   	
     	   		$(".me span.typing").removeClass("typing").addClass("wrong");
@@ -60,7 +49,7 @@ function keydown(e)
        	switch (currKey)
        	{
        	case 8: 
-			playSound();
+
     	   	if ($(".me span").hasClass("wrong")) {
 				if ($(".me span.typing").hasClass("hiddenElement"))
 					$(".me span.typing").addClass("hidden");
@@ -80,7 +69,7 @@ function keydown(e)
 			return false;
     	   	break;
        	case 13:
-			playSound2();
+
      		if ($(".me span").hasClass("wrong")) {   			   	
     	   		$(".me span.typing").removeClass("typing").addClass("wrong");
     	   		$(".me span.notTyped:first").removeClass("notTyped").addClass("typing");     	     	   	    	   	
@@ -103,7 +92,7 @@ function keydown(e)
 			return false;
     	   	break;
        case 32:
-			playSound2();
+
       		if ($(".me span").hasClass("wrong")) {   			   	
     	   		$(".me span.typing").removeClass("typing").addClass("wrong");
     	   		$(".me span.notTyped:first").removeClass("notTyped").addClass("typing");    	     	   	    	   	

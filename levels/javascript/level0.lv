@@ -1,3 +1,26 @@
-#include "Sudoku.h"
-#include <iostream>
-#include <string>
+//节点选择器代码片段
+var exprId = /^#(\w)+$/;
+
+function isWindow (obj) {
+    return obj != null && obj.window == window;
+}
+
+function isArray (obj) {
+    return Object.prototype.toString.call(obj) == "[object Array]";
+}
+
+function isFunction (obj) {
+    return Object.prototype.toString.call(obj) == "[object Function]";
+}
+
+function makeArray (iterable) {
+    var ret = [], len = iterable.length;
+    //String、window和function也有length属性
+    if (len == null || typeof iterable === "string"
+			|| isFunction(iterable) || isWindow(iterable))
+        ret[0] = iterable;
+    else
+        while (len)
+            ret[--len] = iterable[len];
+    return ret;
+}
