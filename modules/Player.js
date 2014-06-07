@@ -29,7 +29,11 @@ function Player(name, socket, session) {
 				collection.insert(player, 
 					{safe: true}, 
 					function(err, player) {
-						mongodb.close();
+						try{
+							mongodb.close();
+						}catch(e) {
+							console.log('close db err:' + e);
+						}
 						callback(err, player);
 					}
 					);
