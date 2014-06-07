@@ -1,17 +1,12 @@
 #define THREAD_NUM 10
 
-void *test(void *args) {
-	printf("tid %d: i say 'Hello'.\n", args);
-	return NULL;
-}
-
 int main(int argc, char *argv[]) {
 	int i, err;
 	pthread_t child[THREAD_NUM];
 
 	for (i = 0; i < THREAD_NUM; i++) {
 		printf("Creating thread %d\n", i);
-		err = pthread_create(&child[i], NULL, test, (void *) i);
+		err = pthread_create(&child[i], NULL, test, (void *)i);
 		if (err) {
 			printf("Can't create thread %d\n", i);
 			exit(0);
@@ -24,4 +19,3 @@ int main(int argc, char *argv[]) {
 	printf("Thread initialize\n");
 	return 0;
 }
-
