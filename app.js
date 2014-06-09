@@ -571,7 +571,9 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 			}else {
 				// just forward
 				try {
-					pair.socket.emit('_Update', data);
+					if (pair && pair.socket) {
+						pair.socket.emit('_Update', data);
+					}
 				}catch(err) {
 					console.log("On 'Update' error." + err + '\n');
 				}
@@ -584,13 +586,16 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 			if (err) {
 				console.log('Get socket pair err.\n');
 			}else {
-				// just forward
 				try {
 					console.log('<<pair[' + pairIndex + '] finish');
+					// just forward
+					pair.socket.emit('_Finish', data);
+
 					if (name && userList[name]) {
 						var p = userList[name];
 						var lan = session.lan;
 						p.recordScore(
+							name,
 							lan,
 							data, 
 							function(err, r) {
@@ -601,7 +606,6 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 								}
 							});
 					}
-					pair.socket.emit('_Finish', data);
 					// clear all pair info
 					pairList[pairIndex] = null;
 					// clear user's pair info
@@ -609,7 +613,6 @@ sio.of('/challenge').on('connection', function(err, socket, session) {
 					session.lan = null;
 					session.save();
 					pair.session.pairIndex = null;
-					pair.session.lan = null;
 					pair.session.save();
 
 					// change state to normal
@@ -647,6 +650,7 @@ sio.of('/practice').on('connection', function(err, socket, session) {
 			var p = userList[name];
 			var lan = session.lan;
 			p.recordScore(
+				name,
 				lan,
 				data, 
 				function(err, r) {

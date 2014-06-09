@@ -34,16 +34,16 @@ function Player(name, socket, session) {
 						}catch(e) {
 							console.log('close db err:' + e);
 						}
-						callback(err, player);
+						return callback(err, player);
 					}
 					);
 			});
 		});
 	};
 
-	this.recordScore = function(lan, record, callback) {
-		console.log(this.name + ' recordScore');
-		this.getBest(lan, function(err, lastBest) {
+	this.recordScore = function(name, lan, record, callback) {
+		console.log(name + ' recordScore');
+		this.getBest(name, lan, function(err, lastBest) {
 			if (err) {
 				return callback(err);
 			}
@@ -56,7 +56,6 @@ function Player(name, socket, session) {
 				if (lastBest) {
 					mongodb.open(function(err, db) {
 						if (err) {
-							mongodb.close();
 							return callback(err);
 						}
 
@@ -66,7 +65,7 @@ function Player(name, socket, session) {
 								return callback(err);
 							}
 
-							collection.update({name: this.name},
+							collection.update({name: name},
 								{$set:record},
 								{safe:true},
 								function(err, result) {
@@ -79,7 +78,6 @@ function Player(name, socket, session) {
 				}else {
 					mongodb.open(function(err, db) {
 						if (err) {
-							mongodb.close();
 							return callback(err);
 						}
 
@@ -90,7 +88,7 @@ function Player(name, socket, session) {
 							}
 
 							collection.ensureIndex('name', {unique: true});
-							record['name'] = this.name;
+							record.name = name;
 							collection.insert(record,
 								{safe:true},
 								function(err, result) {
@@ -106,8 +104,8 @@ function Player(name, socket, session) {
 	};
 
 
-	this.getBest = function(lan, callback) {
-		console.log(this.name + ' getBest');
+	this.getBest = function(name, lan, callback) {
+		console.log(name + ' getBest');
 		mongodb.open(function(err, db) {
 			if (err) {
 				return callback(err);
@@ -119,7 +117,7 @@ function Player(name, socket, session) {
 					return callback(err);
 				}
 
-				collection.findOne({name: this.name},
+				collection.findOne({name: name},
 					function(err, doc) {
 						mongodb.close();
 						if (doc) {

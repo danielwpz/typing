@@ -5,7 +5,7 @@ function doPractice(req, res) {
 	var lan = req.params.lan;
 	var path = './levels/' + lan + '/';
 	if (req.session && req.session.name) {
-		name = req.session;
+		name = req.session.name;
 		req.session.lan = lan;
 		req.session.save();
 	}
