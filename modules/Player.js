@@ -92,8 +92,14 @@ function Player(name, socket, session) {
 							collection.insert(record,
 								{safe:true},
 								function(err, result) {
-									console.log('insert finish');
-									mongodb.close();
+									if (!err) {
+										console.log('insert finish');
+										try {
+											mongodb.close();
+										}catch(e) {
+											console.log(e);
+										}
+									}
 									callback(err, result);
 								});
 						});

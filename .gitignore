@@ -2,6 +2,7 @@ core
 *~
 node_modules/*
 Makefile
+makefile
 node.log
 *.log
 apply.txt

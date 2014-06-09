@@ -445,11 +445,11 @@ sio.on('connection', function(err, socket, session) {
 
 	socket.on('Match', function(data) {
 		var name = getName(session);
-		console.log('Find Match for: ' + name + '\n');
 
 		if (name && data.type == 'try') {
 			var player = userList[name];
 			player.state = 'waiting';
+			console.log('Find Match for: ' + name);
 
 			while(true) {
 				var pairName = matchPicker.match(name, data);
